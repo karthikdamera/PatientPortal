@@ -3,13 +3,7 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    //"ng": "ng",
     "start": "node server.js"
-    //"build": "node --max_old_space_size=4016 node_modules/@angular/cli/bin/ng build --prod aot=true",
-    //"test": "ng test",
-    //"lint": "ng lint",
-    //"e2e": "ng e2e",
-    //"postinstall": "ng build --aot -prod"
   },
   "private": true,
   "dependencies": {
@@ -92,6 +86,5 @@
   },
   "engines": {
     "node": "6.11.0"
-    //"npm": "3.10.10"
   }
 }
