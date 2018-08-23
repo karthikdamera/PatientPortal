@@ -1,0 +1,174 @@
+<div class="w-100 page-titel float-left">
+  <h4 class="float-left titel">Medications</h4>
+  <button type="button" class="btn btn-primary no_margin width_auto float-right waves-light text-center" data-toggle="modal"
+    data-target="#addmedication" (click)="addmedication.show();toClearModel()" mdbWavesEffect>
+    add medication
+  </button>
+  <div class="input-group col-lg-4 no_padding mr-3  search float-right">
+    <span class="icon-search"></span>
+    <input type="text" placeholder="Search By Name" name="barcode" [(ngModel)]="userFilter" class="form-control w-100 float-left no_margin">
+  </div>
+</div>
+
+<div class="w-100 float-left page-container" *ngIf="medicationdata.length>0">
+  <table class="theme-table table">
+    <thead>
+      <tr>
+        <th (click)="setOrder('Name')" class="curor-pointer">Name
+            <i class="fa" [ngClass]="{'fa-caret-down' : !reverse,'fa-caret-up' : reverse }" *ngIf="order=='Name'" aria-hidden="true" ></i>
+        </th>
+        <th (click)="setOrder('Description')" class="curor-pointer">Description
+            <i class="fa" [ngClass]="{'fa-caret-down' : !reverse,'fa-caret-up' : reverse }" *ngIf="order=='Description'" aria-hidden="true" ></i>
+        </th>
+        <!-- <th>ResponsiblePerson</th> -->
+        <th>Manage</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of medicationdata | orderBy: order:reverse:'case-insensitive' | MedicationsPipe : userFilter | paginate: {itemsPerPage: 5, currentPage: page,  id: 'referfriendpage'};let i=index">
+        <!-- <td>{{data.PharmacyName}}</td> -->
+        <td data-column="Provider Name">{{data.Name}}</td>
+        <td data-column="CreatedOn">{{data.Description}}</td>
+        <!-- <td class='details'>{{data.ResponsiblePerson}}</td> -->
+        <td data-column="Manage">
+          <a href="javascript:;;" class="edit float-left" (click)="onEdit(data);editmedication.show()">
+            <i class="icon-edit float-left" aria-hidden="true"></i>
+            <span>Edit</span>
+          </a>
+          <a href="javascript:;;" class="remove float-left" (click)="onDelete(data);deletemedication.show()">
+            <i class="icon-remove float-left" aria-hidden="true"></i>
+            <span>Remove</span>
+          </a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <pagination-controls (pageChange)="page = $event" id="referfriendpage">
+  </pagination-controls>
+
+</div>
+
+
+<div class="page-container add-record w-100 text-center mt-5 float-left" *ngIf="medicationdata.length<=0">
+  <i class="w-100 icon-add-file icon float-left" aria-hidden="true"></i>
+  <p class="w-100 float-left">Add New Record</p>
+</div>
+
+
+<div mdbModal #addmedication="mdb-modal" class="modal fade" id="addmedication" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content rounded">
+      <div class="modal-header">
+        <h4 class="modal-title w-100" id="myModalLabel">Add Medications </h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="addmedication.hide()">
+          <span aria-hidden="true">
+            <i class="icon-close" aria-hidden="true"></i>
+          </span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="medicationForm" (submit)="saveMedication()">
+          <div class="row">
+            <div class="input-group col-lg-4 float-left">
+              <span class="input-title w-100 float-left">Name :
+                <span class="color-red">*</span>
+              </span>
+              <input type="text" class="form-control " formControlName="Name" [(ngModel)]="medicationmodel.Name">
+              <app-validation [control]="medicationForm.controls.Name"></app-validation>
+            </div>
+            <div class="input-group col-lg-4 float-left">
+              <span class="input-title w-100 float-left">Description :
+                <!-- <span class="color-red">*</span> -->
+              </span>
+              <input type="text" class="form-control capitalize " formControlName="Description" [(ngModel)]="medicationmodel.Description">
+              <!-- <app-validation [control]="orgForm.controls.OrgName"></app-validation>
+              -->
+            </div>
+            <!-- <div class="input-group col-lg-4 float-left">
+              <span class="input-title w-100 float-left">ResponsiblePerson :
+              
+              </span>
+              <input type="text" class="form-control " formControlName="ResponsiblePerson" [(ngModel)]="medicationmodel.ResponsiblePerson">
+             
+            </div> -->
+          </div>
+
+
+
+
+          <button class="btn btn-primary float-right waves-light" [disabled]="!medicationForm.valid || disableButton">Save</button>
+
+          <!-- <button class="btn ml-6 btn-primary btn-sm waves-light float-right" [disabled]="!personrequestForm.valid ||  disableButton" mdbWavesEffect>Submit</button> -->
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<div mdbModal #editmedication="mdb-modal" class="modal fade" id="editmedication" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content rounded">
+      <div class="modal-header">
+        <h4 class="modal-title w-100" id="myModalLabel">Edit Medications </h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="editmedication.hide()">
+          <span aria-hidden="true">
+            <i class="icon-close" aria-hidden="true"></i>
+          </span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="medicationForm1" (submit)="medicationEdit()">
+          <div class="row">
+            <div class="input-group col-lg-4 float-left">
+              <span class="input-title w-100 float-left">Name :
+                <span class="color-red">*</span>
+              </span>
+              <input type="text" class="form-control" formControlName="Name" [(ngModel)]="medicationmodel.Name">
+              <app-validation [control]="medicationForm1.controls.Name"></app-validation>
+            </div>
+            <div class="input-group col-lg-4 float-left">
+              <span class="input-title w-100 float-left">Description :
+                <!-- <span class="color-red">*</span> -->
+              </span>
+              <input type="text" class="form-control" formControlName="Description" [(ngModel)]="medicationmodel.Description">
+              <!-- <app-validation [control]="orgForm.controls.OrgName"></app-validation>
+                    -->
+            </div>
+            <!-- <div class="input-group col-lg-4 float-left">
+                      <span class="input-title w-100 float-left">ResponsiblePerson :
+                       
+                      </span>
+                      <input type="text" class="form-control " formControlName="ResponsiblePerson"  [(ngModel)]="medicationmodel.ResponsiblePerson" >
+                    
+                    </div> -->
+          </div>
+          <button class="btn btn-primary float-right waves-light" type="submit" [disabled]="!medicationForm1.valid || disableButton">Save</button>
+
+          <!-- <button class="btn ml-6 btn-primary btn-sm waves-light float-right" [disabled]="!personrequestForm.valid ||  disableButton" mdbWavesEffect>Submit</button> -->
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<div mdbModal #deletemedication="mdb-modal" class="modal fade" id="deletemedication" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content rounded">
+      <div class="modal-header">
+        <p hidden>{{medicationmodel}}</p>
+        <h4 class="modal-title w-100" id="myModalLabel">Do You want to delete?</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="deletemedication.hide()">
+            <span aria-hidden="true">
+              <i class="icon-close" aria-hidden="true"></i>
+            </span>
+          </button>
+
+      </div>
+      <div>
+          <button class="btn btn-danger float-right waves-light" (click)="deletemedication.hide()">No</button>
+        <button class="btn btn-primary float-right waves-light" (click)="delete(medicationmodel)">Yes</button>
+      </div>
+    </div>
+  </div>
+</div>

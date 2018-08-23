@@ -1,0 +1,62 @@
+[
+    {
+        "name": "Bring On the Broccoli",
+        "url": "assets/slides/1.jpg",
+        "tip":"Bring On the Broccoli",
+        "texttip":"They may be chock-full of nutrients, but exotic vegetables like celeriac and Jerusalem artichokes don't always appeal to more traditional pallets. And that's fine, according to Dr."
+    },
+    {
+        "name": "Cut Out the White Stuff",
+        "url": "assets/slides/2.jpg",
+        "tip":"Cut Out the White Stuff",
+        "texttip":"The easiest way to lose weight and improve your health? Ditch the white stuff! Most white foods (bread, rice, pasta, sugar, flour) are primarily made up of refined carbs and empty calories"
+    },
+    {
+        "name": "Make Breakfast Mandatory",
+        "url": "assets/slides/3.jpg",
+        "tip":"Make Breakfast Mandatory",
+        "texttip":"You've heard it before, but it's worth repeating: Breakfast is still the most important meal of the day! Skipping the first meal of the day can increase risk for obesity more than fourfold"
+    },
+    {
+        "name": "Focus on Nutrients, Not Calories",
+        "url": "assets/slides/4.jpg",
+        "tip":"Focus on Nutrients, Not Calories",
+        "texttip":"While the amount of calories you consume is crucial for weight loss, the quality of your food is often more important (and often ignored). Losing weight isn't all about cutting calories."
+    },
+    {
+        "name": "Drink More Water",
+        "url": "assets/slides/5.jpg",
+        "tip":"Drink More Water",
+        "texttip":"There's a reason Dr. Oz can't omit this expected tip from the list. Drinking water is so imperative for staying healthy, energized, and even losing weight. "
+    },
+    {
+        "name": "Get Your Daily Dose of D",
+        "url": "assets/slides/6.jpg",
+        "tip":"Get Your Daily Dose of D",
+        "texttip":"New research says that vitamin D may play a crucial role in weight loss by controlling appetite and helping fat cells become more metabolically active, Dr. Oz says."
+    },
+    {
+        "name":"Delay Dessert",
+        "url":"assets/slides/7.jpg",
+        "tip":"Delay Dessert",
+        "texttip":"You don't need to completely eliminate dessert (Dr. Oz says it's perfectly okay to indulge your sweet tooth in moderation), just try not to indulge immediately after dinner."
+    },
+    {
+        "name":"Trade Supplements for Tea",
+        "url":"assets/slides/8.jpg",
+        "tip":"Trade Supplements for Tea",
+        "texttip":"Drinking all-natural green tea is an excellent way to boost your weight loss and your health. "
+    },
+    {
+        "name":"AVOCADO SUNRISE",
+        "url":"assets/slides/9.jpg",
+        "tip":"AVOCADO SUNRISE",
+        "texttip":" cut a ripe avocado in half, scoop it out of the peel, remove the seed, put your favorite fresh salsa in place of the seed, and sprinkle with a little sea salt."
+    },
+    {
+        "name":"IMMUNITY-BOOSTING SMOOTHIE",
+        "url":"assets/slides/10.jpg",
+        "tip":"IMMUNITY-BOOSTING SMOOTHIE",
+        "texttip":"This smoothie is full of immune-boosting antioxidants and plenty of fiber, plus the chia seeds add protein, calcium, magnesium, potassium, and omega-3 fatty acids."
+    }
+]

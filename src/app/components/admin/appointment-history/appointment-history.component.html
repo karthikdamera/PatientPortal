@@ -1,0 +1,95 @@
+<div class="w-100 page-titel float-left">
+  <h4 class="float-left titel">Appointment History</h4>
+  <div class="input-group col-lg-4 no_padding  search float-right">
+    <span class="icon-search"></span>
+<input type="text" placeholder="Enter Person/Provider Name" name="barcode" [(ngModel)]="userFilter" class="form-control no_margin w-100 float-left">
+</div>
+
+</div>
+
+<div class="w-100 float-left page-container">
+  <div class="acc-header2 w-100 float-left">
+    <div class="input-group col-lg-2 float-left">
+      <select class="mdb-select form-control w-100 float-left" [(ngModel)]="schModel.ProviderName" (change)="setproviderid()">
+        <!-- <option value="" disabled>-Select providers-</option> -->
+        <option value=0 selected>All Providers</option>
+        <option *ngFor="let dropdown of providerslist">{{dropdown.ProviderName}}</option>
+      </select>
+    </div>
+    <div class="input-group col-lg-2  float-left">
+      <select class="mdb-select form-control w-100 float-left" [(ngModel)]="datefilter.Status">
+        <!-- <option disabled>-Select Status-</option> -->
+        <option  value='Booked' selected>Booked</option>
+        <option>Cancelled</option>
+      </select>
+    </div>
+    <div class="input-group col-lg-2 float-left">
+      <i class="icon-calendar waves-effect " aria-hidden="true" (click)="Fromdate.toggleCalendar('Fromdate')"></i>
+      <input class="form-control  w-100 float-left" placeholder="FromDate [MM/DD/YYYY]" (keyup)="dateMask($event)" ngx-mydatepicker
+        name="Fromdate" value="{{schModel.FromDate }}" [(ngModel)]="datemodel.FromDate" (inputFieldChanged)="onInputFieldDobChanged($event)"
+        [options]="fromdate" #Fromdate="ngx-mydatepicker" (dateChanged)="onFromDateChanged($event)" maxlength="10" [ngClass]="{'error':enterdatests === true && validdate === false}"
+      />
+      <div *ngIf="enterdatests === true && validdate === false">
+        <div style="color:red"> Invalid Date.</div>
+      </div>
+    </div>
+    <div class="input-group col-lg-2 float-left">
+      <i class="icon-calendar waves-effect" aria-hidden="true" (click)="Todate.toggleCalendar('Todate')"></i>
+      <input class="form-control w-100 float-left" (keyup)="dateMask($event)" placeholder="ToDate [MM/DD/YYYY]" ngx-mydatepicker
+        name="Todate" value="{{schModel.ToDate }}" [(ngModel)]="datemodel.ToDate" [options]="todate" #Todate="ngx-mydatepicker"
+        (inputFieldChanged)="onInputFieldDobChanged1($event)" (dateChanged)="onToDateChanged($event)" maxlength="10" [ngClass]="{'error':enterdatests1 === true && validdate1 === false}"
+      />
+      <div *ngIf="enterdatests1 === true && validdate1 === false">
+        <div style="color:red"> Invalid Date.</div>
+      </div>
+    </div>
+    <button class="btn btn-primary col-lg-1 float-left waves-light " mdbWavesEffect (click)="GetAppointmentList()" style="cursor:pointer;">Search</button>
+  </div>
+  <hr class="float-left w-100">
+  <table class="custome-table  table" *ngIf="providerData.length>0">
+    <thead>
+      <tr>
+        <th>Person</th>
+        <th>Provider</th>
+        <th>Slot Date</th>
+        <!-- <th>To Date</th> -->
+        <th>Status</th>
+        <th>Check-In Time</th>
+        <th>Checked-Out Time</th>
+        <th>Cancelled Date</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of providerData | AppointmentHistoryPipe : userFilter | paginate: {itemsPerPage: 10, currentPage: page}; let i=index">
+        <td data-column="Person Name">{{data.PersonName}}</td>
+        <td data-column="Provider Name">{{data.ProviderName}}</td>
+        <td data-column="Appointment From Date">{{data.BookedFrom}}</td>
+
+        <!-- <td data-column="Appointment To Date">{{data.BookedTo}}</td> -->
+        <td data-column="Status">{{data.BookingStatus}}</td>
+        <td data-column="CheckedIn Time" *ngIf="data.BookingStatus=='Booked'">{{data.FromTime}}</td>
+        <td data-column="CheckedIn Time" *ngIf="data.BookingStatus=='Cancelled'">--</td>
+        <td data-column="CheckedOut Time" *ngIf=" data.BookingStatus=='Booked'">{{data.ToTime}}</td>
+        <td data-column="CheckedOut Time" *ngIf="data.BookingStatus=='Cancelled'">--</td>
+        <td data-column="Cancelled Date">{{data.BookingStatus!='Cancelled' ? '-' : data.CancelledDate}}</td>
+
+
+        <!-- <td data-column="Cancelled Date" *ngIf="data.BookingStatus!='Cancelled'">--</td> -->
+        <!-- <td data-column="Action">
+                  <a href="javascript:;;" class="edit float-left" data-toggle="modal" data-target="#pharamaeditmodel" [disabled]="disableButton" (click)="edit.show();onEdit(pharmaData)">
+                      <i class="icon-edit float-left" aria-hidden="true" title="Edit" style="cursor:pointer"></i><span>Edit</span></a>
+
+                  <a href="javascript:;;" class="remove float-left" (click)="Deletepharma(pharmaData)" [disabled]="disableButton">
+                      <i class="icon-remove float-left" aria-hidden="true" title="Remove" style="cursor:pointer"></i><span>Remove</span></a>
+              </td> -->
+      </tr>
+
+    </tbody>
+  </table>
+  <pagination-controls (pageChange)="page = $event" *ngIf="providerData.length>0">
+  </pagination-controls>
+</div>
+<div class="page-container add-record w-100 text-center mt-5 float-left" *ngIf="providerData.length<=0">
+  <i class="w-100 icon-add-file icon float-left" aria-hidden="true"></i>
+  <p class="w-100 float-left">No Data Found</p>
+</div>

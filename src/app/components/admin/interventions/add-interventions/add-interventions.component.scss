@@ -1,0 +1,123 @@
+// component css goes here
+.text-red {
+    color: red;
+}
+
+.btn-round {
+    border-radius: 20px;
+    outline: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.5em;
+    min-width: 90px;
+    margin: 0 3px;
+    font-size: 1em;
+}
+
+.headding-banner1 {
+    padding: 1em;
+    background: #ffffff;
+}
+
+.yellow-btn {
+    background-color: yellow;
+}
+
+.table-bordered {
+    border: none;
+}
+
+.details {
+    word-break: break-all;
+    width: 300px;
+}
+
+.check-btn-diagnosis {
+    height: 40px;
+    margin-bottom: 5px;
+    border-radius: 20px;
+    white-space: normal;
+}
+
+.check-btn label {
+    min-width: 100px;
+}
+
+// .check-btn label input {
+//     position: absolute;
+//     z-index: -1;
+// }
+
+.check-btn label span {
+    text-align: center;
+    padding: 5px 12px;
+    display: block;
+}
+
+.check-btn {
+    display: inline-block;
+    font-weight: 400;
+    line-height: 1;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-color: #fff;
+    border-radius: 12px;
+    border: 1px solid #57c8cd;
+    height: 25px;
+    margin-right: 10px;
+    margin-bottom: 5px;
+}
+
+.check-btn label input {
+    position: absolute;
+    z-index: -1;
+}
+
+.check-btn input:checked+span {
+    color: #333;
+    background-color: #b8eff2;
+    // border: 1px solid #57c8cd;
+    border-radius: 12px;
+}
+
+.check-btn input:hover+span {
+    color: #333;
+    background-color: #b8eff2;
+    border-color: #57c8cd;
+    border-radius: 12px;
+}
+
+// .check-btn label span {
+//     text-align: center;
+//     padding: 5px 25px;
+//     display: block;
+// }
+
+.addbtn {
+    border-radius: .25rem;
+    font-size: 1rem;
+    border: 1px solid transparent;
+    background: #57c8cd;
+    color: #fff !important;
+}
+
+.link-previous {
+    font-size: 22px;
+    line-height: 38px;
+}
+
+.link-previous:hover {
+    text-decoration: none;
+}
+
+.entry-header {
+    padding: 10px 0;
+}
+.fa-plus{
+    color: #fff;
+}

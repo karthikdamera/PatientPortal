@@ -1,0 +1,60 @@
+[{
+        "name": "Schedule",
+        "icon": "fa fa-calendar-check-o",
+        "routername": "slot-booking",
+        "title": "Schedule"
+    },
+    {
+        "name": "Masters",
+        "icon": "fa fa-cog",
+        "title": "Masters",
+        "routername": "master-setting"
+    },
+    {
+        "name": "Campaign",
+        "icon": "fa fa-bullhorn",
+        "routername": "campaign",
+        "title": "Campaign"
+    },
+    {
+        "name": "Patient Card",
+        "icon": "fa fa-id-card",
+        "routername": "patientdetails",
+        "title": "patientdetails"
+    },
+    {
+        "name": "Requests",
+        "icon": "fa fa-question",
+        "routername": "requests",
+        "title": "Requests"
+    },
+    {
+        "name": "Today Appointments",
+        "icon": "fa fa-check-circle",
+        "routername": "patientcheckin",
+        "title": "Today Appointments"
+    },
+
+
+    {
+        "name": "My Profile",
+        "icon": "fa fa-user",
+        "title": "Profile",
+        "routername": "profile"
+    },
+    {
+        "name": "Twilio",
+        "icon": "fa fa-comments",
+        "title": "Twilio",
+        "routername": "chats"
+    },
+    {
+        "name": "Admin Settings",
+        "icon": "fa fa-cog",
+        "title": "Admin Settings",
+        "routername": "admin-setting"
+    }
+
+
+
+]

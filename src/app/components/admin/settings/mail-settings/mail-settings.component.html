@@ -1,0 +1,180 @@
+<div class="w-100 float-left" *ngIf="mailData.length >0">
+    <div class="input-group col-lg-4 float-left">
+        <span class="input-title w-100 float-left">EngineType :
+          <span class="color-red">*</span>
+        </span>
+          <select class="form-control" [(ngModel)]="enginetype">
+            <option  value="undefined" selected>-- Choose EngineType--</option>
+            <option value="SMTP">SMTP</option>
+            <option value="SparkPost">SparkPost</option>
+          </select>
+      </div>
+      <div class="input-group col-lg-4 float-left" *ngIf="enginetype == 'SparkPost'">
+          <span class="input-title w-100 float-left">SparkKey
+            <span class="color-red">*</span>
+          </span>
+          <input class="form-control" [(ngModel)]="sparkkey" value="{{mailData[0].SparkKey}}"/>
+        </div>
+        <div class="input-group col-lg-4 float-left" *ngIf="enginetype == 'SparkPost'">
+            <span class="input-title w-100 float-left">User Name :
+              <span class="color-red">*</span>
+            </span>
+            <input class="form-control"   value="{{mailData[0].UserName}}" [(ngModel)]="UserName" 
+              maxlength="50"  />
+            
+          </div>
+  <div [formGroup]="mailForm" *ngIf="enginetype == 'SMTP'">
+    <div class="row" >
+      <div class="input-group col-lg-4 float-left">
+        <span class="input-title w-100 float-left">Host :
+          <!-- <span class="color-red">*</span> -->
+        </span>
+        
+          <input class="form-control" *ngIf="editsts" formControlName="Host" value="{{mailData[0].Host}}" [(ngModel)]="mailsetting.Host"  maxlength="50" 
+          />
+          <app-validation [control]="mailForm.controls.Host">
+          </app-validation>
+     
+      </div>
+      <div class="input-group col-lg-4 float-left">
+        <span class="input-title w-100 float-left">port :
+          <!-- <span class="color-red">*</span> -->
+        </span>
+        <input class="form-control" *ngIf="editsts" formControlName="Port" value="{{mailData[0].Port}}" [(ngModel)]="mailsetting.Port" maxlength="10" 
+        />
+        <app-validation [control]="mailForm.controls.Port">
+        </app-validation>
+      </div>
+      <div class="input-group col-lg-4 float-left">
+        <span class="input-title w-100 float-left">User Name :
+          <!-- <span class="color-red">*</span> -->
+        </span>
+        <input class="form-control" placeholder="User Name" *ngIf="editsts" formControlName="UserName" value="{{mailData[0].UserName}}" [(ngModel)]="mailsetting.UserName" 
+          maxlength="50"  />
+        <app-validation [control]="mailForm.controls.UserName">
+        </app-validation>
+      </div>
+      <div class="input-group col-lg-4 float-left">
+        <span class="input-title w-100 float-left">Password :
+          <!-- <span class="color-red">*</span> -->
+        </span>
+        <input class="form-control" type="password" placeholder="" formControlName="Password" value="{{mailData[0].Password}}" [(ngModel)]="mailsetting.Password" />
+        <app-validation [control]="mailForm.controls.Password">
+        </app-validation>
+      </div>
+      <div class="input-group col-lg-4 float-left">
+        <span class="input-title w-100 float-left">Enable SSl :
+          <!-- <span class="color-red">*</span> -->
+        </span>
+       
+          <select class="form-control" *ngIf="editsts"  formControlName="EnableSsl" value="{{mailData[0].EnableSsl}}"  [(ngModel)]="mailsetting.EnableSsl">
+            <!-- <option selected>-- Choose State--</option> -->
+            <option value="True">True</option>
+            <option value="False">False</option>
+          </select>
+          <app-validation [control]="mailForm.controls.EnableSsl">
+          </app-validation>
+        
+      </div>     
+    </div>
+    
+  </div>
+  <div class="w-100 float-left text-center" *ngIf="enginetype == 'SMTP' || enginetype == 'SparkPost'">
+      <button class="btn btn-primary  waves-light "  (click)="Editupdatemail1(mailData[0])" mdbWavesEffect>Update</button>
+    </div>
+</div>
+<div class="container" *ngIf="mailData.length<=0">
+  <div class="middleContent">
+   
+    <button type="button" class="btn btn-primary no_margin width_auto float-right waves-light text-center" data-toggle="modal"
+      data-target="#emailaddModal1" (click)="emailaddModal1.show();toClearModel()" mdbWavesEffect>
+      Add New
+    </button>
+  </div>
+  <div class="page-container add-record w-100 text-center mt-5 float-left">
+    <i class="w-100 icon-add-file icon float-left" aria-hidden="true"></i>
+    <p class="w-100 float-left">Add New Record</p>
+  </div>
+</div>
+
+
+
+
+
+<div mdbModal #emailaddModal1="mdb-modal" class="modal fade" id="emailaddModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content rounded">
+          <div class="modal-header">
+              <h4 class="modal-title w-100" id="myModalLabel">SMTP Details</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="emailaddModal1.hide()">
+                  <span aria-hidden="true">
+                      <i class="icon-close" aria-hidden="true"></i>
+                  </span>
+              </button>
+          </div>
+          <div class="modal-body">
+            <form [formGroup]="mailForm" (click)="Addmailsetting()">
+                  <div class="row">
+                      
+                      <div class="input-group col-lg-4 float-left">
+                          <span class="input-title w-100 float-left">Host
+                              <span class="color-red">*</span>
+                          </span>
+                          <input class="form-control" placeholder="Host" formControlName="Host" [(ngModel)]="mailsetting.Host" maxlength="50" />
+                          <app-validation [control]="mailForm.controls.Host">
+                          </app-validation>
+                      </div>
+                      <div class="input-group col-lg-4 float-left">
+                          <span class="input-title w-100 float-left">Port
+                              <span class="color-red">*</span>
+                          </span>
+                          <input class="form-control" placeholder="Port" formControlName="Port" [(ngModel)]="mailsetting.Port" maxlength="10" />
+                          <app-validation [control]="mailForm.controls.Port">
+                          </app-validation>
+                      </div>
+                      <div class="input-group col-lg-4 float-left">
+                          <span class="input-title w-100 float-left">User Name
+                              <span class="color-red"></span>
+                          </span>
+                          <input class="form-control" placeholder="User Name" formControlName="UserName" [(ngModel)]="mailsetting.UserName" maxlength="50"
+                          />
+                          <app-validation [control]="mailForm.controls.UserName">
+                          </app-validation>
+                      </div>
+                      <div class="input-group col-lg-4 float-left">
+                          <span class="input-title w-100 float-left">Password
+                              <span class="color-red">*</span>
+                          </span>
+                          <input class="form-control" type="password" placeholder="" formControlName="Password" [(ngModel)]="mailsetting.Password"
+                                        />
+                                        <app-validation [control]="mailForm.controls.Password">
+                                        </app-validation>
+                      </div>
+                      <div class="input-group col-lg-4 float-left">
+                          <span class="input-title w-100 float-left">Enable Ssl
+                              <span class="color-red">*</span>
+                          </span>
+                          <div class="form-select">
+                            <select class="form-control" formControlName="EnableSsl" [(ngModel)]="mailsetting.EnableSsl">
+                                <option value="" selected>-- Please Select--</option>
+                                <option>True</option>
+                                <option>False</option>
+
+                            </select>
+                            <app-validation [control]="mailForm.controls.EnableSsl">
+                            </app-validation>
+                        </div>
+
+                      </div>
+                  </div>
+
+                  <button class="btn btn-primary btn-sm waves-light float-right"  (click)="Addmailsetting()"  mdbWavesEffect>SUBMIT</button>
+              </form>
+          </div>
+          <!-- <div class="modal-footer">
+            <button type="button" class="btn btn-secondary btn-sm waves-light" data-dismiss="modal" (click)="demoBasic.hide()" mdbWavesEffect>Close</button>
+            <button type="button" class="btn btn-primary btn-sm waves-light" mdbWavesEffect>Save changes</button>
+        </div> -->
+      </div>
+  </div>
+</div>

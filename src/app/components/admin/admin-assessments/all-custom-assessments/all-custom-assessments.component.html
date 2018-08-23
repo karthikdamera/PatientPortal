@@ -1,0 +1,225 @@
+<div class="entry">
+    <!-- entry-breadcrumbs-->
+    <!--<div class="entry-section" *ngFor="let questions of assessmentQuestions">-->
+    <div class="entry-header">
+        <div class="col-9 header-title">
+            <div class="entry-breadcrumbs">
+                <a href="javascript:void(0);" class="link-previous" (click)="back()">
+                    <i class="fa fa-angle-left" aria-hidden="true"></i> Assessments</a>
+            </div>
+        </div>
+        <div class="col-3 header-action">
+            <!-- <a class="btn btn-primary" routerLink="../../assessmentPdf" routerLinkActive="Active">Export to pdf</a> -->
+            <!-- <a class="btn btn-primary btn-text-color pull-right" (click)="ExportToPdf(assessmentSections)">Pdf View</a> -->
+            <!-- <a class="btn btn-primary  " (click)="generatePDFfile()">Export to PDF</a> -->
+
+        </div>
+    </div>
+    <div class="entry-section">
+        <div class="entry-header">
+            <!-- <div class="col-lg-12"> -->
+            <div class="col-lg-9 header-title">
+                <h2>{{assessmentSection.SurveyDescription}}</h2>
+            </div>
+            <div class="col-lg-3 header-action">
+                <a class="btn btn-primary  " (click)="generatePDFfile()">Export to PDF</a>
+            </div>
+            <!-- </div> -->
+            <!-- header-title -->
+        </div>
+        <!-- entry-header -->
+        <div class="entry-content">
+            <!-- <div class="col-12">
+                <div class="progress progress_bar">
+                    <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 75%">75%</div>
+                </div>
+                
+            </div> -->
+            <!-- col-12 -->
+            <div class="col-12">
+                <div class="entry-title">{{assessmentSection.SectionName}}</div>
+            </div>
+            <!-- col-12 -->
+            <!-- col-12 -->
+            <!--parent Question loop start-->
+            <div *ngIf="assessmentSection.Surveycode!='ASI'" class="col-12 entry-child">
+                <div class="form-group entry-item" *ngFor="let parentQ of assessmentSection.Questions let i = index">
+                    <div class="form-label col-12 no_padding">
+                        <label class="label-title"> {{i+1}}. {{parentQ.QuestionName}}</label>
+                    </div>
+                    <!--*ngIf="parentQ.TypeId==1"-->
+                    <!--parent Question options start -->
+                    <!--option type1="radio"-->
+                    <div class="form-content col-12 no_padding" *ngIf="parentQ.TypeId==questiontype.RADIO">
+                        <div class="pill-group pull-left">
+                            <label class="btn btn-secondary pull-left" *ngFor="let choice of parentQ.Choices" [ngClass]="{'active':parentQ.SelectedID == choice.ChoiceId}"
+                                (click)="onSelect(choice,'',i,assessmentSection)">
+                                {{choice.ChoiceName}}
+                            </label>
+                        </div>
+                    </div>
+                    <!--option type2="textbox"-->
+                    <div class="form-content" *ngIf="parentQ.TypeId==questiontype.TEXTBOX">
+                        <input class="form-control" #myvalue value="{{parentQ.SelectedValue}}" type="text" (blur)="onSelect(parentQ.Choices[0],myvalue.value,i,assessmentSection)"
+                            (keypress)="enableSave()">
+                    </div>
+                    <div class="form-content" *ngIf="parentQ.TypeId==questiontype.DROPDOWN">
+                        <select class="form-control" #choice (change)="onSelect(choice,choice.value,i,assessmentSection)">
+                            <option value="0">Choose One</option>
+                            <option *ngFor="let choice of parentQ.Choices let i=index" [value]="choice.ChoiceId" [selected]="parentQ.SelectedID==choice.ChoiceId">{{choice.ChoiceName}}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="form-content" *ngIf="parentQ.TypeId==questiontype.CHECKBOX">
+                        <div class="pill-group">
+                            <div class="checkbox" *ngFor="let choice of parentQ.Choices">
+                                <input type="checkbox" [attr.name]="choice" [value]="choice" [checked]="choice.Checked" (click)="onSelect(choice,choice.value,i,assessmentSection,$event.target.checked)">{{choice.ChoiceName}}
+                            </div>
+                        </div>
+                    </div>
+                    <!--parent Question options end -->
+                    <!--child Question loop start -->
+
+                    <!--<div *ngIf="parentQ.IsParent=='true'" >-->
+
+                    <div class="col-12 entry-child">
+
+                        <!--<pre>{{parentQ.ChildQuestions | json}}</pre>-->
+
+                        <div *ngFor="let childQ of parentQ.ChildQuestions let c= index">
+
+                            <div class="form-label">
+
+                                <label class="label-title"> {{i+1}}.{{c+1}}. {{childQ.QuestionName}}</label>
+
+                            </div>
+
+                            <!--child Question options start-->
+
+                            <!--option type1="radio"-->
+
+                            <div class="form-content" *ngIf="childQ.TypeId==questiontype.RADIO">
+
+                                <div class="pill-group pull-left" data-toggle="buttons">
+
+                                    <label class="btn btn-secondary button-selection col-lg-2 pull-left" *ngFor="let childChoice of childQ.Choices" [ngClass]="{'active':childQ.SelectedID == childChoice.ChoiceId}"
+                                        (click)="onSelectChild(childChoice,'',childQ,parentQ.QuestionId,'',c)">
+                                        {{childChoice.ChoiceName}}
+                                    </label>
+
+                                </div>
+                                
+
+                            </div>
+
+                            <!--option type1="textbox"-->
+
+                            <div class="form-content" *ngIf="childQ.TypeId==questiontype.TEXTBOX ">
+
+                                <input class="form-control" placeholder="" #myvalue value="{{childQ.SelectedValue}}" *ngFor="let childChoice of childQ.Choices"
+                                    type="text" (blur)="onSelectChild(childChoice,myvalue.value,childQ,parentQ.QuestionId,'',c)">
+                                
+
+                            </div>
+
+                            <!--option type1="dropdown"-->
+
+                            <div class="form-content" *ngIf="childQ.TypeId==questiontype.DROPDOWN">
+                                <select class="form-control" #choice (change)="onSelectChild(choice,choice.value,childQ,parentQ.QuestionId,'',c)">
+                                    <option value="0">Choose One</option>
+                                    <option *ngFor="let choice of childQ.Choices" [value]="choice.ChoiceId" [selected]="childQ.SelectedID==choice.ChoiceId">{{choice.ChoiceName}}</option>
+                                </select>
+                                
+                            </div>
+
+                            <div class="form-content" *ngIf="childQ.TypeId==questiontype.CHECKBOX">
+                                <div class="pill-group">
+                                    <div class="checkbox" *ngFor="let choice of childQ.Choices">
+
+                                        <input type="checkbox" [attr.name]="choice" [value]="choice" [checked]="choice.Checked" (click)="onSelectChild(choice,choice.value,childQ,parentQ.QuestionId,$event.target.checked,c,i)">{{choice.ChoiceName}}
+
+                                    </div>
+                                </div>
+                            </div>
+                            <!--child  Question options  end-->
+                        </div>
+                    </div>
+                    
+                    <!--child  Question loop end -->
+                </div>
+            </div>
+            <div *ngIf="assessmentSection.Surveycode=='ASI'" class="col-12">
+                <div class="row">
+                    <div class="col-3"></div>
+                    <div class="col-7">
+                        <div class="row">
+                            <div class="col-6 text-center">PAST 30 DAYS (Days) </div>
+                            <div class="col-6 text-center">LIFETIME USE (Years) </div>
+                        </div>
+                    </div>
+                    <div class="col-2 text-center">*Route Of Administration</div>
+                </div>
+                
+                <div class="form-group row" *ngFor="let parentQ of assessmentSection.Questions let i = index">
+                    <div class="form-label col-3">
+                        <label class="label-title"> {{i+1}}.{{parentQ.QuestionName}}</label>
+                    </div>
+
+                    <!--child Question loop start -->
+                    <div class="col-7">
+                        <div class="row">
+                            <div class="col-3" *ngFor="let childQ of parentQ.ChildQuestions let c= index">
+                                <!--child Question options start-->
+                                <div *ngIf="childQ.TypeId==questiontype.DROPDOWN">
+                                    <select class="form-control" #choice (change)="onSelectChild(choice,choice.value,childQ,parentQ.QuestionId,'',c)">
+                                        <option value="0">Choose One</option>
+                                        <option *ngFor="let choice of childQ.Choices" [value]="choice.ChoiceId" [selected]="childQ.SelectedID==choice.ChoiceId">{{choice.ChoiceName}}
+                                        </option>
+                                    </select>
+
+                                </div>
+                                <!--child  Question options  end-->
+                            </div>
+                        </div>
+                    </div>
+                    <!--child  Question loop end -->
+
+                    <!--parent Question options start -->
+                    <div class="col-2">
+                        <div class="form-content" *ngIf="parentQ.TypeId==questiontype.DROPDOWN">
+                            <select class="form-control" #choice (change)="onSelect(choice,choice.value,i,assessmentSection)">
+                                <option value="0">Choose One</option>
+                                <option *ngFor="let choice of parentQ.Choices let i = index" [value]="choice.ChoiceId" [selected]="parentQ.SelectedID==choice.ChoiceId">{{choice.ChoiceName}}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    <!--parent Question options end -->
+                </div>
+            </div>
+            <!--parent Question loop end-->
+            <!-- col-12 entry-child -->
+            <div class="entry-action">
+                <button *ngIf="totalNumberOfSection>1" class="btn btn-primary btn-color" type="button" (click)="prevButton()" [disabled]="currentPage==0">Prev</button>
+                <button *ngIf="totalNumberOfSection>1" class="btn btn-primary btn-color" type="button" (click)="nextButton()" [disabled]="currentPage==(totalNumberOfSection-1)">Next</button>
+                <button class="btn btn-primary btn-color" [disabled]="disableButton" type="submit" (click)="save()">Save</button>
+                <!--<router-outlet> </router-outlet>-->
+            </div>
+            <!-- <div class="alert alert-success alert-margin" *ngIf="message">
+                Your Assessment Submitted Successfully
+            </div> -->
+            <div class="alert alert-danger alert-margin" *ngIf="error">
+                Your assessment is not submitted successfully
+            </div>
+            <!-- entry-action -->
+        </div>
+        <!-- entry-content -->
+    </div>
+    <!-- entry-section -->
+</div>
+<!-- <span *ngIf="showLoader" class="loading"></span> -->
+<!-- entry -->
+
+
+
+<!--container-fluid-->

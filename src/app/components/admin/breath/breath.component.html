@@ -1,0 +1,154 @@
+<div class="entry">
+  <div class="entry-header">
+      <div class="col-lg-12 float-left header-title headding-banner">
+      <!-- <div class="title-text float-left">Breathe
+        </div> -->
+      <div class="col-lg-6 search float-left">
+        
+              <span class="icon-search"></span>
+              <input class="form-control no_margin" type="text" placeholder="Quick search" [(ngModel)]="userFilter.Breath">
+           
+      </div>
+      <button class="btn btn-primary no_margin float-right waves-light text-center" (click)="addbreath()">
+        <i class="menu-icon fa fa-plus"></i> Add New</button> 
+    
+    </div>
+  </div>
+  <!-- entry-header -->
+  <div class="filter-bar">
+    <div class="filter-options">
+      <div class="option">
+
+      </div>
+      <!-- option -->
+    </div>
+    <!-- filter-options -->
+  </div>
+  <!-- filter-bar -->
+  <div class="entry-section" *ngFor="let breath of breathItems |  filterBy: userFilter">
+    <!--<div class="entry-section" *ngFor="let intervention of interventions">-->
+    <!-- <div class="entry-content"> -->
+        <div class="row no-gutters headding-banner">
+        <!-- col-2 -->
+        <div class="col-lg-2 float-left entry-status">
+          <!--<span class="status-complete" ></span>-->
+          <span aria-hidden="true" class="fa fa-check" *ngIf="breath.Status=='Complete'"></span>
+          <span aria-hidden="true" class="fa fa-unlock" *ngIf="breath.Status=='Active'"></span>
+          <span aria-hidden="true" class="fa fa-lock" *ngIf="breath.Status=='Inactive'"></span>
+        </div>
+        <!-- col-3 -->
+        <div class="col-lg-7 float-left">
+          <div class="entry-available">{{breath.Breath}} ({{breath.TimeConsume}})</div>
+          <!-- <div class="entry-meta"><b>{{breath.Status}}</b> by client on <b>{{breath.Date | date:'short'}}</b> </div> -->
+          <div class="entry-meta">
+            <b>{{breath.Status}}</b> by client on
+            <b>{{breath.Date | date:'short'}}</b>
+          </div>
+        </div>
+        <!-- col-8 -->
+        <div class="col-lg-3 float-left entry-action" *ngIf="user.RoleId!=7">
+          <a href="javascript:void(0)" data-toggle="modal" data-target="#edit" (click)="edit.show();updateBreath(breath,i)" class="btn btn-primary width_auto float-right waves-light text-center">Update</a>
+        </div>
+
+          <div mdbModal #edit="mdb-modal" class="modal fade" id="view" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content rounded">
+                  <div class="modal-header">
+                              <h4 class="modal-title w-100 float-left" >Update Breathe</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="edit.hide()">
+                          <span aria-hidden="true">
+                            <i class="icon-close" aria-hidden="true"></i>
+                          </span>
+                        </button>
+                        </div>
+                  <div class="modal-body">
+                    <form #Form="ngForm" name="form" novalidate>
+                      <!-- entry-header -->
+                          <div class="col-lg-12">
+                              <b class="float-left w-100 mb-2">{{onClickUpdate.Breath}}</b>
+                          </div>
+                          <!-- col-12 -->
+                          <div class="col-lg-12">
+                            <div class="form-group">
+                              <div class="form-label">
+                                <label class="label-title required">Time (in secs)</label>
+                              </div>
+                              <!-- form-label -->
+                              <div class="form-content">
+                                <select class="form-control" name="Time" [(ngModel)]="onClickUpdate.TimeConsume" #Time="ngModel" required>
+                                  <option value="" selected disabled>Choose</option>
+                                  <option value="1 sec">1</option>
+                                  <option value="2 secs">2</option>
+                                  <option value="3 secs">3</option>
+                                  <option value="4 secs">4</option>
+                                  <!-- <option value="5 secs">5</option> -->
+                                  <!-- <option value="10 secs">10</option> -->
+                                  <!--<option value="15 secs">15</option>
+                                                <option value="20 secs">20</option>
+                                                <option value="25 secs">25</option>
+                                                <option value="30 secs">30</option> -->
+                                </select>
+                                <div *ngIf="Time.errors && (Time.dirty || Time.touched)" class="has-danger">
+                                  <div [hidden]="!Time.errors.required">
+                                    <span class="error-text-msg">Please enter time </span>
+                                  </div>
+                                </div>
+                              </div>
+                              </div>
+                              <div class="form-group">
+                              <div class="form-label">
+                                <label class="label-title">Status</label>
+                              </div>
+                              <!-- form-label -->
+                              <!-- form-content -->
+                              <div class="form-content">
+                                <div class="check-btn">
+                                  <label>
+                                    <input type="radio" value="Active" [checked]="onClickUpdate.Status ==='Active'" name="editCurrentStatus" (click)="updateStatus('Active')"
+                                      required>
+                                    <span>Active</span>
+                                  </label>
+                                </div>
+                                <div class="check-btn">
+                                  <label>
+                                    <input type="radio" value="Inactive" [checked]="onClickUpdate.Status ==='Inactive'" name="editCurrentStatus" (click)="updateStatus('Inactive')"
+                                      required>
+                                    <span>Inactive</span>
+                                  </label>
+                                </div>
+                                <div class="check-btn">
+                                  <label>
+                                    <input type="radio" value="Complete" [checked]="onClickUpdate.Status ==='Complete'" name="editCurrentStatus" (click)="updateStatus('Complete')"
+                                      required>
+                                    <span>Complete</span>
+                                  </label>
+                                </div>
+                              </div>
+
+                            </div>
+                            <!-- form-group -->
+
+                          </div>
+                          <!-- col-12 -->
+                        <button type="button" class="btn btn-primary width_auto float-right waves-light text-center" data-dismiss="modal" aria-label="Close" (click)="edit.hide()">Discard</button>
+                        <button class="btn btn-primary width_auto float-right waves-light text-center" [disabled]="!Form.form.valid" (click)="edit.hide();postUpdatedStatus()">Submit</button>
+                      <!-- modal-footer -->
+                    </form>
+                  </div>
+                <!-- </div> -->
+              </div>
+            </div>
+          </div>  
+        
+        <!-- col-3 -->
+
+      </div>
+      <!-- entry-item -->
+    <!-- </div> -->
+    <!-- entry-content -->
+
+  </div>
+  <!-- entry-section -->
+
+</div>
+<!-- <span *ngIf="showLoader" class="loading"></span> -->

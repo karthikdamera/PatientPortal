@@ -1,0 +1,71 @@
+<div class="w-100 page-titel float-left">
+  <h4 class="float-left titel">Today Check-outs</h4>
+  <div class="input-group col-lg-4 no_padding search float-right" *ngIf="patientDetails.length>0">
+    <span class="icon-search"></span>
+    <input type="text" placeholder="Enter Patient Name" name="barcode" [(ngModel)]="userFilter.PatientName" class="no_margin form-control w-100 float-left" >
+  </div>
+</div>
+<div class="w-100 float-left page-container" *ngIf="patientDetails.length>0">
+  <table class="theme-table table">
+    <thead>
+      <tr>
+        <th>Patient Name</th>
+        <th>Provider Name</th>
+        <!-- <th>Appointment Date</th> -->
+        <th>Slot Time</th>
+        <th>Check-in Time</th>
+        <th>Check-out Time</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="ng-star-inserted" *ngFor="let patientdata of patientDetails | filterBy:userFilter | paginate: {itemsPerPage: 8, currentPage: page,  id: 'referfriendpage'}">
+        <td data-column="Patient Name" [ngClass]="{'sucessbg' : patientdata.Status == 'CheckOut'}">{{patientdata.PatientName}}</td>
+        <td data-column="Provider Name" [ngClass]="{'sucessbg' : patientdata.Status == 'CheckOut'}">{{patientdata.ProviderName}}</td>
+        <!-- <td data-column="ToTime" [ngClass]="{'sucessbg' : patientdata.Status == 'CheckOut'}">{{patientdata.SlotDate}}</td> -->
+        <td data-column="Slot Time" [ngClass]="{'sucessbg' : patientdata.Status == 'CheckOut'}">{{patientdata.CheckIn}}</td>
+        <td data-column="Check-in Time" [ngClass]="{'sucessbg' : patientdata.Status == 'CheckOut'}">{{patientdata.FromTime}}</td>
+        <td data-column="Check-out Time" [ngClass]="{'sucessbg' : patientdata.Status == 'CheckOut'}">{{patientdata.ToTime==null?'-':patientdata.ToTime}}</td>
+
+        <td [ngClass]="{'sucessbg' : patientdata.Status == 'CheckOut'}">
+          <a href="javascript:void(0)" class="btn btn-primary float-left waves-light text-center" data-toggle="modal" data-target="#PatientCheckIn"
+            (click)="patientcheckin(patientdata);checkoutBasic.show()" *ngIf="patientdata.Status == 'CheckIn'">
+            Check-Out</a>
+          <span class="sucess_lable " *ngIf="patientdata.Status == 'CheckOut'">Checked out</span>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <div *ngIf="((patientDetails | filterBy: userFilter).length) != 0">
+    <pagination-controls (pageChange)="page = $event" id="referfriendpage">
+    </pagination-controls>
+  </div>
+</div>
+<!-- icon-add-file -->
+<div class="page-container add-record w-100 text-center mt-5 float-left" *ngIf="(patientDetails.length<=0) || (patientDetails | filterBy: userFilter).length === 0">
+  <i class="w-100  icon-warning2 icon float-left" aria-hidden="true"></i>
+  <p class="w-100 float-left">No Records to Display</p>
+</div>
+<!-- <div  *ngIf="(patientDetails | filterBy: userFilter).length === 0">
+    <p class="text-center">There is no data to display</p>
+  </div> -->
+<div mdbModal #checkoutBasic="mdb-modal" class="modal fade" id="PatientCheckIn" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title w-100" id="myModalLabel">Checkout</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="checkoutBasic.hide()">
+          <span aria-hidden="true">
+            <i class="icon-close" aria-hidden="true"></i>
+          </span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Do you want to Checkout this appointment?</p>
+        <button class="btn btn-danger float-right waves-light" (click)="Cancelcheckin()">No</button>
+        <button class="btn btn-primary float-right waves-light" (click)="checkin()">Yes</button>
+      </div>
+    </div>
+  </div>
+</div>

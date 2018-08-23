@@ -1,0 +1,110 @@
+<!--component html goes here -->
+<!--entry start-->
+<div class="entry">
+    <!--entry-section start-->
+    <div class="entry-breadcrumbs">
+        <a href="javascript:void(0);" (click)="back()" class="link-previous">Assessments</a>
+    </div>
+    <div class="entry-section">
+        <div class="entry-content chart">
+            <div class="col-3 chart-nav">
+                <ul class="list-unstyled">
+                    <li class="active">
+                        <a href="javascript:void(0);" class="chart-legend legend-cyan">Custom</a>
+                    </li>
+                </ul>
+                <ul class="list-unstyled">
+                    <div class="list-title">
+                        <a href="javascript:void(0)" (click)="getAssementChart()">Total Score</a>
+                    </div>
+                </ul>
+                <ul class="list-unstyled">
+                    <div class="list-title">Questions</div>
+                    <li [ngClass]="{active: isActive(question.QuestionId)}" *ngFor="let question of questionChartData let i = index">
+                        <a href="javascript:void(0);" (click)="getChartByQuestion(question.QuestionId)"> {{i+1}} {{question.QuestionName}}</a>
+                    </li>
+                </ul>
+                <!-- ul -->
+            </div>
+            <!-- col-4 -->
+            <div class="col-9">
+                <p>
+                    <a href="javascript:void(0);" class="chartDayHeader btn btn-primary" [ngClass]="{'chartDayHeaderActive': chartDay.title == activeChartDay}"
+                        style="margin-right: 5px;" (click)="getChartBySelectedDate(chartDay.value, chartDay)" *ngFor="let chartDay of ChartDays">
+                        <span>{{chartDay.title}}</span>
+                    </a>
+                    <!-- <button class="btn btn-primary" style="color:white" (click)="getChartBySelectedDate(3)">
+              <span>3d</span>
+            </button>
+            <button class="btn btn-primary" style="color:white" (click)="getChartBySelectedDate(7)">
+              <span>7d</span>
+            </button>
+            <button class="btn btn-primary" style="color:white" (click)="getChartBySelectedDate(10)">
+              <span>10d</span>
+            </button>
+            <button class="btn btn-primary" style="color:white" (click)="getChartBySelectedDate(15)">
+              <span>15d</span>
+            </button>
+            <button class="btn btn-primary" style="color:white" (click)="getChartBySelectedDate(30)">
+              <span>30d</span>
+            </button>
+            <button class="btn btn-primary" style="color:white" (click)="getChartBySelectedDate(45)">
+              <span>45d</span>
+            </button>
+            <button class="btn btn-primary" style="color:white" (click)="getChartBySelectedDate(60)">
+              <span>60d</span>
+            </button>
+            <button class="btn btn-primary" style="color:white" (click)="getChartBySelectedDate(90)">
+              <span>90d</span>
+            </button>
+            <button class="btn btn-primary" style="color:white" (click)="getChartBySelectedDate(180)">
+              <span>180d</span>
+            </button>
+            <button class="btn btn-primary" style="color:white" (click)="getChartBySelectedDate(365)">
+              <span>365d</span>
+            </button> -->
+                    <!--{{todayDate}}-->
+                </p>
+                <h3>
+                    <a href="javascript:void(0)">{{labelHeader}}</a>
+                </h3>
+                <ul class="list-unstyled icon-ul">
+                    <li [ngClass]="{'selectedChart': activeChart == 'line' }">
+                        <a href="javascript:void(0);" (click)="getChart('line')">
+                            <span class="line-icon"></span>
+                        </a>
+                    </li>&nbsp;&nbsp;
+                    <li [ngClass]="{'selectedChart': activeChart == 'column' }">
+                        <a href="javascript:void(0);" (click)="getChart('column')">
+                            <span class="bar-icon"></span>
+                        </a>
+                    </li>&nbsp;&nbsp;
+                    <!--<li>
+                  <a href="javascript:void(0);" (click)="getChart('pie')">            
+                    <span class="pie pie1"></span>
+                    <span class="pie pie2"></span>
+                  </a>
+                </li>-->
+                    <li [ngClass]="{'selectedChart': activeChart == 'scatter' }">
+                        <a href="javascript:void(0);" (click)="getChart('scatter')">
+                            <span class="badge-scatter-dot">
+                                <span class="badge-first">.</span>
+                                <span class="badge-second">.</span>
+                                <span class="badge-third">.</span>
+                            </span>
+
+                        </a>
+                    </li>
+                </ul>
+                <!-- <div [ng2-highcharts]="options" style="width:650px; height:430px"></div> -->
+            </div>
+            <!-- col-8 -->
+        </div>
+        <!-- end entry-content -->
+    </div>
+    <!--end  entry-section -->
+</div>
+<!-- <span *ngIf="showLoader" class="loading"></span> -->
+
+
+<!--end content-wrapper-->

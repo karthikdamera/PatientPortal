@@ -1,0 +1,557 @@
+<div class="w-100 assessments float-left">
+    <!-- filter-bar start -->
+    <div class="headding-banner col-lg-12 float-left" *ngIf="assessment.length>0">
+        <div class="float-left">
+            <a href="javascript:;;" class="option-name float-left refresh icon-refresh" data-toggle="tooltip" title="Refresh" aria-hidden="true"
+                (click)="refresh()" *ngIf="isRefresh"></a>
+            <a href="javascript:;;" class="option-name float-left refresh icon-error" aria-hidden="true" (click)="stop()" *ngIf="!isRefresh"></a>
+            <div class="filter-options float-left">
+                <span class="option-name float-left">Sort By</span>
+                <a class="option-value float-left" [ngClass]="{'active': sortingOrder=='Date'}" href="javascript:void(0);" (click)="sortBy('Date')">Date</a>
+                <a class="option-value active float-left" [ngClass]="{'active': sortingOrder=='Type'}" href="javascript:void(0);" (click)="sortBy('Type')">Type</a>
+                <a class="option-value float-left" [ngClass]="{'active': sortingOrder=='Status'}" href="javascript:void(0);" (click)="sortBy('Status')">Status</a>
+            </div>
+        </div>
+        <button class="btn btn-primary float-right waves-light text-center" data-toggle="modal" data-target="#view" (click)="view.show();openModal()">
+            <i class="menu-icon fa fa-plus"></i> Add New</button>
+        <!-- filter-options -->
+    </div>
+    <!-- filter-bar -->
+    <!-- entry-section -->
+    <!--rendering all assessments-->
+    <div class="col-lg-12 float-left" *ngFor="let item of assessment ; let i=index">
+        <div class="w-100 float-left" *ngIf="sortingOrder=='Status'">
+            <div class="section-title collapsed">
+                <a href="javascript:;;" *ngIf="sortingOrder!='Date'" (click)="expand('assessment_'+i)" class="waves-effect accordion-expand w-100 float-left">
+                    <span class="expand_tital" *ngIf="sortingOrder=='Status'">{{item.Status}} ({{item.Assessments.length}})</span> Expand
+                    <i class="fa fa-angle-down" aria-hidden="true"></i>
+                </a>
+            </div>
+        </div>
+        <div class="w-100 float-left" *ngIf="sortingOrder=='Type'">
+            <div class="waves-effect accordion-expand w-100 float-left">
+                <a href="javascript:;;" *ngIf="sortingOrder!='Date'" (click)="expand('assessment_'+i)" class="float-left">
+                    <span class="expand_tital" *ngIf="sortingOrder=='Type'">{{item.SurveyCode}} ({{item.Assessments.length}})</span>Expand
+                    <i class="fa fa-angle-down" aria-hidden="true"></i>
+                </a>
+                <a href="javascript:;;" *ngIf="sortingOrder=='Type'" class="btn btn-primary float-right waves-light text-center" data-toggle="modal"
+                    data-target="#myIndividualModal" (click)="myIndividualModal.show();openIndividualModal(item)">
+                    <span class="icon-add btn-text-color"></span>
+                    <span class="btn-text-color">New</span>
+                </a>
+            </div>
+        </div>
+        <!--sort by Type-->
+        <div class="w-100 float-left" *ngFor="let assessmentItem  of item.Assessments">
+            <div class="accordion-body w-100 float-left" *ngIf="expanded == 'assessment_'+i">
+                <div class="col-lg-1 entry-status float-left">
+                    <span class="fa fa-calendar" aria-hidden="true" aria-hidden="true" *ngIf="assessmentItem.Status=='Scheduled'"> </span>
+                    <span class="fa fa-check" aria-hidden="true" aria-hidden="true" *ngIf="assessmentItem.Status=='Completed'"></span>
+                    <span class="fa fa-unlock" aria-hidden="true" *ngIf="assessmentItem.Status=='Available'"> </span>
+                    <span class="fa fa-hourglass-half" aria-hidden="true" *ngIf="assessmentItem.Status=='Started'"></span>
+                    <span class="fa fa-hourglass-o" aria-hidden="true" *ngIf="assessmentItem.Status=='Inprogress'"></span>
+                    <span class="fa fa-flag incomplete" aria-hidden="true" *ngIf="assessmentItem.Status=='Incomplete'"></span>
+                </div>
+                <div class="col-lg-7 float-left" *ngIf="assessmentItem.Status=='Scheduled'">
+                    <div class="entry-name">{{assessmentItem.SurveyDescription}}</div>
+                    <div class="entry-meta">
+                        <span>
+                            <b>{{assessmentItem.Status}}</b>
+                        </span> at
+                        <span>
+                            <b> {{assessmentItem.ScheduleDate | date: 'shortDate'}}</b>
+                        </span>
+                    </div>
+
+                </div>
+                <div class="col-lg-7 float-left" *ngIf="assessmentItem.Status=='Available'">
+                    <div class="entry-name">{{assessmentItem.SurveyDescription}}</div>
+                    <div class="entry-meta">
+                        <span>
+                            <b>{{assessmentItem.Status}}</b>
+                        </span> at
+                        <span>
+                            <b> {{todayDate | date: 'shortDate'}}</b>
+                        </span>
+                    </div>
+
+                </div>
+                <div class="col-lg-7 float-left" *ngIf="(assessmentItem.Status=='Inprogress') || (assessmentItem.Status=='Started')">
+                    <div class="entry-name">{{assessmentItem.SurveyDescription}}</div>
+                    <div class="entry-meta">
+                        <span>
+                            <b>{{assessmentItem.Status}}</b>
+                        </span> at
+                        <span>
+                            <b> {{assessmentItem.StartDate| date: 'short'}}</b>
+                        </span>
+                    </div>
+
+                </div>
+                <div class="col-lg-7 float-left" *ngIf="assessmentItem.Status=='Completed'">
+                    <div class="entry-name">{{assessmentItem.SurveyDescription}}</div>
+                    <div class="entry-meta">
+                        <span>
+                            <b>{{assessmentItem.Status}}</b>
+                        </span> by
+                        <span>
+                            <b>{{assessmentItem.FilledBy}}</b>
+                        </span> at
+                        <span>
+                            <b> {{assessmentItem.EndDate | date:'short'}}</b>
+                        </span>
+                    </div>
+
+                </div>
+                <div class="col-lg-7 float-left" *ngIf="assessmentItem.Status=='Incomplete'">
+                    <div class="entry-name">{{assessmentItem.SurveyDescription}}</div>
+                    <div class="entry-meta">
+                        <span>
+                            <b>{{assessmentItem.Status}}</b>
+                        </span> at
+                        <span>
+                            <b> {{assessmentItem.DueDate | date:'shortDate'}}</b>
+                        </span>
+                    </div>
+
+                </div>
+                <div class="col-lg-4 float-left for-status-btn no_padding" *ngIf="assessmentItem.Status == 'Completed'">
+                    <!-- <a class="btn btn-secondary link-more" (click)="individualPerformance(assessmentItem)">
+                            <span class="button-text">View Performance</span>
+                        </a> -->
+                    <a href="javascript:void(0);" class="btn btn-secondary link-more" (click)="viewAssessment(assessmentItem)">
+                        <span class="button-text">View</span>
+                    </a>
+                </div>
+                <div class="col-lg-4 float-left for-status-btn" *ngIf="assessmentItem.Status != 'Completed'">
+                    <a href="javascript:void(0);" class="btn btn-primary link-more" *ngIf="assessmentItem.Status == 'Available'" (click)="startAsseessment(assessmentItem)">
+                        <span class="button-text ">Start</span>
+                    </a>
+                    <a href="javascript:void(0);" *ngIf="assessmentItem.Status == 'Scheduled'">
+                        <span class="fa fa-lock" aria-hidden="true"></span>
+                    </a>
+                    <a href="javascript:void(0);" class="btn btn-primary link-more" *ngIf="assessmentItem.Status == 'Started'" (click)="continueAssessment(assessmentItem)">
+                        <span class="button-text btn-text-color">Continue</span>
+                    </a>
+                    <a href="javascript:void(0);" class="btn btn-primary link-more" *ngIf="assessmentItem.Status == 'Inprogress'" (click)="continueAssessment(assessmentItem)">
+                        <span class="button-text btn-text-color">Continue</span>
+                    </a>
+                    <a *ngIf="assessmentItem.Status == 'Incomplete'">
+                        <span class="fa fa-lock" aria-hidden="true"></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <!-- sort by Status-->
+        <div class="w-100 float-left" *ngFor="let assessmentItem  of item.Assessments ">
+            <div class="accordion-body w-100 float-left" *ngIf="expanded == 'assessment_'+i">
+                <div class="col-lg-1 float-left entry-status">
+                    <span class="fa fa-calendar" aria-hidden="true" *ngIf="assessmentItem.Status=='Scheduled'"> </span>
+                    <span class="fa fa-check" aria-hidden="true" aria-hidden="true" *ngIf="assessmentItem.Status=='Completed'"></span>
+                    <span class="fa fa-unlock" aria-hidden="true" *ngIf="assessmentItem.Status=='Available'"></span>
+                    <span class="fa fa-hourglass-half" aria-hidden="true" *ngIf="assessmentItem.Status=='Started'"></span>
+                    <span class="fa fa-hourglass-o" aria-hidden="true" *ngIf="assessmentItem.Status=='Inprogress'"></span>
+                    <span class="fa fa-lock incomplete" aria-hidden="true" *ngIf="assessmentItem.Status=='Incomplete'"></span>
+                </div>
+                <div class="col-lg-7 float-left" *ngIf="assessmentItem.Status=='Scheduled'">
+                    <div class="entry-name">{{assessmentItem.SurveyDescription}}</div>
+                    <div class="entry-meta">
+                        <span>
+                            <b>{{assessmentItem.Status}}</b>
+                        </span> at
+                        <span>
+                            <b> {{assessmentItem.ScheduleDate | date: 'shortDate'}}</b>
+                        </span>
+                    </div>
+
+                </div>
+                <div class="col-lg-7 float-left" *ngIf="assessmentItem.Status=='Available'">
+                    <div class="entry-name">{{assessmentItem.SurveyDescription}}</div>
+                    <div class="entry-meta">
+                        <span>
+                            <b>{{assessmentItem.Status}}</b>
+                        </span> at
+                        <span>
+                            <b> {{todayDate | date: 'shortDate'}}</b>
+                        </span>
+                    </div>
+
+                </div>
+                <div class="col-lg-7 float-left" *ngIf="(assessmentItem.Status=='Inprogress') || (assessmentItem.Status=='Started')">
+                    <div class="entry-name">{{assessmentItem.SurveyDescription}}</div>
+                    <div class="entry-meta">
+                        <span>
+                            <b>{{assessmentItem.Status}}</b>
+                        </span> at
+                        <span>
+                            <b> {{assessmentItem.StartDate| date: 'short'}}</b>
+                        </span>
+                    </div>
+
+                </div>
+                <div class="col-lg-7 float-left" *ngIf="assessmentItem.Status=='Completed'">
+                    <div class="entry-name">{{assessmentItem.SurveyDescription}}</div>
+                    <div class="entry-meta">
+                        <span>
+                            <b>{{assessmentItem.Status}}</b>
+                        </span> by
+                        <span>
+                            <b>{{assessmentItem.FilledBy}}</b>
+                        </span> at
+                        <span>
+                            <b> {{assessmentItem.EndDate | date:'short'}}</b>
+                        </span>
+                    </div>
+
+                </div>
+                <div class="col-lg-7 float-left" *ngIf="assessmentItem.Status=='Incomplete'">
+                    <div class="entry-name">{{assessmentItem.SurveyDescription}}</div>
+                    <div class="entry-meta">
+                        <span>
+                            <b>{{assessmentItem.Status}}</b>
+                        </span> at
+                        <span>
+                            <b> {{assessmentItem.DueDate | date:'shortDate'}}</b>
+                        </span>
+                    </div>
+
+                </div>
+                <div class="col-lg-4 float-left for-status-btn" *ngIf="assessmentItem.Status == 'Completed'">
+                    <!-- <a class="btn btn-secondary link-more" (click)="individualPerformance(assessmentItem)">
+                            <span class="button-text">View Performance</span>
+                        </a> -->
+                    <a href="javascript:void(0);" class="btn btn-secondary link-more" (click)="viewAssessment(assessmentItem)">
+                        <span class="button-text">View</span>
+                    </a>
+                </div>
+                <div class="col-lg-4 float-left for-status-btn" *ngIf="assessmentItem.Status != 'Completed'">
+                    <a href="javascript:void(0);" class="btn btn-primary link-more" *ngIf="assessmentItem.Status == 'Available'" (click)="startAsseessment(assessmentItem)">
+                        <span class="button-text ">Start</span>
+                    </a>
+                    <a href="javascript:void(0);" *ngIf="assessmentItem.Status == 'Scheduled'">
+                        <span class="fa fa-lock" aria-hidden="true"></span>
+                    </a>
+                    <a href="javascript:void(0);" class="btn btn-primary link-more" *ngIf="assessmentItem.Status == 'Started'" (click)="continueAssessment(assessmentItem)">
+                        <span class="button-text btn-text-color">Continue</span>
+                    </a>
+                    <a href="javascript:void(0);" class="btn btn-primary link-more" *ngIf="assessmentItem.Status == 'Inprogress'" (click)="continueAssessment(assessmentItem)">
+                        <span class="button-text btn-text-color">Continue</span>
+                    </a>
+                    <a *ngIf="assessmentItem.Status == 'Incomplete'">
+                        <span class="fa fa-lock" aria-hidden="true"></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <!--sort by date-->
+        <div class="entry-item" *ngIf="sortingOrder=='Date'">
+            <div class="col-lg-1 float-left entry-status">
+                <span class="fa fa-calendar" aria-hidden="true" aria-hidden="true" *ngIf="item.Status=='Scheduled'"> </span>
+                <span class="fa fa-check" aria-hidden="true" aria-hidden="true" *ngIf="item.Status=='Completed'"></span>
+                <span class="fa fa-unlock" aria-hidden="true" *ngIf="item.Status=='Available'"> </span>
+                <span class="fa fa-hourglass-half" aria-hidden="true" *ngIf="item.Status=='Started'"></span>
+                <span class="fa fa-hourglass-o" aria-hidden="true" *ngIf="item.Status=='Inprogress'"></span>
+                <span class="fa fa-flag incomplete" aria-hidden="true" aria-hidden="true" *ngIf="item.Status=='Incomplete'"></span>
+            </div>
+            <div class="col-lg-7 float-left" *ngIf="item.Status=='Scheduled'">
+                <div class="entry-name">{{item.SurveyDescription}}</div>
+                <div class="entry-meta">
+                    <span>
+                        <b>{{item.Status}}</b>
+                    </span> at
+                    <span>
+                        <b> {{item.ScheduleDate | date: 'shortDate'}}</b>
+                    </span>
+                </div>
+
+            </div>
+            <div class="col-lg-7 float-left" *ngIf="item.Status=='Available'">
+                <div class="entry-name">{{item.SurveyDescription}}</div>
+                <div class="entry-meta">
+                    <span>
+                        <b>{{item.Status}}</b>
+                    </span> at
+                    <span>
+                        <b> {{todayDate | date: 'shortDate'}}</b>
+                    </span>
+                </div>
+
+            </div>
+            <div class="col-lg-7 float-left" *ngIf="(item.Status=='Inprogress') || (item.Status=='Started')">
+                <div class="entry-name">{{item.SurveyDescription}}</div>
+                <div class="entry-meta">
+                    <span>
+                        <b>{{item.Status}}</b>
+                    </span> at
+                    <span>
+                        <b> {{item.StartDate | date: 'shortDate'}}</b>
+                    </span>
+                </div>
+
+            </div>
+            <div class="col-lg-7 float-left" *ngIf="item.Status=='Completed'">
+                <div class="entry-name">{{item.SurveyDescription}}</div>
+                <div class="entry-meta">
+                    <span>
+                        <b>{{item.Status}}</b>
+                    </span> by
+                    <span>
+                        <b>{{item.FilledBy}}</b>
+                    </span> at
+                    <span>
+                        <b> {{item.EndDate | date:'short'}}</b>
+                    </span>
+                </div>
+
+            </div>
+            <div class="col-lg-7 float-left" *ngIf="item.Status=='Incomplete'">
+                <div class="entry-name">{{item.SurveyDescription}}</div>
+                <div class="entry-meta">
+                    <span>
+                        <b>{{item.Status}}</b>
+                    </span> at
+                    <span>
+                        <b> {{item.DueDate | date:'shortDate'}}</b>
+                    </span>
+                </div>
+            </div>
+            <div class="col-lg-4 float-left for-status-btn" *ngIf="item.Status == 'Completed'">
+                <!-- <a class="btn btn-secondary link-more" (click)="individualPerformance(item)">
+                    <span class="button-text">View Performance</span>
+                </a> -->
+                <a href="javascript:void(0);" class="btn btn-secondary link-more" (click)="viewAssessment(item)">
+                    <span class="button-text">View</span>
+                </a>
+            </div>
+            <div class="col-lg-4 float-left for-status-btn" *ngIf="item.Status != 'Completed'">
+                <a href="javascript:void(0);" class="btn btn-primary link-more" *ngIf="item.Status == 'Available'" (click)="startAsseessment(item)">
+                    <span class="button-text">Start</span>
+                </a>
+                <a href="javascript:void(0);" *ngIf="item.Status == 'Scheduled'">
+                    <span class="fa fa-lock" aria-hidden="true"></span>
+                </a>
+                <a href="javascript:void(0);" class="btn btn-primary link-more" *ngIf="item.Status == 'Started'" (click)="continueAssessment(item)">
+                    <span class="button-text btn-text-color">Continue</span>
+                </a>
+                <a href="javascript:void(0);" class="btn btn-primary link-more" *ngIf="item.Status == 'Inprogress'" (click)="continueAssessment(item)">
+                    <span class="button-text btn-text-color">Continue</span>
+                </a>
+                <a *ngIf="item.Status == 'Incomplete'">
+                    <span class="fa fa-lock" aria-hidden="true"></span>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+<!--entry end-->
+
+
+<div mdbModal #myIndividualModal="mdb-modal" class="modal fade" id="myIndividualModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content rounded">
+            <div class="modal-header">
+                <div class="section-title">
+                    <div class="title-text">
+                        <h5>New Assessment</h5>
+                    </div>
+
+                </div>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="myIndividualModal.hide()">
+                    <span aria-hidden="true">
+                        <i class="icon-close" aria-hidden="true"></i>
+                    </span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="entry-section">
+                    <div class="col-lg-12 float-left">
+                        <div class="col-lg-7 float-left entry-name">{{individualAssessmentData.SurveyCode}}</div>
+                        <div class="col-lg-5 float-right entry-action">
+                            <!-- <div class="pill-group"> -->
+                            <button class="btn btn-secondary" (click)="IsExpand = !IsExpand">Schedule</button>
+                            <a href="javascript:void(0);" class="btn btn-primary btn-text-color" data-dismiss="modal" (click)="scheduleAssessmentToday(individualAssessmentData.SurveyId)">Start</a>
+                            <!-- </div> -->
+                        </div>
+                    </div>
+                    <!-- <div id="collapseExample" [ngbCollapse]="IsExpand"> -->
+                    <collapsible-list *ngIf="IsExpand">
+                        <collapsible-list-item>
+                            <collapsible-header>
+                                <div class="entry-item">
+                                    <div class="col-lg-2"></div>
+                                    <div class="col-lg-10">
+                                        <div class="form-group">
+                                            <div class="check-btn">
+                                                <label>
+                                                    <input type="radio" name="ScheduleStatus" (click)="updateIndividualScheduleStatus('Single',individualAssessmentData.SurveyId)"
+                                                        [checked]="isScheduleStatus">
+                                                    <span>Schedule</span>
+                                                </label>
+                                            </div>
+                                            <!-- <div class="check-btn">
+                                                            <label>
+                                                <input type="radio" name="ScheduleStatus" (click)="updateIndividualScheduleStatus('Recurrence',individualAssessmentData.SurveyId)">
+                                                <span>Recurrence Schedule</span>
+                                              </label>
+                                                        </div>
+                                                        -->
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                                <div *ngIf="individualScheduleStatus=='Single' && individualAssessmentData.SurveyId == selectedId">
+                                    <div class="col-lg-12 form-inline">
+                                        <div class="form-group inline-group">
+                                            <div class="form-content">
+                                                <div class="input-group">
+                                                    <span class="input-group-btn">
+                                                        <button type="button" class="btn btn-default" (click)="selcteddate.toggleCalendar('selcteddate')">
+                                                            <i class="fa fa-calendar" aria-hidden="true"></i>
+                                                        </button>
+                                                    </span>
+
+                                                    <input class="form-control datewidth" style="float:none" placeholder="mm/dd/yyyy" (keyup)="dateMask($event)" #EndDate ngx-mydatepicker
+                                                        name="selcteddate" [(ngModel)]="model.selcteddate" [options]="myOptions"
+                                                        #selcteddate="ngx-mydatepicker" (inputFieldChanged)="onInputFieldDobChanged($event,'individualschedule')"
+                                                        (dateChanged)="onDOBDateChanged($event)" maxlength="10">
+                                                </div>
+                                                <!-- <div *ngIf="enterdatests === true && validdate === false">
+                                                                <div style="color:red"> Invalid Date.</div>
+                                                            </div> -->
+                                                <!-- form-content -->
+                                            </div>
+                                            <!-- form-group -->
+                                            <div class="form-action">
+                                                <button class="btn btn-secondary" (click)="IsExpand = !IsExpand;close();">Cancel</button>
+                                                <button class="btn btn-primary" (click)="IsExpand = !IsExpand" (click)="scheduleAssessment(individualAssessmentData.SurveyId,'individualschedule',EndDate.value)"
+                                                    [disabled]="disablesave">Save</button>
+                                            </div>
+                                        </div>
+                                        <!-- col-lg-12 -->
+                                    </div>
+                                    <!-- entry-item  -->
+                                </div>
+                                <!-- <div *ngIf="individualScheduleStatus=='Recurrence'">
+                                                <app-recurrence [data]="scheduleObject"></app-recurrence>
+                                            </div> -->
+                                <!-- </div> -->
+                            </collapsible-header>
+                        </collapsible-list-item>
+                    </collapsible-list>
+
+                    <!-- <div id="collapseExample" [ngbCollapse]="IsExpand">
+                                      <div class="entry-item">
+                                        <div class="col-lg-12 form-inline">
+                                          <div class="form-group inline-group">
+                                            <div class="form-content">
+                                              <div class="input-group">
+                                                <my-date-picker name="mydate" [options]="myDatePickerOptions" placeholder="Select a date" [(ngModel)]="DOBModel"></my-date-picker>
+                                              </div>
+                                            </div>
+                                            <div class="form-action">
+                                              <button class="btn btn-secondary" (click)="IsExpand = !IsExpand">Cancel</button>
+                                              <button class="btn btn-primary" (click)="IsExpand = !IsExpand" (click)="scheduleAssessment(individualAssessmentData.SurveyId)"
+                                                data-dismiss="modal">Save</button>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div> -->
+                </div>
+                <button type="button" class="btn btn-primary float-right waves-light text-center" data-dismiss="modal" aria-label="Close"
+                    (click)="myIndividualModal.hide()">Close</button>
+            </div>
+
+
+
+
+        </div>
+    </div>
+</div>
+<div mdbModal #view="mdb-modal" class="modal fade" id="view" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content rounded">
+            <div class="modal-header">
+                <div class="section-title">
+                    <div class="title-text">
+                        <h5>New Assessment</h5>
+                    </div>
+                    <div class="title-instructions">Select Assessment Type</div>
+                </div>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="view.hide()">
+                    <span aria-hidden="true">
+                        <i class="icon-close" aria-hidden="true"></i>
+                    </span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!--entry-section start-->
+                <div class="entry-section" *ngFor=" let schedule of assessmentSchedule" [style.display]="schedule.Mode=='Custom' || schedule.Mode=='Standard'">
+                    <div class="col-lg-12 float-left">
+                        <div class="col-lg-7 float-left entry-name">{{schedule.Name}}</div>
+                        <div class="col-lg-5 float-right entry-action">
+                            <div class="pill-group">
+                                <button class="btn btn-secondary" aria-label="Close" (click)="schedule.IsExpand = !schedule.IsExpand" [attr.aria-expanded]="!IsExpand">Schedule</button>
+                                <a class="btn btn-primary btn-text-color-imp" aria-label="Close" data-dismiss="modal" (click)="scheduleAssessmentToday(schedule.Id)">Start</a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- <div [ngbCollapse]="!schedule.IsExpand"> -->
+                    <collapsible-list *ngIf="!schedule.IsExpand">
+                        <collapsible-list-item>
+                            <collapsible-header>
+                                <div class="entry-item">
+                                    <div class="check-btn" [ngClass]="{defaultActiveRadio:ischecked}">
+                                        <label>
+                                            <input type="radio" name="ScheduleStatus" (click)="updateScheduleStatus('Single',schedule)" [checked]="isScheduleStatus">
+                                            <span>Schedule</span>
+                                        </label>
+                                    </div>
+                                    <!-- <div class="check-btn">
+                                                <label>
+                              <input type="radio" name="ScheduleStatus" (click)="updateScheduleStatus('Recurrence',schedule)">
+                              <span>Recurrence Schedule</span>
+                            </label>
+                                            </div>  -->
+
+                                </div>
+                                <div *ngIf="ScheduleStatus=='Single' && schedule.Id == selectedId">
+                                    <div class="col-lg-12 form-inline">
+                                        <div class="form-group inline-group">
+                                            <div class="form-content">
+                                                <div class="input-group">
+                                                    <span class="input-group-btn">
+                                                        <button type="button" class="btn btn-default" (click)="selectschdt.toggleCalendar('selectschdt')">
+                                                            <i class="fa fa-calendar" aria-hidden="true"></i>
+                                                        </button>
+                                                    </span>
+
+                                                    <input class="form-control datewidth" style="float:none" (keyup)="dateMask($event)" placeholder="mm/dd/yyyy" #StartDate ngx-mydatepicker
+                                                        name="selectschdt" [(ngModel)]="model.selectschdt" [options]="myOptions"
+                                                        #selectschdt="ngx-mydatepicker" (inputFieldChanged)="onInputFieldDobChanged($event,'schedule')"
+                                                        (dateChanged)="onDOBDateChanged($event)" maxlength="10">
+                                                </div>
+                                                <!-- form-content -->
+                                            </div>
+                                            <!-- form-group -->
+                                            <div class="form-action">
+                                                <button class="btn btn-secondary" (click)="schedule.IsExpand = !schedule.IsExpand;close();">Cancel</button>
+                                                <button class="btn btn-primary" (click)="schedule.IsExpand = !schedule.IsExpand" (click)="scheduleAssessment(schedule.Id,'schedule',StartDate.value)"
+                                                    [disabled]="disablesave">Save</button>
+                                            </div>
+                                        </div>
+                                        <!-- col-lg-12 -->
+                                    </div>
+                                    <!-- entry-item  -->
+                                </div>
+                            </collapsible-header>
+                        </collapsible-list-item>
+                    </collapsible-list>
+                    <!-- </div> -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

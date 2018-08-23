@@ -1,0 +1,188 @@
+<div class="w-100 float-left no_padding">
+    <div class="person-header float-left w-100">
+        <div class="profile_pic float-left">
+            <img *ngIf="imageshow" src="https://image.flaticon.com/icons/svg/236/236832.svg" alt="">
+            <img *ngIf="imageshow==false" [src]="profileimage" class="w-100 float-left">
+        </div>
+        <div class="col-lg-10 col-md-10 col-sm-12 col-xs-12 float-left user-info">
+            <h2 class="float-left w-100">{{profileInfo.StaffName}}
+            </h2>
+            <div class="w-100 float-left">
+                <p class="float-left no_padding col-lg-3 ">
+                    <span class="float-left">Appointments :</span>&nbsp;{{adminDashboardCounts.AppointmentCount}}
+
+                </p>
+                <p class="float-left col-lg-3 ">
+                    <span class="float-left">Check-in :</span>&nbsp;{{adminDashboardCounts.CheckinCount}}
+                </p>
+                <p class="float-left col-lg-4 ">
+                    <span class="float-left">Late Check-in :</span>&nbsp;{{adminDashboardCounts.LateChekinsCount}}
+                </p>
+            </div>
+            <div class="w-100 float-left">
+                <p class="float-left col-lg-3 no_padding">
+                    <span class="float-left">No shows :</span>&nbsp;{{adminDashboardCounts.AppointmentCount - (adminDashboardCounts.CheckinCount + adminDashboardCounts.CancelledCount)}}
+
+                </p>
+                <p class="float-left  col-lg-3">
+                    <span class="float-left">Cancelled :</span>&nbsp;{{adminDashboardCounts.CancelledCount}}
+
+
+
+                </p>
+                <p class="float-left col-lg-3">
+                    <span class="float-left"> Requests:</span>&nbsp;{{adminDashboardCounts.NoOfRequests}}
+                </p>
+            </div>
+
+        </div>
+
+        <!-- <a href="javascript:;;" class="icon-user-settings float-right"></a> -->
+    </div>
+    <div class="page-container float-left">
+        <div class="w-100 float-left">
+            <p class="tile-headding float-left w-100 ">daily activities</p>
+            <div class="tile-group w-100 float-left">
+                <div class="col-lg-4 custome-col col-md-6 float-left" *ngFor="let dType of dashBoardCounts">
+                    <a href="javascript:;;" class="activitie-tile float-left w-100" routerLink="{{dType.navigateUrl}}" routerLinkActive="active">
+                        <h6 class="w-100 float-left">{{dType.openTitle}}
+                            <!-- <span class="icon icon-todat-appointments float-right"></span> -->
+                        </h6>
+                        <h3 class="float-left w-100 text-center">{{dType.openCount}}</h3>
+                        <p class="float-left w-100 tile-footer">
+                            <span class="icon-check float-left mr-2"></span> {{dType.closedTitle}} : {{dType.closedCount}}
+                            <!-- <span class="icon icon-todat-appointments float-right"></span> -->
+                        </p>
+                    </a>
+                </div>
+                <!-- <div class="col-lg-4 custome-col col-md-6 float-left">
+                    <a href="javascript:;;" class="activitie-tile float-left">
+                        <h6 class="w-100 float-left">Appointments Checked-in
+                            <span class="icon icon-checked-out float-right"></span>
+                        </h6>
+                        <h3 class="float-left w-100 text-center appointment-number">16</h3>
+                        <p class="float-left w-100 tile-footer">
+                            <span class="icon-check float-left mr-2"></span>Completed : 7
+                            <span class="icon icon-checked-out float-right"></span>
+                        </p>
+                    </a>
+                </div>
+                <div class="col-lg-4 custome-col col-md-6 float-left">
+                    <a href="javascript:;;" class="activitie-tile float-left">
+                        <h6 class="w-100 float-left">Twilio Messages
+                            <span class="icon icon-twilio float-right"></span>
+                        </h6>
+                        <h3 class="float-left w-100 text-center twilio-number">4</h3>
+                        <p class="float-left w-100 tile-footer">
+                            <span class="icon-check float-left mr-2"></span>Completed : 7
+                            <span class="icon icon-twilio float-right"></span>
+                        </p>
+                    </a>
+                </div>
+                <div class="col-lg-4 custome-col col-md-6 float-left">
+                    <a href="javascript:;;" class="activitie-tile float-left">
+                        <h6 class="w-100 float-left">Requests
+                            <span class="icon icon-requests float-right"></span>
+                        </h6>
+                        <h3 class="float-left w-100 text-center requests-number">42</h3>
+                        <p class="float-left w-100 tile-footer">
+                            <span class="icon-check float-left mr-2"></span>Completed: 7
+                            <span class="icon icon-requests float-right"></span>
+                        </p>
+                    </a>
+                </div> -->
+            </div>
+        </div>
+        <div class="w-100 float-left">
+            <p class="tile-headding float-left w-100">General</p>
+            <div class="tile-group w-100 float-left">
+                <div class="col-lg-4 custome-col col-md-6 float-left">
+                    <a href="javascript:;;" class="dashboard-tile float-left" routerLink="/admin/slot-booking" routerLinkActive="active">
+                        <span class="col-lg-4 icon icon-schedule"></span>
+                        <p class="col-lg-8 float-right">Schedule</p>
+                    </a>
+                </div>
+                <div class="col-lg-4 custome-col col-md-6 float-left">
+                    <a href="javascript:;;" class="dashboard-tile float-left" routerLink="/admin/patientlist" routerLinkActive="active">
+
+                        <span class="col-lg-4 icon icon-patient-card"></span>
+                        <p class="col-lg-8 float-right">Patient Card</p>
+                    </a>
+                </div>
+                <div class="col-lg-4 custome-col col-md-6 float-left">
+                    <a href="javascript:;;" class="dashboard-tile float-left" routerLink="/admin/campaign" routerLinkActive="active">
+                        <span class="col-lg-4 icon icon-campaign"></span>
+                        <p class="col-lg-8 float-right">Campaign</p>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="graph-header w-100 float-left">
+            <p class=" col-lg-4 float-left">Analytics</p>
+            <div class="col-lg-8 float-right">
+
+                <div class="btn-group float-right" data-toggle="buttons">
+                    <!-- <p class="float-left no_margin pr-2">Session</p> -->
+                    <div class="float-left no_padding" (click)="getChartDates('Today')">
+                        <label class="btn btn-primary text-center" for="radio0" [ngClass]="{'active1': today == 'Today'}">
+                            <input type="radio" name="options" id="radio0" value="option1">Today
+                        </label>
+                    </div>
+                    <div class="float-left no_padding" (click)="getChartDates('WeekOne')">
+                        <label class="btn btn-primary text-center" for="radio1" [ngClass]="{'active1': today == 'WeekOne'}">
+                            <input type="radio" name="options" id="radio1" value="option1">1 Week
+                        </label>
+                    </div>
+                    <div class="float-left no_padding" (click)="getChartDates('WeekTwo')">
+                        <label class="btn btn-primary text-center" for="radio2" [ngClass]="{'active1': today == 'WeekTwo'}">
+                            <input type="radio" name="options" id="radio2" value="option1">2 Weeks
+                        </label>
+                    </div>
+                    <div class="float-left no_padding" (click)="getChartDates('month')">
+                        <label class="btn btn-primary text-center" for="radio3" [ngClass]="{'active1': today == 'month'}">
+                            <input type="radio" name="options" id="radio3" value="option1">1 month
+                        </label>
+                    </div>
+                </div>
+                <div class="input-group  no_margin col-lg-4 float-right">
+                    <!-- <input class="form-control  w-100 float-left" placeholder="Sort By Date" />
+          <i class="icon-calendar waves-effect " aria-hidden="true"></i> -->
+                    <input class="form-control  w-100 float-left someinput" placeholder="Sort By Date" style="float:none" placeholder="MM/DD/YYYY" (keyup)="dateMask($event)" ngx-mydatepicker name="selectdate" [(ngModel)]="model.selectdate" [options]="myOptions" #selectdate="ngx-mydatepicker"
+                        (inputFieldChanged)="onInputFieldDobChanged($event)" (dateChanged)="onDateChanged($event)" maxlength="10" />
+                    <i class="icon-calendar waves-effect " aria-hidden="true" (click)="selectdate.toggleCalendar('selectdate')"></i>
+                    <div class="errormsg" *ngIf="enterdatests === true && validdate === false ">
+                        Invalid Date
+                    </div>
+                </div>
+                <!-- <span class="icon-dotes-menu float-right"></span> -->
+            </div>
+
+        </div>
+        <div class="graph-body w-100 float-left">
+            <div class="no_data_overlay" *ngIf="chartLabels.length == 0">
+                <p>no data available</p>
+            </div>
+            <div class="col-lg-6 float-left">
+                <div style="display: block">
+                    <canvas mdbChart [chartType]="pieChartType" [data]="pieChartData" [labels]="pieChartLabels" [colors]="pieChartColors" [options]="pieChartOptions" [legend]="true" (chartHover)="pieChartHovered($event)" (chartClick)="pieChartClicked($event)">
+                    </canvas>
+                </div>
+            </div>
+            <div class="col-lg-6 float-left">
+                <div style="display: block">
+                    <canvas mdbChart [chartType]="chartType" [datasets]="chartDatasets" [labels]="chartLabels" [colors]="chartColors" [options]="chartOptions" [legend]="true" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)">
+                    </canvas>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+<!-- <div class="col-lg-2 float-left dashboard_right">
+
+    <app-slider-component></app-slider-component>
+    <app-bmi-component></app-bmi-component>
+</div> -->

@@ -1,0 +1,21 @@
+<div class="w-100 float-left bmi">
+    <div class="bmi-title w-100 float-left">
+        <h5>Body Mass Index (BMI)</h5>
+        <p>A Measure of body fat in adults</p>
+    </div>
+    <div class="bmi-body w-100 float-left">           
+        <div class="input-group w-100 float-left">
+            <span class="input-title">Weight</span>
+            <input type="text"  [(ngModel)]="user.weight" class="form-control col-lg-11 text-center w-100 float-left" onkeypress='return event.charCode >= 46 && event.charCode <= 57' placeholder="wt"  (keyup)="calculatebmi()"  maxlength=5  [ngClass]="{'error':errormsg==true} ">
+            <span class="float-left units">kg</span>
+        </div>
+        <div class="input-group w-100 float-left">
+            <span class="input-title">Height</span>
+            <input type="text" [(ngModel)]="user.height" class="form-control col-lg-11 text-center w-100 float-left" onkeypress='return event.charCode >= 46 && event.charCode <= 57'  placeholder="ht"  (keyup)="calculatebmi()"  maxlength=5 [ngClass]="{'error':errormsg==true}">
+            <span class="float-left units">cm</span>
+        </div>
+        <h1 class="float-left w-100 text-center">{{bmi}}</h1>
+        <p class="float-left w-100 text-center">{{result}} BMI </p>
+    </div>
+
+</div>

@@ -1,0 +1,36 @@
+<div class="w-100 float-left" *ngIf="(ehrtypeamd == true) || (credentialtype == '')">
+
+  <div class=" tile float-left no_padding" (click)="ehrtype('AMD')" *ngIf="((ehrtypeempty == true) || (intigrationmodel.EhrType == 'AMD'))" >
+      <div class="today_appoin_tile">
+          <span class="default" *ngIf="ehrtypeempty == false" title="You have already integrated {{intigrationmodel.EhrType}}. Please click here to configuration details.">
+                    
+                  </span>
+          <img src="../assets/logos/advancedmd.png" />
+      </div>
+  </div>
+  <div class="tile float-left no_padding" [ngClass]="{'disable':intigrationmodel.EhrType != 'AMD'}" style="cursor: not-allowed;" *ngIf="((ehrtypeempty == false) && (intigrationmodel.EhrType != 'AMD'))" title="You can not integrate Athena. Because, you have already integrated {{intigrationmodel.EhrType}}">
+      <div class="today_appoin_tile">
+          <img src="../assets/logos/advancedmd.png" />
+      </div>
+  </div>
+
+  <div class=" tile float-left no_padding" (click)="ehrtype('Athena')" *ngIf="((ehrtypeempty == true) || (intigrationmodel.EhrType == 'Athena'))">
+      <div class="today_appoin_tile"> 
+          <span class="default" *ngIf="ehrtypeempty == false" title="You have already integrated {{intigrationmodel.EhrType}}. Please click here to configuration details.">
+              <i class="fa fa-check-circle"></i>
+          </span>
+          <img src="../assets/logos/athena.png"/>
+      </div>
+  </div>
+  <div class="tile  float-left no_padding" [ngClass]="{'disable':intigrationmodel.EhrType != 'Athena'}" style="cursor: not-allowed;" *ngIf="((ehrtypeempty == false) && (intigrationmodel.EhrType != 'Athena'))" title="You can not integrate Athena. Because, you have already integrated {{intigrationmodel.EhrType}}">
+      <div class="today_appoin_tile">
+          <img src="../assets/logos/athena.png"  />
+      </div>
+  </div>
+</div>
+<div *ngIf="credentialtype == 'AMD'">
+  <app-amd (getehrtypeCall)="EHREvent($event)"></app-amd>
+</div>
+<div *ngIf="credentialtype == 'Athena'">
+  <app-athena (getehrtypeCall)="EHREvent($event)"></app-athena>
+</div>

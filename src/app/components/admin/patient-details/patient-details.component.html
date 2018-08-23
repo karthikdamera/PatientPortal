@@ -1,0 +1,1526 @@
+<div class="w-100 page-titel float-left">
+    <a class="fa fa-angle-left mr-3 float-left icon_back" routerLink="/admin/patientlist" routerLinkActive="active"></a>
+    <h4 class="float-left titel">Patient Details</h4>
+    <div class="input-group no_padding search col-lg-4 float-right">
+        <span class="icon-search"></span>
+        <input type="text" class="form-control no_margin float-left" placeholder="Enter Email/PhoneNo/Name" [(ngModel)]="query" id="patientlists" value="{{email}}" (keyup)="filter()">
+        <ng-scrollbar class="inner-suggestions" *ngIf="filteredList.length > 0">
+
+            <ul class="w-100 float-left">
+                <li (click)="select(item)" *ngFor="let item of filteredList">
+                    <a class="w-100 float-left">
+                        <img class="col-lg-2 float-left no_padding" src="https://image.flaticon.com/icons/svg/236/236832.svg">
+                        <span class="col-lg-8 float-left ">{{item.FirstName}} &nbsp; {{item.LastName}} </span>
+                        <span class="col-lg-8 float-left ">{{item.Email}}</span>
+                        <span class="col-lg-8 float-left ">{{item.PhoneNo}}</span>
+                    </a>
+                </li>
+            </ul>
+        </ng-scrollbar>
+
+    </div>
+</div>
+<div class="patient-detail page-container w-100 float-left">
+    <div *ngIf="dataCheck==true" class="w-100 float-left patient-card" id="patient-detail-card">
+        <div class="col-lg-3 patient-profile float-left">
+            <div class="w-100 float-left">
+                <div class="w-100 float-left">
+                    <a href="javascript:;;" class="edit float-right" title="Edit" data-toggle="tooltip" *ngIf="!profilests" (click)="edit('profile',patientcarddata.PatientDetails)">Edit</a>
+                    <a href="javascript:;;" class="cancel float-right" title="Cancel" data-toggle="tooltip" *ngIf="profilests" (click)="Cancel()">Cancel</a>
+                    <a href="javascript:;;" class="save float-right" title="Save" data-toggle="tooltip" *ngIf="profilests" (click)="EditUpdate('profile')">Save</a>
+                </div>
+                <div class="w-100 float-left" *ngIf="profileimage!==null && profileimage !='' ">
+                    <img class="img-responsive media-object" src="{{profileimage}}">
+                </div>
+                <div class="w-100 float-left" *ngIf="profileimage=='' || profileimage== null">
+                    <img class="rounded-circle img-responsive media-object" src="https://image.flaticon.com/icons/svg/236/236832.svg">
+                </div>
+            </div>
+            <div class=" float-left w-100">
+                <form [formGroup]="userForm">
+                    <label class="profile-text" *ngIf="!profilests">{{name}}</label>
+                    <div class="w-100 input-group float-left" *ngIf="profilests">
+                        <label class="w-100 float-left">First Name</label>
+                        <input class="form-control " placeholder="First Name" formControlName="FirstName"  [(ngModel)]="profileInfo.FirstName" maxlength="50" />
+                        <app-validation [control]="userForm.controls.FirstName">
+                        </app-validation>
+                    </div>
+                    <div class="w-100 input-group float-left" *ngIf="profilests">
+                        <label class="w-100 float-left">Last Name</label>
+                        <input type="text" class="form-control " formControlName="LastName" placeholder="Last Name"  [(ngModel)]="profileInfo.LastName" maxlength="50" />
+                        <app-validation [control]="userForm.controls.LastName">
+                        </app-validation>
+                    </div>
+                    <label class="w-100 float-left" *ngIf="!profilests">Gender:&nbsp; {{patientcarddata.PatientDetails.Gender}}</label>
+                    <div class="w-100 float-left input-group" *ngIf="profilests">
+                        <label class="w-100 float-left">Gender</label>
+                        <select class="form-control btn-section bordered-input"  formControlName="Gender" [(ngModel)]="profileInfo.Gender">
+              <option [ngValue]="null" disabled>Please Select</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+            </select>
+                    </div>
+                    <div class="w-100 float-left" *ngIf="profilests">
+                        <label class="w-100 float-left">Age</label>
+                        <label class="w-100 float-left">{{age}} years old ({{patientcarddata.PatientDetails.DOB | slice:0:10}})</label>
+                    </div>
+                    <label class="w-100 float-left" *ngIf="!profilests">VIP Patient: {{isVippatient}}
+          </label>
+                    <div class="input-group w-100 float-left" *ngIf="profilests">
+                        <label class="w-100 float-left">VIP Patient:</label>
+                        <select class="form-control w-100 float-left" formControlName="vippatient"  [(ngModel)]="profileInfo.IsVipPatient">
+              <option [ngValue]="null" disabled>Please Select</option>
+              <option value="true">Yes</option>
+              <option value="false">No</option>
+            </select>
+                    </div>
+                    <label class="profile-text">Contact Information</label>
+                    <label class="w-100 float-left" *ngIf="!profilests">Email:&nbsp; {{patientcarddata.PatientDetails.Email}}</label>
+                    <div class="w-100 input-group float-left" *ngIf="profilests">
+                        <label class="w-100 float-left">Email</label>
+                        <input class="form-control bordered-input" rows="3" placeholder="Email" formControlName="Email" [(ngModel)]="profileInfo.Email" />
+                        <app-validation [control]="userForm.controls.Email">
+                        </app-validation>
+                    </div>
+                    <label class="w-100 float-left" *ngIf="!profilests">Phone Number:&nbsp; {{patientcarddata.PatientDetails.PhoneNo}}</label>
+                    <div class="w-100 float-left input-group" *ngIf="profilests">
+                        <label class="w-100 float-left">Phone Number</label>
+                        <input type="text" class="form-control bordered-input" [textMask]="getphoneno()" formControlName="PhoneNo" placeholder="Phone Number"  (blur)="unmasckphone()" [(ngModel)]="profileInfo.PhoneNo" [ngClass]="{'error' : phonestssec}"
+                        />
+                        <app-validation [control]="userForm.controls.PhoneNo">
+                        </app-validation>
+                        <!-- <div class="w-100 float-left" class="errormsg" *ngIf="phonestssec"> Phone Number Should Be 10 Digits</div> -->
+                    </div>
+                    <label class="w-100 float-left" *ngIf="!profilests">Phone Number1:&nbsp; {{patientcarddata.PatientDetails.AltPhoneNo}}</label>
+                    <div class="w-100 float-left input-group" *ngIf="profilests">
+                        <label class="w-100 float-left">Alternate Phone Number</label>
+                        <input type="text" class="form-control bordered-input" [textMask]="getaltphoneno()" placeholder="Alternate Phone Number" formControlName="AltPhoneNo"  (blur)="unmasckaltphone()" [(ngModel)]="profileInfo.AltPhoneNo" [ngClass]="{'error' : phonealtstssec}"
+                        />
+                        <!-- <div class="w-100 float-left" class="errormsg" *ngIf="phonealtstssec"> Phone Number Should Be 10 Digits</div> -->
+                    </div>
+                    <label class="profile-text">Address</label>
+                    <label class="w-100 float-left" *ngIf="!profilests">Address1:&nbsp; {{patientcarddata.PatientDetails.Address}}</label>
+                    <label class="w-100 float-left" *ngIf="!profilests">Address2:&nbsp; {{patientcarddata.PatientDetails.Address2}}</label>
+                    <div class="w-100 float-left input-group" *ngIf="profilests">
+                        <label class="w-100 float-left ">Address1</label>
+                        <input class="form-control bordered-input" rows="3" placeholder="Address1" formControlName="Address"  [(ngModel)]="profileInfo.Address" />
+                        <app-validation [control]="userForm.controls.Address">
+                        </app-validation>
+                    </div>
+                    <div class="w-100 float-left input-group" *ngIf="profilests">
+                        <label class="">Address2</label>
+                        <input class="form-control bordered-input" rows="3" placeholder="Address2" formControlName="Address2"  [(ngModel)]="profileInfo.Address2" />
+                    </div>
+                    <label class="w-100 float-left" *ngIf="!profilests">State:&nbsp; {{patientcarddata.PatientDetails.State}}</label>
+                    <div class="w-100 float-left input-group" *ngIf="profilests">
+                        <label class="w-100 float-left">State</label>
+                        <select class="form-control btn-section ng-untouched ng-pristine ng-invalid bordered-input" formControlName="state" [(ngModel)]="profileInfo.State">
+              <option [ngValue]="null" disabled>-- Choose State --</option>
+              <option *ngFor="let data of stateNames" [ngValue]="data.Name" [selected]="data.Name==profileInfo.State">{{data.Name}}</option>
+            </select>
+                        <app-validation [control]="userForm.controls.state">
+                        </app-validation>
+                    </div>
+                    <label class="w-100 float-left" *ngIf="!profilests">City:&nbsp; {{patientcarddata.PatientDetails.City}}</label>
+                    <div class="w-100 float-left input-group" *ngIf="profilests">
+                        <label class="w-100 float-left">City</label>
+                        <input type="text" class="form-control bordered-input" placeholder="City" formControlName="city"  [(ngModel)]="profileInfo.City" maxlength="50" />
+                    </div>
+                    <label class="w-100 float-left" *ngIf="!profilests">Zip Code:&nbsp; {{patientcarddata.PatientDetails.Zipcode}}</label>
+                    <div class="w-100 float-left input-group" *ngIf="profilests">
+                        <label class="w-100 float-left">Zip Code</label>
+                        <input type="text" class="form-control bordered-input" placeholder="Zip Code" formControlName="Zipcode"  [(ngModel)]="profileInfo.Zipcode" maxlength="5" />
+                        <app-validation [control]="userForm.controls.Zipcode">
+                        </app-validation>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="col-lg-9 patient-tabs float-left">
+            <div class="w-100 float-left">
+                <ngx-tabset class="w-100 float-left">
+                    <ngx-tab title="Clinical">
+                        <div class="w-100 float-left accordion">
+                            <a href="javascript:;;" (click)="expand('pharmacy', expanded)" class="waves-effect accordion-header w-100 float-left">
+                Pharmacy
+                <i class="icon-plus float-right" *ngIf="(!isOpen && expanded === 'pharmacy')  || (expanded != 'pharmacy')"></i>
+                <i class="icon-mines float-right" *ngIf="(isOpen && (expanded === 'pharmacy'))"></i>
+              </a>
+                            <div class="accordion-body w-100 float-left" *ngIf="expanded === 'pharmacy' && isOpen">
+                                <ng-scrollbar class="accordion-body-scroll w-100 float-left">
+                                    <div class="w-100 float-left" *ngIf="patientcarddata.Pharmacy.length == 0">
+                                        <p class="w-100 float-left text-center pt-4 pb-4">
+                                            <i class="w-100 icon icon-warning2 float-left" aria-hidden="true"></i> No Data Availabale</p>
+                                    </div>
+                                    <div class="w-100 float-left scroll" *ngIf="patientcarddata.Pharmacy.length>0">
+                                        <form [formGroup]="pharmacyForm">
+                                            <table class="theme-table table w-100 float-left">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Preferred Pharmacy</th>
+                                                        <th>Phone Number</th>
+                                                        <th>Address1</th>
+                                                        <th>Address2</th>
+                                                        <th>State</th>
+                                                        <th>Zip Code</th>
+                                                        <th>Edit</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr *ngFor="let data of patientcarddata.Pharmacy">
+                                                        <td data-column="Preferred Pharmacy">
+                                                            <p *ngIf="pharmaId!=data.Id">{{data.PreferredPharmacy}}</p>
+                                                            <div class="w-100 float-left input-group" *ngIf="pharmaId==data.Id">
+                                                                <select class="form-control btn-section bordered-input" [(ngModel)]="phrmamodel.PreferredPharmacy" formControlName="PreferredPharmacy" [ngValue]="phrmamodel.PreferredPharmacy">
+                                  <option value="" selected disabled>--Please Select--</option>
+                                  <!-- <option value="CVS">CVS</option>
+                               <option value="Express Scripts">Express Scripts</option>
+                               <option value="Pavilions">Pavilions</option>
+                               <option value="Ralphs">Ralphs</option>
+                               <option value="Target">Target</option> -->
+                                  <option *ngFor="let dropdown of pharmacydrop" [selected]="dropdown.Name==phrmamodel.PreferredPharmacy">{{dropdown.Name}}</option>
+                                </select>
+                                                                <app-validation [control]="pharmacyForm.controls.PreferredPharmacy">
+                                                                </app-validation>
+                                                            </div>
+
+
+                                                        </td>
+                                                        <td data-column="Phone Number">
+                                                            <p *ngIf="pharmaId!=data.Id">{{data.PharmacyPhoneNumber}}</p>
+                                                            <div class="w-100 input-group float-left" *ngIf="pharmaId==data.Id">
+                                                                <input class="form-control " [(ngModel)]="phrmamodel.PharmacyPhoneNumber" [textMask]="{mask: mask}" formControlName="PharmacyPhoneNumber" (blur)="unmasckPHARMphone()" [ngClass]="{'error' : phonestssec}" />
+                                                                <app-validation [control]="pharmacyForm.controls.PharmacyPhoneNumber">
+                                                                </app-validation>
+                                                                <!-- <div class="errormsg" *ngIf="phonestssec"> Number Should Be 10 Digits</div> -->
+                                                            </div>
+                                                        </td>
+                                                        <td data-column="Address1">
+                                                            <p *ngIf="pharmaId!=data.Id">{{data.PharmacyAddress1}}</p>
+                                                            <div class="w-100 input-group float-left" *ngIf="pharmaId==data.Id">
+                                                                <input class="form-control " [(ngModel)]="phrmamodel.PharmacyAddress1" formControlName="PharmacyAddress1" maxlength="100" value="{{phrmamodel.PharmacyAddress1}}" />
+                                                                <app-validation [control]="pharmacyForm.controls.PharmacyAddress1"> </app-validation>
+                                                            </div>
+                                                        </td>
+                                                        <td data-column="Address2">
+                                                            <p *ngIf="pharmaId!=data.Id">{{data.PharmacyAddress2}}</p>
+                                                            <div class="w-100 input-group float-left" *ngIf="pharmaId==data.Id">
+                                                                <input class="form-control " [(ngModel)]="phrmamodel.PharmacyAddress2" formControlName="PharmacyAddress2" maxlength="100" value="{{phrmamodel.PharmacyAddress2}}" />
+                                                            </div>
+
+                                                        </td>
+                                                        <td data-column="State">
+                                                            <p *ngIf="pharmaId!=data.Id">{{data.State}}</p>
+
+                                                            <div class="w-100 float-left input-group" *ngIf="pharmaId==data.Id">
+                                                                <select class="form-control btn-section bordered-input" [(ngModel)]="phrmamodel.State" formControlName="State">
+                                  <option value="null" disabled>-- Choose State --</option>
+                                  <option *ngFor="let data of stateNames" [ngValue]="data.Name">{{data.Name}}</option>
+
+                                </select>
+                                                                <app-validation [control]="pharmacyForm.controls.State">
+                                                                </app-validation>
+                                                            </div>
+                                                        </td>
+                                                        <td data-column="Zip Code">
+                                                            <p *ngIf="pharmaId!=data.Id">{{data.ZipCode}}</p>
+
+                                                            <div class="w-100 input-group float-left" *ngIf="pharmaId==data.Id">
+                                                                <input class="form-control " value="{{phrmamodel.ZipCode}}" formControlName="ZipCode" [(ngModel)]="phrmamodel.ZipCode" maxlength="5" />
+                                                                <app-validation [control]="pharmacyForm.controls.ZipCode">
+                                                                </app-validation>
+                                                            </div>
+
+                                                        </td>
+
+                                                        <td data-column="Edit">
+                                                            <a class="edit float-left" *ngIf="pharmaId!=data.Id" [hidden]="disableedit==false" (click)="edit('pharma',data)">
+                                                                <i aria-hidden="true" class="icon-edit float-left"></i>
+                                                                <span>Edit</span>
+                                                            </a>
+                                                            <!-- <button class="edit_btn" *ngIf="pharmaId!=data.Id" [hidden]="disableedit==false" (click)="edit('pharma',data)">
+                              <i class="fa fa-pencil-square-o" title="Edit" data-toggle="tooltip"></i>
+                            </button> -->
+                                                            <!-- <button *ngIf="pharmaId==data.Id" (click)="EditUpdate('pharma')">save
+                              <i class="icon-save" title="Save" data-toggle="tooltip">save</i>
+                            </button> -->
+                                                            <a href="javascript:;;" class="edit float-left" data-toggle="modal" *ngIf="pharmaId==data.Id" (click)="EditUpdate('pharma')">
+                                                                <i class="icon-save float-left" aria-hidden="true"></i>
+                                                                <span>save</span>
+                                                            </a>
+                                                            <!-- <a *ngIf="pharmaId==data.Id" (click)="Cancel()">
+                              <i class="fa fa-remove" title="Cancel" data-toggle="tooltip"></i>
+                            </a> -->
+                                                            <a href="javascript:;;" class="remove float-left" data-toggle="modal" *ngIf="pharmaId==data.Id" (click)="Cancel()">
+                                                                <i class="icon-cancel float-left" aria-hidden="true"></i>
+                                                                <span>Cancel</span>
+                                                            </a>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </form>
+                                    </div>
+                                </ng-scrollbar>
+                            </div>
+                        </div>
+
+                        <div class="w-100 float-left accordion">
+                            <a href="javascript:;;" (click)="expand('medications', expanded)" class="waves-effect accordion-header w-100 float-left">
+                Medications
+                <i class="icon-plus float-right" *ngIf="(!isOpen && expanded === 'medications') || (expanded != 'medications')"></i>
+                <i class="icon-mines float-right" *ngIf="(isOpen && (expanded === 'medications'))"></i>
+              </a>
+                            <div class="accordion-body w-100 float-left" *ngIf="expanded === 'medications' && isOpen">
+                                <div *ngIf="patientcarddata.CareTeam.length > 0">
+                                    <!-- <ng-scrollbar class="accordion-body-scroll w-100 float-left"> -->
+                                    <div *ngIf="patientmedications">
+                                        <app-patient-medications [parentData]="parentData" [patientid]="patientid" (medications)="ChildEvent($event)"></app-patient-medications>
+                                    </div>
+                                    <div *ngIf="addmedications">
+                                        <app-add-medications [patientid]="patientid" (addmedicationsdata)="ChildEvent($event)"></app-add-medications>
+                                    </div>
+                                    <div *ngIf="medicationview">
+                                        <app-patient-medicationview [patientid]="patientid" (medicationview)="ChildEvent($event)"></app-patient-medicationview>
+                                    </div>
+                                </div>
+                                <div *ngIf="patientcarddata.CareTeam.length == 0">
+                                    <p class="w-100 float-left text-center pt-4 pb-4">
+                                        <i class="w-100 icon icon-warning2 float-left" aria-hidden="true"></i> No Data Availabale</p>
+                                </div>
+                                <!-- </ng-scrollbar> -->
+                            </div>
+                        </div>
+
+                        <div class="w-100 float-left accordion">
+                            <a href="javascript:;;" (click)="expand('careteam', expanded)" class="waves-effect accordion-header w-100 float-left">
+                Care Team
+                <i class="icon-plus float-right" *ngIf="(!isOpen && expanded === 'careteam') || (expanded != 'careteam')"></i>
+                <i class="icon-mines float-right" *ngIf="(isOpen && (expanded === 'careteam'))"></i>
+              </a>
+
+                            <!-- <div class="accordion-body w-100 float-left" *ngIf="expanded === 'careteam' && isOpen">
+                <ng-scrollbar class="accordion-body-scroll w-100 float-left">
+                  <div class="w-100 float-left" *ngIf="patientcarddata.CareTeam.length == 0">
+                    <p class="w-100 float-left text-center pt-4 pb-4">
+                      <i class="w-100 icon icon-warning2 float-left" aria-hidden="true"></i>
+                      No Data Availabale</p>
+                  </div>
+                </ng-scrollbar>
+              </div> -->
+
+                            <div class="accordion-body w-100 float-left" *ngIf="expanded === 'careteam' && isOpen">
+                                <div class="w-100 float-left" *ngIf="patientcarddata.CareTeam.length == 0">
+                                    <p class="w-100 float-left text-center pt-4 pb-4">
+                                        <i class="w-100 icon icon-warning2 float-left" aria-hidden="true"></i> No Data Availabale</p>
+                                </div>
+                                <!-- <table class="theme-table table" *ngIf="patientcarddata.CareTeam.length>0">
+                  <thead>
+                    <tr>
+                      <th>ProviderName</th>
+                      <th>Phone No</th>
+                      <th>Email</th>
+                      <th>Image</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let data of patientcarddata.CareTeam">
+                      <td data-column="Name">{{data.Name }}</td>
+                      <td data-column="PhoneNo">{{data.PhoneNo }}</td>
+                      <td data-column="Email">{{data.Email }}</td>
+                      <td data-column="Image">
+                        <img src="{{data.ImageUrl }}" *ngIf="data.ImageUrl !=''" />
+                        <img src="" *ngIf="data.ImageUrl =='' || data.ImageUrl ==null" />
+                      </td>
+                    </tr>
+
+                  </tbody>
+                </table> -->
+                                <div class="float-left person-card" *ngIf="patientcarddata.CareTeam.length>0">
+                                    <!-- primary-card -->
+                                    <div class="card float-left" *ngFor="let data of patientcarddata.CareTeam">
+                                        <!-- <i class="icon-master-card"></i> -->
+                                        <!-- {{cardinfo.CardType}} -->
+                                        <h4 class="w-100 float-left">{{data.Name }}</h4>
+                                        <h4 class="w-100 float-left">{{data.PhoneNo }}</h4>
+                                        <h4 class="w-100 float-left">{{data.Email }}</h4>
+                                        <div class="custom-shape">
+                                            <!-- <img src="{{data.ImageUrl }}" *ngIf="data.ImageUrl !=''" /> -->
+                                            <img class="float-left w-100" src="assets\images\avatar.png" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </ngx-tab>
+                    <ngx-tab title="Encounters">
+                        <!-- <ng2-timeline [completeListener]="completeListener" [data]="timelineData"></ng2-timeline> -->
+                        <div *ngIf="patientcarddata.Encounter.length==0">
+                            <p style="padding:1em 0;" class="text-center">
+                                <b>No Data Availabale</b>
+                            </p>
+                        </div>
+                        <!-- <ng2-timeline [completeListener]="completeListener" [data]="timelineData"></ng2-timeline> -->
+                        <div class="timeline" *ngIf="patientcarddata.Encounter.length>0">
+                            <div class="row no-gutters justify-content-end justify-content-md-around align-items-start  timeline-nodes" *ngFor="let enc of patientcarddata.Encounter ">
+                                <div class="col-10 col-md-5 order-3 order-md-1 timeline-content">
+                                    <h3>{{enc.Title}}</h3>
+                                    <p>
+                                        {{enc.Description}}
+                                    </p>
+                                </div>
+                                <div class="col-2 col-sm-1 px-md-3 order-2 timeline-image text-md-center">
+                                    <i class="fa fa-sign-out fa-2x" *ngIf="enc.Title === 'APPOINTMENT Booking'"></i>
+                                    <i class="fa fa-history fa-2x" *ngIf="enc.Title === 'APPOINTMENT ReScheduling'"></i>
+                                    <i class="fa fa-check fa-2x" *ngIf="enc.Title === 'Checkin'"></i>
+                                </div>
+                                <div class="col-10 col-md-5 order-1 order-md-3 py-3 timeline-date">
+                                    <time>{{enc.Date}}</time>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </ngx-tab>
+                    <ngx-tab title="Customer Intelligence">
+                        <div class="w-100 float-left accordion">
+                            <a href="javascript:;;" (click)="expand('patientstatistics', expanded)" class="waves-effect accordion-header w-100 float-left">
+                Patient Statistics
+                <i class="icon-plus float-right" *ngIf="(!isOpen && expanded === 'patientstatistics') || (expanded != 'patientstatistics')"></i>
+                <i class="icon-mines float-right" *ngIf="(isOpen && (expanded === 'patientstatistics'))"></i>
+              </a>
+                            <div class="accordion-body w-100 float-left" *ngIf="expanded === 'patientstatistics' && isOpen">
+                                <ng-scrollbar class="accordion-body-scroll w-100 float-left">
+                                    <table class="table acctable">
+                                        <tr>
+                                            <th>Date of First Appointment</th>
+                                            <td>
+                                                <p *ngIf="patientcarddata.Appointments.length>0">
+                                                    :{{patientcarddata.Appointments[patientcarddata.Appointments.length-1].Date}}
+                                                </p>
+                                            </td>
+                                            <th>Total Number of Appointments</th>
+                                            <td>:&nbsp;{{patientcarddata.Appointments.length}}
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </ng-scrollbar>
+                            </div>
+                        </div>
+                        <div class="w-100 float-left accordion" style="display: none;">
+                            <a href="javascript:;;" (click)="expand('confirmed', expanded)" class="waves-effect accordion-header w-100 float-left">
+                Confirmed / Tentative Patient Status
+                <i class="icon-plus float-right" *ngIf="(!isOpen && expanded === 'confirmed') || (expanded != 'confirmed')"></i>
+                <i class="icon-mines float-right" *ngIf="(isOpen && (expanded === 'confirmed'))"></i>
+
+              </a>
+                            <div class="accordion-body w-100 float-left" *ngIf="expanded === 'confirmed' && isOpen">
+                                <ng-scrollbar class="accordion-body-scroll w-100 float-left">
+                                    <p class="w-100 float-left text-center pt-4 pb-4">
+                                        <i class="w-100 icon icon-warning2 float-left" aria-hidden="true"></i> No Data Availabale</p>
+                                </ng-scrollbar>
+                            </div>
+                        </div>
+                        <div class="w-100 float-left accordion" style="display: none;">
+                            <a href="javascript:;;" (click)="expand('customerinteractions', expanded)" class="waves-effect accordion-header w-100 float-left">
+                Notable Customer Interactions
+                <i class="icon-plus float-right" *ngIf="(!isOpen && expanded === 'customerinteractions') || (expanded != 'customerinteractions')"></i>
+                <i class="icon-mines float-right" *ngIf="(isOpen && (expanded === 'customerinteractions'))"></i>
+              </a>
+                            <div class="accordion-body w-100 float-left" *ngIf="expanded === 'customerinteractions' && isOpen">
+                                <ng-scrollbar class="accordion-body-scroll w-100 float-left">
+                                    <p class="w-100 float-left text-center pt-4 pb-4">
+                                        <i class="w-100 icon icon-warning2 float-left" aria-hidden="true"></i> No Data Availabale</p>
+                                </ng-scrollbar>
+                            </div>
+                        </div>
+                        <div class="w-100 float-left accordion">
+                            <a href="javascript:;;" (click)="expand('referral', expanded)" class="waves-effect accordion-header w-100 float-left">
+                Referral Information
+                <i class="icon-plus float-right" *ngIf="(!isOpen && expanded === 'referral') || (expanded != 'referral')"></i>
+                <i class="icon-mines float-right" *ngIf="(isOpen && (expanded === 'referral'))"></i>
+              </a>
+                            <div class="accordion-body w-100 float-left" *ngIf="expanded === 'referral' && isOpen">
+                                <ng-scrollbar class="accordion-body-scroll w-100 float-left">
+                                    <div *ngIf="patientcarddata.Referral.length==0">
+                                        <p class="w-100 float-left text-center pt-4 pb-4">
+                                            <i class="w-100 icon icon-warning2 float-left" aria-hidden="true"></i> No Data Availabale</p>
+                                    </div>
+                                    <table class="table acctable" *ngIf="patientcarddata.Referral.length>0">
+                                        <form [formGroup]="ReferralForm">
+                                            <tr>
+                                                <th>Were you referred by another Physician?</th>
+                                                <td>
+                                                    <p *ngIf="patientcarddata.Referral.length>0 && !editsts">:&nbsp;{{patientcarddata.Referral[0].WereyouReferredByAnotherProvider}}</p>
+                                                    <div class="form-select" *ngIf="editsts">
+                                                        <select class="form-control input-md btn-section" [(ngModel)]="refferalModel.WereyouReferredByAnotherProvider" formControlName="WereyouReferredByAnotherProvider">
+                              <option [ngValue]="undefined" selected>Please Select</option>
+                              <option value="Yes">Yes</option>
+                              <option value="No">No</option>
+                            </select>
+                                                        <app-validation [control]="ReferralForm.controls.WereyouReferredByAnotherProvider">
+                                                        </app-validation>
+                                                    </div>
+
+                                                </td>
+                                                <th>Other</th>
+                                                <td>
+                                                    <p *ngIf="patientcarddata.Referral.length>0 && !editsts">
+                                                        :&nbsp;{{patientcarddata.Referral[0].HowDidYouHearAboutUsOther}}
+                                                    </p>
+                                                    <input class="form-control input-md btn-section" *ngIf="editsts" [(ngModel)]="refferalModel.HowDidYouHearAboutUsOther" formControlName="HowDidYouHearAboutUsOther" />
+                                                    <app-validation [control]="ReferralForm.controls.HowDidYouHearAboutUsOther">
+                                                    </app-validation>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th>Name of Referring Physician from Website</th>
+                                                <td>
+                                                    <p *ngIf="patientcarddata.Referral.length>0 && !editsts">
+                                                        :&nbsp;{{patientcarddata.Referral[0].NameOfReferringProviderFromWebsite}}
+                                                    </p>
+                                                    <input class="form-control input-md btn-section" *ngIf="editsts" [(ngModel)]="refferalModel.NameOfReferringProviderFromWebsite" formControlName="NameOfReferringProviderFromWebsite" />
+                                                    <app-validation [control]="ReferralForm.controls.NameOfReferringProviderFromWebsite">
+                                                    </app-validation>
+                                                </td>
+
+
+                                                <th>Name Of Referring Physician Organization If Not Listed Above</th>
+                                                <td>
+                                                    <p *ngIf="patientcarddata.Referral.length>0 && !editsts">
+                                                        :&nbsp;{{patientcarddata.Referral[0].ReferringProviderOrganizationIfNo}}
+                                                    </p>
+                                                    <input class="form-control input-md btn-section" *ngIf="editsts" [(ngModel)]="refferalModel.ReferringProviderOrganizationIfNo" formControlName="ReferringProviderOrganizationIfNo" maxlength="100" />
+                                                    <app-validation [control]="ReferralForm.controls.ReferringProviderOrganizationIfNo">
+                                                    </app-validation>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th>How did you hear about us "Other"</th>
+                                                <td>
+                                                    <p *ngIf="patientcarddata.Referral.length>0 && !editsts">
+                                                        :&nbsp;{{patientcarddata.Referral[0].HowDidYouHearAboutUs}}
+                                                    </p>
+                                                    <div class="form-select" *ngIf="editsts">
+                                                        <select class="form-control input-md btn-section" [(ngModel)]="refferalModel.HowDidYouHearAboutUs" formControlName="HowDidYouHearAboutUs">
+                              <option [ngValue]="undefined" selected>Please Select</option>
+                              <option value="Another Patient">Another Patient</option>
+                              <option value="My Caseworker">My Caseworker</option>
+                              <option value="My Insurance">My Insurance</option>
+                              <option value="My Physician">My Physician</option>
+                              <option value="Web">Web</option>
+                              <option value="yelp">yelp</option>
+                              <option value="ZocDoc">ZocDoc</option>
+                              <option value="Other">Other</option>
+                            </select>
+                                                        <app-validation [control]="ReferralForm.controls.HowDidYouHearAboutUs">
+                                                        </app-validation>
+                                                    </div>
+                                                </td>
+                                                <th>Name of Referring Physician Organization</th>
+                                                <td>
+                                                    <p *ngIf="patientcarddata.Referral.length>0 && !editsts">
+                                                        :&nbsp;{{patientcarddata.Referral[0].NameOfReferringProviderOrganization}}
+                                                    </p>
+                                                    <div class="form-select" *ngIf="editsts">
+                                                        <select class="form-control input-md btn-section" [(ngModel)]="refferalModel.NameOfReferringProviderOrganization" formControlName="NameOfReferringProviderOrganization">
+                              <option [ngValue]="undefined" selected>Please Select</option>
+                              <option value="Beverly Hills Advanced Pain & Spine">Beverly Hills Advanced Pain & Spine</option>
+                              <option value="Cedars Sinai Health Associates">Cedars Sinai Health Associates</option>
+                              <option value="Cedars Sinai Medical Center">Cedars Sinai Medical Center</option>
+                              <option value="Cedars Sinai Medical Group">Cedars Sinai Medical Group</option>
+                              <option value="OneMedical">OneMedical</option>
+                              <option value="UCLA">UCLA</option>
+                              <option value="Not Listed Here - Please Enter Below">Not Listed Here - Please Enter Below</option>
+                              <option value="NONE">NONE</option>
+                            </select>
+                                                        <app-validation [control]="ReferralForm.controls.NameOfReferringProviderOrganization">
+                                                        </app-validation>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </form>
+                                    </table>
+                                    <div class="w-100 float-left" *ngIf="patientcarddata.Referral.length>0">
+                                        <button class="btn btn-primary float-right waves-light text-center" *ngIf="!editsts" (click)="edit('referral',patientcarddata.Referral[0])">Edit</button>
+                                        <button class="btn btn-danger float-right waves-light text-center" *ngIf="editsts" (click)="Cancel()">Cancel</button>
+                                        <button class="btn btn-primary float-right waves-light text-center" *ngIf="editsts" (click)="EditUpdate('referral')">Save</button>
+                                    </div>
+                                </ng-scrollbar>
+                            </div>
+                        </div>
+                        <div class="w-100 float-left accordion" style="display: none;">
+                            <a href="javascript:;;" (click)="expand('outreach', expanded)" class="waves-effect accordion-header w-100 float-left">
+                Patient Outreach
+                <i class="icon-plus float-right" *ngIf="(!isOpen && expanded === 'outreach') || (expanded != 'outreach')"></i>
+                <i class="icon-mines float-right" *ngIf="(isOpen && (expanded === 'outreach'))"></i>
+
+
+
+              </a>
+                            <div class="accordion-body w-100 float-left" *ngIf="expanded === 'outreach' && isOpen">
+                                <ng-scrollbar class="accordion-body-scroll w-100 float-left">
+                                    <p class="w-100 float-left text-center pt-4 pb-4">
+                                        <i class="w-100 icon icon-warning2 float-left" aria-hidden="true"></i> No Data Availabale</p>
+                                </ng-scrollbar>
+                            </div>
+                        </div>
+                    </ngx-tab>
+                    <ngx-tab title="Scheduling">
+                        <div class="w-100 float-left accordion">
+                            <a href="javascript:;;" (click)="expand('attendance', expanded)" class="waves-effect accordion-header w-100 float-left">
+                Attendance Information
+                <i class="icon-plus float-right" *ngIf="(!isOpen && expanded === 'attendance') || (expanded != 'attendance')"></i>
+                <i class="icon-mines float-right" *ngIf="(isOpen && (expanded === 'attendance'))"></i>
+              </a>
+                            <div class="accordion-body w-100 float-left" *ngIf="expanded === 'attendance' && isOpen">
+                                <ng-scrollbar class="accordion-body-scroll w-100 float-left">
+                                    <div class="" *ngIf="patientcarddata.Attendence.length==0">
+                                        <p class="w-100 float-left text-center pt-4 pb-4">
+                                            <i class="w-100 icon icon-warning2 float-left" aria-hidden="true"></i> No Data Availabale</p>
+                                    </div>
+
+                                    <div class="" *ngIf="patientcarddata.Attendence.length>0">
+                                        <table class="theme-table table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Checkin date</th>
+                                                    <th>Appointment number</th>
+                                                    <th>Appointment date</th>
+                                                    <th>Provider Name</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngFor="let data of patientcarddata.Attendence">
+                                                    <td data-column="Checkin date">{{data.CheckInDateTime | slice:0:10}}</td>
+                                                    <td data-column="Appointment number">{{data.AppointmentNumber }}</td>
+                                                    <td data-column="Appointment date">{{data.AppointmentDateTime | slice:0:10}}</td>
+                                                    <td data-column="Provider Name">{{data.ProviderName }}</td>
+                                                </tr>
+
+                                            </tbody>
+                                        </table>
+
+                                    </div>
+                                </ng-scrollbar>
+                            </div>
+                        </div>
+                        <div class="w-100 float-left accordion" style="display: none;">
+                            <a href="javascript:;;" (click)="expand('mdwaitlist', expanded)" class="waves-effect accordion-header w-100 float-left">
+                MD Waitlist Information
+                <i class="icon-plus float-right" *ngIf="(!isOpen && expanded === 'mdwaitlist') || (expanded != 'mdwaitlist')"></i>
+                <i class="icon-mines float-right" *ngIf="(isOpen && (expanded === 'mdwaitlist'))"></i>
+              </a>
+                            <div class="accordion-body w-100 float-left" *ngIf="expanded === 'mdwaitlist' && isOpen">
+                                <ng-scrollbar class="accordion-body-scroll w-100 float-left">
+                                    <p class="w-100 float-left text-center pt-4 pb-4">
+                                        <i class="w-100 icon icon-warning2 float-left" aria-hidden="true"></i> No Data Availabale</p>
+                                </ng-scrollbar>
+                            </div>
+                        </div>
+                        <div class="w-100 float-left accordion" style="display: none;">
+                            <a href="javascript:;;" (click)="expand('nonmdwaitlist', expanded)" class="waves-effect accordion-header w-100 float-left">
+                Non-MD Waitlist Information
+                <i class="icon-plus float-right" *ngIf="(!isOpen && expanded === 'nonmdwaitlist') || (expanded != 'nonmdwaitlist')"></i>
+                <i class="icon-mines float-right" *ngIf="(isOpen && (expanded === 'nonmdwaitlist'))"></i>
+              </a>
+                            <div class="accordion-body w-100 float-left" *ngIf="expanded === 'nonmdwaitlist' && isOpen">
+                                <ng-scrollbar class="accordion-body-scroll w-100 float-left">
+                                    <p class="w-100 float-left text-center pt-4 pb-4">
+                                        <i class="w-100 icon icon-warning2 float-left" aria-hidden="true"></i> No Data Availabale</p>
+                                </ng-scrollbar>
+                            </div>
+                        </div>
+                        <div class="w-100 float-left accordion">
+                            <a href="javascript:;;" (click)="expand('appointments', expanded)" class="waves-effect accordion-header w-100 float-left">
+                Appointments
+                <i class="icon-plus float-right" *ngIf="(!isOpen && expanded === 'appointments') || (expanded != 'appointments')"></i>
+                <i class="icon-mines float-right" *ngIf="(isOpen && (expanded === 'appointments'))"></i>
+              </a>
+                            <div class="accordion-body w-100 float-left" *ngIf="expanded === 'appointments' && isOpen">
+                                <ng-scrollbar class="accordion-body-scroll w-100 float-left">
+                                    <div *ngIf="patientcarddata.Appointments.length==0">
+                                        <p class="w-100 float-left text-center pt-4 pb-4">
+                                            <i class="w-100 icon icon-warning2 float-left" aria-hidden="true"></i> No Data Availabale</p>
+                                    </div>
+                                    <div *ngIf="patientcarddata.Appointments.length>0">
+                                        <table class="theme-table table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Service Type</th>
+                                                    <th>Provider Name</th>
+                                                    <th>From Time</th>
+                                                    <th>To Time</th>
+                                                    <th>Appointment Date</th>
+                                                    <th>Booking Status</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngFor="let data of patientcarddata.Appointments">
+                                                    <td data-column="Service Type">{{data.ServiceType }}</td>
+                                                    <td data-column="Provider Name">{{data.ProviderName }}</td>
+                                                    <td data-column="From Time">{{data.FromTime }}</td>
+                                                    <td data-column="To Time">{{data.ToTime }}</td>
+                                                    <td data-column="Appointment Date">{{data.Date }}</td>
+                                                    <td data-column="Booking Status">{{data.BookingStatus }}</td>
+                                                </tr>
+
+                                            </tbody>
+                                        </table>
+
+                                    </div>
+                                </ng-scrollbar>
+                            </div>
+                        </div>
+                        <div class="w-100 float-left accordion" style="display: none;">
+                            <a href="javascript:;;" (click)="expand('couplestherapy', expanded)" class="waves-effect accordion-header w-100 float-left">
+                Couples Therapy
+                <i class="icon-plus float-right" *ngIf="(!isOpen && expanded === 'couplestherapy') || (expanded != 'couplestherapy')"></i>
+                <i class="icon-mines float-right" *ngIf="(isOpen && (expanded === 'couplestherapy'))"></i>
+              </a>
+
+                            <div class="accordion-body w-100 float-left" *ngIf="expanded === 'couplestherapy' && isOpen">
+                                <ng-scrollbar class="accordion-body-scroll w-100 float-left">
+                                    <p class="w-100 float-left text-center pt-4 pb-4">
+                                        <i class="w-100 icon icon-warning2 float-left" aria-hidden="true"></i> No Data Availabale</p>
+                                    <div *ngIf="data.length>0">
+                                        <table class="theme-table table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Type</th>
+                                                    <th>First Name</th>
+                                                    <th>Relationship</th>
+                                                    <th>City</th>
+                                                    <th>Dob</th>
+                                                    <th>Email</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngFor="let insdata of data">
+                                                    <td data-column="Type">{{insdata.SubscriberType}}</td>
+                                                    <td data-column="First Name">{{insdata.SubscriberFirstName}}</td>
+                                                    <td data-column="Relationship">{{insdata.RelationshipToPatient}}</td>
+                                                    <td data-column="City">{{insdata.SubscriberCity}}</td>
+                                                    <td data-column="Dob">{{insdata.SubscriberDob}}</td>
+                                                    <td data-column="Email">{{insdata.SubscriberEmail}}</td>
+                                                </tr>
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </ng-scrollbar>
+                            </div>
+
+                        </div>
+                    </ngx-tab>
+                    <ngx-tab title="Financial">
+                        <div class="w-100 float-left accordion" style="display: none;">
+                            <a href="javascript:;;" (click)="expand('payment', expanded)" class="waves-effect accordion-header w-100 float-left">
+                Financial Responsibility & Payment
+                <i class="icon-plus float-right" *ngIf="(!isOpen && expanded === 'payment') || (expanded != 'payment')"></i>
+                <i class="icon-mines float-right" *ngIf="(isOpen && (expanded === 'payment'))"></i>
+              </a>
+                            <div class="accordion-body w-100 float-left" *ngIf="expanded === 'payment' && isOpen">
+                                <ng-scrollbar class="accordion-body-scroll w-100 float-left">
+                                    <p class="w-100 float-left text-center pt-4 pb-4">
+                                        <i class="w-100 icon icon-warning2 float-left" aria-hidden="true"></i> No Data Availabale</p>
+                                </ng-scrollbar>
+                            </div>
+                        </div>
+                        <div class="w-100 float-left accordion">
+                            <a href="javascript:;;" (click)="expand('cards', expanded)" class="waves-effect accordion-header w-100 float-left">
+                Cards on File
+                <i class="icon-plus float-right" *ngIf="(!isOpen && expanded === 'cards') || (expanded != 'cards')"></i>
+                <i class="icon-mines float-right" *ngIf="(isOpen && (expanded === 'cards'))"></i>
+              </a>
+                            <div class="accordion-body w-100 float-left" *ngIf="expanded === 'cards' && isOpen">
+                                <ng-scrollbar class="accordion-body-scroll w-100 float-left">
+                                    <div class="" *ngIf="patientcarddata.PaymentMethods.length==0">
+                                        <p class="w-100 float-left text-center pt-4 pb-4">
+                                            <i class="w-100 icon icon-warning2 float-left" aria-hidden="true"></i> No Data Availabale</p>
+
+                                    </div>
+                                    <div class="" *ngIf="patientcarddata.PaymentMethods.length>0">
+                                        <table class="theme-table table">
+                                            <tr>
+                                                <th>Name on the Card</th>
+                                                <th>Card</th>
+                                                <th>Card Expiration Date (Month/Year) </th>
+                                                <th>Card CVV</th>
+                                                <th>Card Status</th>
+
+                                            </tr>
+                                            <tr *ngFor="let payCard of patientcarddata.PaymentMethods">
+
+                                                <td data-column="Name on the Card">
+                                                    {{payCard.NameOnTheCard}}
+                                                </td>
+                                                <td data-column="Card">
+                                                    {{payCard.CardNumber}}
+                                                </td>
+                                                <td data-column="Card Expiration Date (Month/Year)">
+                                                    {{payCard.CardExpirationDate}}
+                                                </td>
+                                                <td data-column="Card CVV">
+                                                    {{payCard.Cvv}}
+                                                </td>
+                                                <td data-column="Card Status">
+                                                    <b class="badge_sucess" *ngIf="payCard.IsActive">Active</b>
+                                                    <b class="badge_cancel" *ngIf="!payCard.IsActive">In-Active</b>
+                                                </td>
+                                            </tr>
+                                        </table>
+
+                                    </div>
+                                </ng-scrollbar>
+                            </div>
+                        </div>
+                        <div class="w-100 float-left accordion" style="display: none;">
+                            <a href="javascript:;;" (click)="expand('paymentplan', expanded)" class="waves-effect accordion-header w-100 float-left">
+                Payment Plan
+                <i class="icon-plus float-right" *ngIf="(!isOpen && expanded === 'paymentplan') || (expanded != 'paymentplan')"></i>
+                <i class="icon-mines float-right" *ngIf="(isOpen && (expanded === 'paymentplan'))"></i>
+              </a>
+                            <div class="accordion-body w-100 float-left" *ngIf="expanded === 'paymentplan' && isOpen">
+                                <ng-scrollbar class="accordion-body-scroll w-100 float-left">
+                                    <p class="w-100 float-left text-center pt-4 pb-4">
+                                        <i class="w-100 icon icon-warning2 float-left" aria-hidden="true"></i> No Data Availabale</p>
+                                </ng-scrollbar>
+                            </div>
+                        </div>
+                        <div class="w-100 float-left accordion" style="display: none;">
+                            <a href="javascript:;;" (click)="expand('eob', expanded)" class="waves-effect accordion-header w-100 float-left">
+                EOB's
+                <i class="icon-plus float-right" *ngIf="(!isOpen && expanded === 'eob') || (expanded != 'eob')"></i>
+                <i class="icon-mines float-right" *ngIf="(isOpen && (expanded === 'eob'))"></i>
+              </a>
+                            <div class="accordion-body w-100 float-left" *ngIf="expanded === 'eob' && isOpen">
+                                <ng-scrollbar class="accordion-body-scroll w-100 float-left">
+                                    <p class="w-100 float-left text-center pt-4 pb-4">
+                                        <i class="w-100 icon icon-warning2 float-left" aria-hidden="true"></i> No Data Availabale</p>
+                                </ng-scrollbar>
+                            </div>
+                        </div>
+                        <div class="w-100 float-left accordion" style="display: none;">
+                            <a href="javascript:;;" (click)="expand('visit', expanded)" class="waves-effect accordion-header w-100 float-left">
+                Visit and Claim History
+                <i class="icon-plus float-right" *ngIf="(!isOpen && expanded === 'visit') || (expanded != 'visit')"></i>
+                <i class="icon-mines float-right" *ngIf="(isOpen && (expanded === 'visit'))"></i>
+              </a>
+                            <div class="accordion-body w-100 float-left" *ngIf="expanded === 'visit' && isOpen">
+                                <ng-scrollbar class="accordion-body-scroll w-100 float-left">
+                                    <p class="w-100 float-left text-center pt-4 pb-4">
+                                        <i class="w-100 icon icon-warning2 float-left" aria-hidden="true"></i> No Data Availabale</p>
+                                </ng-scrollbar>
+                            </div>
+                        </div>
+                        <div class="w-100 float-left accordion">
+                            <a href="javascript:;;" (click)="expand('paymenthistory', expanded)" class="waves-effect accordion-header w-100 float-left">
+                Patient Payment History
+                <i class="icon-plus float-right" *ngIf="(!isOpen && expanded === 'paymenthistory') || (expanded != 'paymenthistory')"></i>
+                <i class="icon-mines float-right" *ngIf="(isOpen && (expanded === 'paymenthistory'))"></i>
+              </a>
+                            <div class="accordion-body w-100 float-left" *ngIf="expanded === 'paymenthistory' && isOpen">
+                                <ng-scrollbar class="accordion-body-scroll w-100 float-left">
+                                    <p class="w-100 float-left text-center pt-4 pb-4">
+                                        <i class="w-100 icon icon-warning2 float-left" aria-hidden="true"></i> No Data Availabale</p>
+                                </ng-scrollbar>
+                            </div>
+                        </div>
+                    </ngx-tab>
+                    <!-- <ngx-tab title="Activities" style="display: none;">
+            <div class="w-100 float-left accordion">
+              <a href="javascript:;;" (click)="expand('activityhistory', expanded)" class="waves-effect accordion-header w-100 float-left">
+                Activity History
+                <i class="icon-plus float-right" *ngIf="(!isOpen && expanded === 'activityhistory') || (expanded != 'activityhistory')"></i>
+                <i class="icon-mines float-right" *ngIf="(isOpen && (expanded === 'activityhistory'))"></i>
+              </a>
+              <div class="accordion-body w-100 float-left" *ngIf="expanded === 'activityhistory' && isOpen">
+                <ng-scrollbar class="accordion-body-scroll w-100 float-left">
+                  <p class="w-100 float-left text-center pt-4 pb-4">
+                    <i class="w-100 icon icon-warning2 float-left" aria-hidden="true"></i>
+                    No Data Availabale</p>
+                </ng-scrollbar>
+              </div>
+            </div>
+            <div class="w-100 float-left accordion">
+              <a href="javascript:;;" (click)="expand('cases', expanded)" class="waves-effect accordion-header w-100 float-left">
+                Cases
+                <i class="icon-plus float-right" *ngIf="(!isOpen && expanded === 'cases') || (expanded != 'cases')"></i>
+                <i class="icon-mines float-right" *ngIf="(isOpen && (expanded === 'cases'))"></i>
+              </a>
+              <div class="accordion-body w-100 float-left" *ngIf="expanded === 'cases' && isOpen">
+                <ng-scrollbar class="accordion-body-scroll w-100 float-left">
+                  <p class="w-100 float-left text-center pt-4 pb-4">
+                    <i class="w-100 icon icon-warning2 float-left" aria-hidden="true"></i>
+                    No Data Availabale</p>
+                </ng-scrollbar>
+              </div>
+            </div>
+            <div class="w-100 float-left accordion">
+              <a href="javascript:;;" (click)="expand('notes', expanded)" class="waves-effect accordion-header w-100 float-left">
+                Notes and Attachments
+                <i class="icon-plus float-right" *ngIf="(!isOpen && expanded === 'notes') || (expanded != 'notes')"></i>
+                <i class="icon-mines float-right" *ngIf="(isOpen && (expanded === 'notes'))"></i>
+              </a>
+              <div class="accordion-body w-100 float-left" *ngIf="expanded === 'notes' && isOpen">
+                <ng-scrollbar class="accordion-body-scroll w-100 float-left">
+                  <p class="w-100 float-left text-center pt-4 pb-4">
+                    <i class="w-100 icon icon-warning2 float-left" aria-hidden="true"></i>
+                    No Data Availabale</p>
+                </ng-scrollbar>
+              </div>
+            </div>
+            <div class="w-100 float-left accordion">
+              <a href="javascript:;;" (click)="expand('interventions', expanded)" class="waves-effect accordion-header w-100 float-left">
+                Interventions
+                <i class="icon-plus float-right" *ngIf="(!isOpen && expanded === 'interventions') || (expanded != 'interventions')"></i>
+                <i class="icon-mines float-right" *ngIf="(isOpen && (expanded === 'interventions'))"></i>
+              </a>
+              <div class="accordion-body w-100 float-left" *ngIf="expanded === 'interventions' && isOpen">
+                <ng-scrollbar class="accordion-body-scroll w-100 float-left">
+                  <div *ngIf="inteventionsts">
+                    <app-interventions [parentData]="parentData" [patientid]="patientid" (getEventCall)="ChildEvent($event)"></app-interventions>
+                  </div>
+                  <div *ngIf="addinteventionsts">
+                    <app-add-interventions [patientid]="patientid" (isShowinterventionChange)="ChildEvent($event)"></app-add-interventions>
+                  </div>
+                </ng-scrollbar>
+              </div>
+            </div>
+            <div class="w-100 float-left accordion">
+              <a href="javascript:;;" (click)="expand('assessments', expanded)" class="waves-effect accordion-header w-100 float-left">
+                Assessments
+                <i class="icon-plus float-right" *ngIf="(!isOpen && expanded === 'assessments') || (expanded != 'assessments')"></i>
+                <i class="icon-mines float-right" *ngIf="(isOpen && (expanded === 'assessments'))"></i>
+              </a>
+              <div class="accordion-body w-100 float-left" *ngIf="expanded === 'assessments' && isOpen">
+                <ng-scrollbar class="accordion-body-scroll w-100 float-left">
+                  <app-admin-assessments [parentData]="parentData" [patientid]="patientid" (getAssessmentCall)="ChildEvent($event)" *ngIf="adminassessmetssts"></app-admin-assessments>
+                  <app-all-custom-assessments [patientid]="patientid" [assessmentId]="assessmentId" (isShowassessmentChange)="ChildEvent($event)"
+                    *ngIf="allcustomassessmentssts"></app-all-custom-assessments>
+                  <app-individual-charts [patientid]="patientid" [assessmentId]="assessmentId" [SurveyId]="SurveyId" (isShowindividualchartChange)="ChildEvent($event)"
+                    *ngIf="individualchartsts"></app-individual-charts>
+                  <app-assessment-wise-score-charts [patientid]="patientid" [SurveyId]="SurveyId" (isShowoverallchartChange)="ChildEvent($event)"
+                    *ngIf="overallchartsts"></app-assessment-wise-score-charts>
+                </ng-scrollbar>
+              </div>
+            </div>
+            <div class="w-100 float-left accordion">
+              <a href="javascript:;;" (click)="expand('activities', expanded)" class="waves-effect accordion-header w-100 float-left">
+                Activities
+                <i class="icon-plus float-right" *ngIf="(!isOpen && expanded === 'activities') || (expanded != 'activities')"></i>
+                <i class="icon-mines float-right" *ngIf="(isOpen && (expanded === 'activities'))"></i>
+              </a>
+              <div class="accordion-body w-100 float-left" *ngIf="expanded === 'activities' && isOpen">
+                <ng-scrollbar class="accordion-body-scroll w-100 float-left">
+                  <div *ngIf="activities">
+                    <app-activities [parentData]="parentData" [patientid]="patientid" (getActiviesCall)="ChildEvent($event)"></app-activities>
+                  </div>
+                  <div *ngIf="addactivities">
+                    <app-add-activities [patientid]="patientid" (addActiviesCall)="ChildEvent($event)"></app-add-activities>
+                  </div>
+                </ng-scrollbar>
+              </div>
+            </div>
+            <div class="w-100 float-left accordion">
+              <a href="javascript:;;" (click)="expand('medications', expanded)" class="waves-effect accordion-header w-100 float-left">
+                Medications
+                <i class="icon-plus float-right" *ngIf="(!isOpen && expanded === 'medications') || (expanded != 'medications')"></i>
+                <i class="icon-mines float-right" *ngIf="(isOpen && (expanded === 'medications'))"></i>
+              </a>
+              <div class="accordion-body w-100 float-left" *ngIf="expanded === 'medications' && isOpen">
+                <ng-scrollbar class="accordion-body-scroll w-100 float-left">
+                  <div *ngIf="patientmedications">
+                    <app-patient-medications [parentData]="parentData" [patientid]="patientid" (medications)="ChildEvent($event)"></app-patient-medications>
+                  </div>
+                  <div *ngIf="addmedications">
+                    <app-add-medications [patientid]="patientid" (addmedicationsdata)="ChildEvent($event)"></app-add-medications>
+                  </div>
+                  <div *ngIf="medicationview">
+                    <app-patient-medicationview [patientid]="patientid" (medicationview)="ChildEvent($event)"></app-patient-medicationview>
+                  </div>
+                </ng-scrollbar>
+              </div>
+            </div>
+            <div class="w-100 float-left accordion">
+              <a href="javascript:;;" (click)="expand('breath', expanded)" class="waves-effect accordion-header w-100 float-left">
+                Breath
+                <i class="icon-plus float-right" *ngIf="(!isOpen && expanded === 'breath') || (expanded != 'breath')"></i>
+                <i class="icon-mines float-right" *ngIf="(isOpen && (expanded === 'breath'))"></i>
+              </a>
+              <div class="accordion-body w-100 float-left" *ngIf="expanded === 'breath' && isOpen">
+                <ng-scrollbar class="accordion-body-scroll w-100 float-left">
+                  <div *ngIf="patientbreath">
+                    <app-breath [patientid]="patientid" [parentData]="parentData" (patientbreath)="ChildEvent($event)"></app-breath>
+                  </div>
+                  <div *ngIf="patientaddbreath">
+                    <app-add-breath [patientid]="patientid" (patientaddbreath)="ChildEvent($event)"></app-add-breath>
+                  </div>
+                </ng-scrollbar>
+              </div>
+            </div>
+            <div class="w-100 float-left accordion">
+              <a href="javascript:;;" (click)="expand('mood', expanded)" class="waves-effect accordion-header w-100 float-left">
+                Mood
+                <i class="icon-plus float-right" *ngIf="(!isOpen && expanded === 'mood') || (expanded != 'mood')"></i>
+                <i class="icon-mines float-right" *ngIf="(isOpen && (expanded === 'mood'))"></i>
+              </a>
+              <div class="accordion-body w-100 float-left" *ngIf="expanded === 'mood' && isOpen">
+                <ng-scrollbar class="accordion-body-scroll w-100 float-left">
+                  <app-mood></app-mood>
+                </ng-scrollbar>
+              </div>
+            </div>
+            <div class="w-100 float-left accordion">
+              <a href="javascript:;;" (click)="expand('journal', expanded)" class="waves-effect accordion-header w-100 float-left">
+                Journal-Entries
+                <i class="icon-plus float-right" *ngIf="(!isOpen && expanded === 'journal') || (expanded != 'journal')"></i>
+                <i class="icon-mines float-right" *ngIf="(isOpen && (expanded === 'journal'))"></i>
+              </a>
+              <div class="accordion-body w-100 float-left" *ngIf="expanded === 'journal' && isOpen">
+                <ng-scrollbar class="accordion-body-scroll w-100 float-left">
+                  <app-journal-entries></app-journal-entries>
+                </ng-scrollbar>
+              </div>
+            </div>
+          </ngx-tab> -->
+                    <ngx-tab title="Insurance">
+                        <!-- <div class="w-100 float-left accordion">
+              <a href="javascript:;;" (click)="expand('insurance', expanded)" class="waves-effect accordion-header w-100 float-left">
+                Insurance
+                <i class="icon-plus float-right" *ngIf="(!isOpen && expanded === 'insurance') || (expanded != 'insurance')"></i>
+                <i class="icon-mines float-right" *ngIf="(isOpen && (expanded === 'insurance'))"></i>
+              </a>
+              <div class="accordion-body w-100 float-left" *ngIf="expanded === 'insurance' && isOpen">
+                <ng-scrollbar class="accordion-body-scroll w-100 float-left">
+                  <div class="" *ngIf="patientcarddata.Insurance.length==0">
+                    <p class="w-100 float-left text-center pt-4 pb-4">
+                      <i class="w-100 icon icon-warning2 float-left" aria-hidden="true"></i>
+                      No Data Availabale</p>
+                  </div>
+                  <div class="" *ngFor="let insurance of patientcarddata.Insurance">
+
+                    <table class="table acctable">
+                      <tr *ngIf="patientcarddata.Insurance.length>0 && insurance.CoverageType=='Primary'">
+                        <th>Photo Image of Insurance Card(Front)</th>
+                        <td>
+                          <p>
+                            :&nbsp;
+                          </p>
+                        </td>
+                        <th>Photo Image of Insurance Card(Front)</th>
+                        <td>
+                          <p>:&nbsp;</p>
+                        </td>
+
+                      </tr>
+                      <tr *ngIf="patientcarddata.Insurance.length>0">
+                        <th>Date of EOB</th>
+                        <td>
+                          <p>
+                            :&nbsp;
+                          </p>
+                        </td>
+                        <th>Eligible / Problem with Eligibility</th>
+                        <td>
+                          <p>
+                            :&nbsp;
+                          </p>
+                        </td>
+
+                      </tr>
+                      <tr *ngIf="patientcarddata.Insurance.length>0">
+                        <th>Product Type</th>
+                        <td>
+                          <p>
+                            :&nbsp;
+                          </p>
+                        </td>
+                        <th>Group No</th>
+                        <td>
+                          <p>
+                            :&nbsp;
+                          </p>
+                        </td>
+
+                      </tr>
+                      <tr *ngIf="patientcarddata.Insurance.length>0">
+                        <th>Primary Insurance Group #</th>
+                        <td>
+                          <p>
+                            :&nbsp;
+                          </p>
+                        </td>
+                        <th>Deductible Remaining</th>
+                        <td>
+                          <p>:&nbsp;</p>
+                        </td>
+
+                      </tr>
+                      <tr *ngIf="patientcarddata.Insurance.length>0 && insurance.CoverageType=='Primary'">
+                        <th>Copay</th>
+                        <td>
+                          <p>:&nbsp;</p>
+                        </td>
+                        <th>Coverage Type</th>
+                        <td>
+                          <p>:&nbsp; {{insurance.CoverageType}}</p>
+                        </td>
+
+                      </tr>
+                      <tr *ngIf="patientcarddata.Insurance.length>0">
+                        <th>Policy No</th>
+                        <td>
+                          <p>:&nbsp;</p>
+                        </td>
+                        <th>Eligibility Status</th>
+                        <td>
+                          <p>:&nbsp;</p>
+                        </td>
+
+                      </tr>
+                      <tr *ngIf="patientcarddata.Insurance.length>0">
+                        <th>Eligibility Inquiry Date</th>
+                        <td>
+                          <p>:&nbsp;</p>
+                        </td>
+                        <th>Inquiry Performed By</th>
+                        <td>
+                          <p>:&nbsp;</p>
+                        </td>
+
+                      </tr>
+                    </table>
+                  </div>
+                </ng-scrollbar>
+              </div>
+            </div> -->
+                        <div class="w-100 float-left accordion">
+                            <a href="javascript:;;" (click)="expand('primary', expanded)" class="waves-effect accordion-header w-100 float-left">
+                Primary Insurance
+                <i class="icon-plus float-right" *ngIf="(!isOpen && expanded === 'primary') || (expanded != 'primary')"></i>
+                <i class="icon-mines float-right" *ngIf="(isOpen && (expanded === 'primary'))"></i>
+              </a>
+                            <div class="accordion-body w-100 float-left" *ngIf="expanded === 'primary' && isOpen">
+                                <ng-scrollbar class="accordion-body-scroll w-100 float-left">
+                                    <div class="" *ngIf="patientcarddata.Insurance.length==0">
+                                        <p class="w-100 float-left text-center pt-4 pb-4">
+                                            <i class="w-100 icon icon-warning2 float-left" aria-hidden="true"></i> No Data Availabale</p>
+                                    </div>
+                                    <div class="" *ngFor="let insurancedata of patientcarddata.Insurance">
+
+                                        <table class="table acctable">
+                                            <tr *ngIf="patientcarddata.Insurance.length>0 && insurancedata.CoverageType=='Primary'">
+                                                <th>Insurance Name</th>
+                                                <td>
+                                                    <p>
+                                                        :&nbsp; {{insurancedata.InsuranceName}}
+                                                    </p>
+                                                </td>
+                                                <th>Copay</th>
+                                                <td>
+                                                    <p>:&nbsp;</p>
+                                                </td>
+
+                                            </tr>
+                                            <tr *ngIf="patientcarddata.Insurance.length>0 && insurancedata.CoverageType=='Primary'">
+                                                <th>Insurance Type </th>
+                                                <td>
+                                                    <p>
+                                                        :&nbsp; {{insurancedata.CoverageType}}
+                                                    </p>
+                                                </td>
+                                                <th>Co-Insurance % </th>
+                                                <td>
+                                                    <p>:&nbsp;</p>
+                                                </td>
+
+                                            </tr>
+                                            <tr *ngIf="patientcarddata.Insurance.length>0 && insurancedata.CoverageType=='Primary'">
+                                                <th>Primary Insurance Policy #</th>
+                                                <td>
+                                                    <p>:&nbsp;</p>
+                                                </td>
+                                                <th>Deductible </th>
+                                                <td>
+                                                    <p>:&nbsp;</p>
+                                                </td>
+
+                                            </tr>
+                                            <tr *ngIf="patientcarddata.Insurance.length>0 && insurancedata.CoverageType=='Primary'">
+                                                <th>Primary Insurance Group #</th>
+                                                <td>
+                                                    <p>:&nbsp;</p>
+                                                </td>
+                                                <th>Deductible Remaining</th>
+                                                <td>
+                                                    <p>:&nbsp;</p>
+                                                </td>
+
+                                            </tr>
+                                            <tr *ngIf="patientcarddata.Insurance.length>0 && insurancedata.CoverageType=='Primary'">
+                                                <th>Time Taken to Verify Insurance</th>
+                                                <td>
+                                                    <p>:&nbsp;</p>
+                                                </td>
+                                                <th>Yearly Limit on Visit</th>
+                                                <td>
+                                                    <p>:&nbsp;</p>
+                                                </td>
+
+                                            </tr>
+                                            <tr *ngIf="patientcarddata.Insurance.length>0 && insurancedata.CoverageType=='Primary'">
+                                                <th>Auto Verification Insufficient</th>
+                                                <td>
+                                                    <p>:&nbsp;</p>
+                                                </td>
+                                                <th>Why was auto-verification insufficient?</th>
+                                                <td>
+                                                    <p>:&nbsp;</p>
+                                                </td>
+
+                                            </tr>
+                                            <tr *ngIf="patientcarddata.Insurance.length>0 && insurancedata.CoverageType=='Primary'">
+                                                <th>Subscriber First Name</th>
+                                                <td>
+                                                    <p>
+                                                        :&nbsp; {{insurancedata.SubscriberFirstName}}
+                                                    </p>
+                                                </td>
+                                                <th>Subscriber DOB</th>
+                                                <td>
+                                                    <p>
+                                                        :&nbsp; {{insurancedata.SubscriberDob}}
+                                                    </p>
+                                                </td>
+
+                                            </tr>
+                                            <tr *ngIf="patientcarddata.Insurance.length>0 && insurancedata.CoverageType=='Primary'">
+                                                <th>Subscriber Last Name</th>
+                                                <td>
+                                                    <p>
+                                                        :&nbsp; {{insurancedata.SubscriberLastName}}
+                                                    </p>
+                                                </td>
+                                                <th>Subscribers Employer</th>
+                                                <td>
+                                                    <p>
+                                                        :&nbsp;
+                                                    </p>
+                                                </td>
+
+                                            </tr>
+                                            <tr *ngIf="patientcarddata.Insurance.length>0 && insurancedata.CoverageType=='Primary'">
+                                                <th>Subscriber Address</th>
+                                                <td>
+                                                    <p>
+                                                        :&nbsp; {{insurancedata.SubscriberHomeAddress}}
+                                                    </p>
+                                                </td>
+                                                <th>Subscriber Email</th>
+                                                <td>
+                                                    <p>
+                                                        :&nbsp; {{insurancedata.SubscriberEmail}}
+                                                    </p>
+                                                </td>
+
+                                            </tr>
+                                            <tr *ngIf="patientcarddata.Insurance.length>0 && insurancedata.CoverageType=='Primary'">
+                                                <th>Subscriber City</th>
+                                                <td>
+                                                    <p>
+                                                        :&nbsp; {{insurancedata.SubscriberCity}}
+                                                    </p>
+                                                </td>
+
+                                                <th>Subscriber Gender</th>
+                                                <td>
+                                                    <p>
+                                                        :&nbsp; {{insurancedata.SubscriberGender}}
+                                                    </p>
+                                                </td>
+
+
+                                            </tr>
+                                            <tr *ngIf="patientcarddata.Insurance.length>0 && insurancedata.CoverageType=='Primary'">
+                                                <th>Subscriber State</th>
+                                                <td>
+                                                    <p>
+                                                        :&nbsp; {{insurancedata.SubscriberState}}
+                                                    </p>
+                                                </td>
+                                                <th>Subscriber Phone</th>
+                                                <td>
+                                                    <p>
+                                                        :&nbsp; {{insurancedata.SubscriberPhoneNumber}}
+                                                    </p>
+                                                </td>
+                                            </tr>
+                                            <tr *ngIf="patientcarddata.Insurance.length>0 && insurancedata.CoverageType=='Primary'">
+                                                <th>Subscriber Zip Code</th>
+                                                <td>
+                                                    <p>
+                                                        :&nbsp; {{insurancedata.SubscriberZipCode}}
+                                                    </p>
+                                                </td>
+                                                <th>Relationship to Patient</th>
+                                                <td>
+                                                    <p>
+                                                        :&nbsp; {{insurancedata.RelationshipToPatient}}
+                                                    </p>
+                                                </td>
+
+                                            </tr>
+                                            <tr *ngIf="patientcarddata.Insurance.length>0 && insurancedata.CoverageType=='Primary'">
+                                                <th>Insurance Notes </th>
+                                                <td>
+                                                    <p>:&nbsp;</p>
+                                                </td>
+
+
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </ng-scrollbar>
+                            </div>
+                        </div>
+                        <div class="w-100 float-left accordion">
+                            <a href="javascript:;;" (click)="expand('secondary', expanded)" class="waves-effect accordion-header w-100 float-left">
+                Secondary Insurance
+                <i class="icon-plus float-right" *ngIf="(!isOpen && expanded === 'secondary') || (expanded != 'secondary')"></i>
+                <i class="icon-mines float-right" *ngIf="(isOpen && (expanded === 'secondary'))"></i>
+              </a>
+                            <div class="accordion-body w-100 float-left" *ngIf="expanded === 'secondary' && isOpen">
+                                <ng-scrollbar class="accordion-body-scroll w-100 float-left">
+                                    <div class="" *ngIf="patientcarddata.Insurance.length==0">
+                                        <p class="w-100 float-left text-center pt-4 pb-4">
+                                            <i class="w-100 icon icon-warning2 float-left" aria-hidden="true"></i> No Data Availabale</p>
+                                    </div>
+                                    <div class="" *ngFor="let insurancesec of patientcarddata.Insurance">
+                                        <table class="table acctable">
+                                            <tr *ngIf="patientcarddata.Insurance.length>0 && insurancesec.CoverageType=='Secondary'">
+                                                <th>Insurance Name</th>
+                                                <td>
+                                                    <p>
+                                                        :&nbsp; {{insurancesec.InsuranceName}}
+                                                    </p>
+                                                </td>
+                                                <th>Copay</th>
+                                                <td>
+                                                    <p>:&nbsp;</p>
+                                                </td>
+
+                                            </tr>
+                                            <tr *ngIf="patientcarddata.Insurance.length>0 && insurancesec.CoverageType=='Secondary'">
+
+                                                <th>Insurance Type </th>
+                                                <td>
+                                                    <p>
+                                                        :&nbsp; {{insurancesec.CoverageType}}
+                                                    </p>
+                                                </td>
+                                                <th>Co-Insurance % </th>
+                                                <td>
+                                                    <p>:&nbsp;</p>
+                                                </td>
+
+                                            </tr>
+                                            <tr *ngIf="patientcarddata.Insurance.length>0 && insurancesec.CoverageType=='Secondary'">
+                                                <th>Secondary Insurance Policy #</th>
+                                                <td>
+                                                    <p>:&nbsp;</p>
+                                                </td>
+                                                <th>Deductible </th>
+                                                <td>
+                                                    <p>:&nbsp;</p>
+                                                </td>
+
+                                            </tr>
+                                            <tr *ngIf="patientcarddata.Insurance.length>0 && insurancesec.CoverageType=='Secondary'">
+                                                <th>Secondary Insurance Group #</th>
+                                                <td>
+                                                    <p>:&nbsp;</p>
+                                                </td>
+                                                <th>Deductible Remaining</th>
+                                                <td>
+                                                    <p>:&nbsp;</p>
+                                                </td>
+
+                                            </tr>
+                                            <tr *ngIf="patientcarddata.Insurance.length>0 && insurancesec.CoverageType=='Secondary'">
+                                                <th>Time Taken to Verify Insurance</th>
+                                                <td>
+                                                    <p>:&nbsp;</p>
+                                                </td>
+                                                <th>Yearly Limit on Visit</th>
+                                                <td>
+                                                    <p>:&nbsp;</p>
+                                                </td>
+
+                                            </tr>
+                                            <tr *ngIf="patientcarddata.Insurance.length>0 && insurancesec.CoverageType=='Secondary'">
+                                                <th>Auto Verification Insufficient</th>
+                                                <td>
+                                                    <p>:&nbsp;</p>
+                                                </td>
+                                                <th>Why was auto-verification insufficient?</th>
+                                                <td>
+                                                    <p>:&nbsp;</p>
+                                                </td>
+
+                                            </tr>
+                                            <tr *ngIf="patientcarddata.Insurance.length>0 && insurancesec.CoverageType=='Secondary'">
+                                                <th>Subscriber First Name</th>
+                                                <td>
+                                                    <p>
+                                                        :&nbsp; {{insurancesec.SubscriberFirstName}}
+                                                    </p>
+                                                </td>
+                                                <th>Subscriber DOB</th>
+                                                <td>
+                                                    <p>
+                                                        :&nbsp; {{insurancesec.SubscriberDob}}
+                                                    </p>
+                                                </td>
+
+                                            </tr>
+                                            <tr *ngIf="patientcarddata.Insurance.length>0 && insurancesec.CoverageType=='Secondary'">
+                                                <th>Subscriber Last Name</th>
+                                                <td>
+                                                    <p>
+                                                        :&nbsp; {{insurancesec.SubscriberLastName}}
+                                                    </p>
+                                                </td>
+                                                <th>Subscribers Employer</th>
+                                                <td>
+                                                    <p>
+                                                        :&nbsp;
+                                                    </p>
+                                                </td>
+
+                                            </tr>
+                                            <tr *ngIf="patientcarddata.Insurance.length>0 && insurancesec.CoverageType=='Secondary'">
+                                                <th>Subscriber Address</th>
+                                                <td>
+                                                    <p>
+                                                        :&nbsp; {{insurancesec.SubscriberHomeAddress}}
+                                                    </p>
+                                                </td>
+                                                <th>Subscriber Email</th>
+                                                <td>
+                                                    <p>
+                                                        :&nbsp; {{insurancesec.SubscriberEmail}}
+                                                    </p>
+                                                </td>
+
+                                            </tr>
+                                            <tr *ngIf="patientcarddata.Insurance.length>0 && insurancesec.CoverageType=='Secondary'">
+                                                <th>Subscriber City</th>
+                                                <td>
+                                                    <p>
+                                                        :&nbsp; {{insurancesec.SubscriberCity}}
+                                                    </p>
+                                                </td>
+                                                <th>Subscriber Gender</th>
+                                                <td>
+                                                    <p>
+                                                        :&nbsp; {{insurancesec.SubscriberGender}}
+                                                    </p>
+                                                </td>
+
+                                            </tr>
+                                            <tr *ngIf="patientcarddata.Insurance.length>0 && insurancesec.CoverageType=='Secondary'">
+                                                <th>Subscriber State</th>
+                                                <td>
+                                                    <p>
+                                                        :&nbsp; {{insurancesec.SubscriberState}}
+                                                    </p>
+                                                </td>
+                                                <th>Subscriber Phone</th>
+                                                <td>
+                                                    <p>
+                                                        :&nbsp; {{insurancesec.SubscriberPhoneNumber}}
+                                                    </p>
+                                                </td>
+
+                                            </tr>
+                                            <tr *ngIf="patientcarddata.Insurance.length>0 && insurancesec.CoverageType=='Secondary'">
+                                                <th>Subscriber Zip Code</th>
+                                                <td>
+                                                    <p>
+                                                        :&nbsp; {{insurancesec.SubscriberZipCode}}
+                                                    </p>
+                                                </td>
+                                                <th>Relationship to Patient</th>
+                                                <td>
+                                                    <p>
+                                                        :&nbsp; {{insurancesec.RelationshipToPatient}}
+                                                    </p>
+                                                </td>
+
+                                            </tr>
+                                            <tr *ngIf="patientcarddata.Insurance.length>0 && insurancesec.CoverageType=='Secondary'">
+                                                <th>Insurance Notes </th>
+                                                <td>
+                                                    <p>:&nbsp;</p>
+                                                </td>
+
+
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </ng-scrollbar>
+                            </div>
+                        </div>
+                        <div class="w-100 float-left accordion" style="display: none;">
+                            <a href="javascript:;;" (click)="expand('authorizations', expanded)" class="waves-effect accordion-header w-100 float-left">
+                Authorizations
+                <i class="icon-plus float-right" *ngIf="(!isOpen && expanded === 'authorizations') || (expanded != 'authorizations')"></i>
+                <i class="icon-mines float-right" *ngIf="(isOpen && (expanded === 'authorizations'))"></i>
+              </a>
+                            <div class="accordion-body w-100 float-left" *ngIf="expanded === 'authorizations' && isOpen">
+                                <ng-scrollbar class="accordion-body-scroll w-100 float-left">
+                                    <p class="w-100 float-left text-center pt-4 pb-4">
+                                        <i class="w-100 icon icon-warning2 float-left" aria-hidden="true"></i> No Data Availabale</p>
+                                </ng-scrollbar>
+                            </div>
+                        </div>
+                        <div class="w-100 float-left accordion" style="display: none;">
+                            <a href="javascript:;;" (click)="expand('EOBs', expanded)" class="waves-effect accordion-header w-100 float-left">
+                EOBs (Explanation of Benefits)
+                <i class="icon-plus float-right" *ngIf="(!isOpen && expanded === 'EOBs') || (expanded != 'EOBs')"></i>
+                <i class="icon-mines float-right" *ngIf="(isOpen && (expanded === 'EOBs'))"></i>
+              </a>
+                            <div class="accordion-body w-100 float-left" *ngIf="expanded === 'EOBs' && isOpen">
+                                <ng-scrollbar class="accordion-body-scroll w-100 float-left">
+                                    <p class="w-100 float-left text-center pt-4 pb-4">
+                                        <i class="w-100 icon icon-warning2 float-left" aria-hidden="true"></i> No Data Availabale</p>
+                                </ng-scrollbar>
+                            </div>
+                        </div>
+                    </ngx-tab>
+                    <ngx-tab title="Policies">
+                        <div class="w-100 float-left accordion">
+                            <a href="javascript:;;" (click)="expand('policies', expanded)" class="waves-effect accordion-header w-100 float-left">
+                Policies
+                <i class="icon-plus float-right" *ngIf="(!isOpen && expanded === 'policies') || (expanded != 'policies')"></i>
+                <i class="icon-mines float-right" *ngIf="(isOpen && (expanded === 'policies'))"></i>
+              </a>
+                            <div class="accordion-body w-100 float-left" *ngIf="expanded === 'policies' && isOpen">
+                                <ng-scrollbar class="accordion-body-scroll w-100 float-left">
+                                    <p class="w-100 float-left text-center pt-4 pb-4">
+                                        <i class="w-100 icon icon-warning2 float-left" aria-hidden="true"></i> No Data Availabale</p>
+                                </ng-scrollbar>
+                            </div>
+                        </div>
+                    </ngx-tab>
+
+                </ngx-tabset>
+            </div>
+        </div>
+    </div>
+
+</div>

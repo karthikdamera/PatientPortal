@@ -1,0 +1,73 @@
+// component css goes here
+.checkedin {
+    background-color: antiquewhite;
+}
+.modal-header h4 {
+    width: auto;
+    text-align: left;
+}
+.today_appoin_tile {
+    -webkit-box-shadow: 0px 0px 5px 2px rgba(0, 0, 0, 0.08);
+    -moz-box-shadow: 0px 0px 5px 2px rgba(0, 0, 0, 0.08);
+    box-shadow: 0px 0px 5px 2px rgba(0, 0, 0, 0.08);
+     min-height: 60px;
+    margin: 10px 0;
+    padding: 10px;
+    float: left;
+    width: 100%;
+    position: relative;
+    background-color: #fff;
+    .profile-img {
+        position: absolute;
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        color:white;
+        top: 10px; left: 10px;
+        text-align: center;
+        line-height: 48px;
+        text-transform: uppercase;
+        font-size: 14px;
+        font-weight: 600;}
+    p {
+        float: left;      
+        margin: 0;
+        font-size: 14px;
+        padding: 0 0 0 56px;
+        text-align: left;
+        font-weight: 400;
+        color: #b2b2b2;
+        line-height: 24px;
+        text-transform: capitalize;
+    }
+    h5 {
+        float: left;
+        padding-left: 55px;
+        margin: 0;
+        width: 100%;
+        text-align: left;
+        font-size: 18px;
+        color: #000;
+        font-weight: 400;
+        text-transform: capitalize;
+        line-height: 32px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    // .chk-status{border-top: 1px solid #b2b2b2; padding-top: 6px; margin-top: 4px;}
+    .blue-btn, .btn-danger {
+        font-size: 12px;
+     z-index:88;
+        padding: 5px;
+        font-weight: 600;
+        // position: absolute;
+       right: 10px;
+        top: 50%;
+       margin-top: 5px;
+    }
+    .blue-btn.disabled{background-color: #b2b2b2;}
+}
+.appCancelled {
+     text-decoration: line-through !important;
+}

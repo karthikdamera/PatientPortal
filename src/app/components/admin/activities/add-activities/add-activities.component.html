@@ -1,0 +1,270 @@
+<!--component html goes here -->
+<!--component html goes here -->
+<div class="entry add-intervention row no-gutters table-responsive">
+
+    <div class="entry-header">
+        <div class="col-9 header-title">
+            <div class="entry-breadcrumbs">
+                <a href="javascript:void(0);" class="link-previous" (click)="back()">
+                    <i class="fa fa-angle-left" aria-hidden="true"></i> Activities</a>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="row no-gutters headding-banner1">
+        <div class="col-md-9">
+            <h6 class="headding-detail">Add Activities</h6>
+            <!-- <button value="Add New" class="btn btn-primary" (click)="addactivities()"></button> -->
+        </div>
+        <span class="col-md-3">
+            <button class="btn btn-primary no_margin float-right waves-light text-center" href="javascript:void(0);" ata-toggle="modal" data-target="#view" (click)="view.show();toClearModel()">
+                <i class="menu-icon fa fa-plus"></i> Add New</button>
+        </span>
+    </div>
+
+
+    <div mdbModal #view="mdb-modal" class="modal fade" id="view" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content rounded">
+                <div class="modal-header">
+                        <h4 class="modal-title w-100 float-left" >New Activity</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="view.hide()">
+                            <span aria-hidden="true">
+                                <i class="icon-close" aria-hidden="true"></i>
+                            </span>
+                        </button>
+                        </div>
+                    <div class="modal-body">
+                        <form class="form-horizontal" novalidate #AddCustomForm="ngForm" name="form">
+
+                                            <div class="col-12">
+                                                <div class="form-group">
+                                                    <div class="form-label">
+                                                        <label class="label-title required">Activity</label>
+                                                    </div>
+                                                    <!-- form-label -->
+                                                    <div class="form-content">
+                                                        <input class="form-control" type="text" name="Activity" [(ngModel)]="model.Activity" #Activity="ngModel" placeholder="" required>
+                                                        <div *ngIf="Activity.errors && (Activity.dirty || Activity.touched)" class="has-danger">
+                                                            <div [hidden]="!Activity.errors.required">
+                                                                <span class="error-text-msg">Please enter activity </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!-- form-content -->
+                                                </div>
+                                                <!-- form-group -->
+                                            </div>
+                                            <!-- col-12 -->
+                                            <div class="col-12">
+                                                <div class="form-group">
+                                                    <div class="form-label">
+                                                        <label class="label-title required">Description</label>
+                                                    </div>
+                                                    <!-- form-label -->
+                                                    <div class="form-content">
+                                                        <input class="form-control" type="text" name="Description" [(ngModel)]="model.Description" #Description="ngModel" placeholder=""
+                                                            required>
+                                                        <div *ngIf="Description.errors && (Description.dirty || Description.touched)" class="has-danger">
+                                                            <div [hidden]="!Description.errors.required">
+                                                                <span class="error-text-msg">Please enter description </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!-- form-content -->
+                                                </div>
+                                                <!-- form-group -->
+                                            </div>
+                                            <div class="col-12">
+                                                <div class="form-group">
+                                                    <div class="form-label">
+                                                        <label class="label-title required">Status</label>
+                                                    </div>
+                                                    <div class="check-btn">
+                                                        <label>
+                                                            <input type="radio" name="CurrentStatus" [(ngModel)]="isCheckboxChecked" (click)="updateStatus('Active')" value="Active" required>
+                                                            <span>Active</span>
+                                                        </label>
+                                                    </div>
+                                                    <div class="check-btn">
+                                                        <label>
+                                                            <input type="radio" name="CurrentStatus" (click)="updateStatus('Inactive')" [(ngModel)]="isCheckboxChecked" value="Inactive" required>
+                                                            <span>Inactive</span>
+                                                        </label>
+                                                    </div>
+                                                    <div class="check-btn">
+                                                        <label>
+                                                            <input type="radio" name="CurrentStatus" [(ngModel)]="isCheckboxChecked" (click)="updateStatus('Complete')" value="Complete" required>
+                                                            <span>Complete</span>
+                                                        </label>
+                                                    </div>
+                                                    <!-- form-content -->
+                                                </div>
+                                                <!-- form-group -->
+                                            </div>
+                                    <button type="button" class="btn btn-primary float-right waves-light text-center" data-dismiss="modal" aria-label="Close" (click)="view.hide()">Discard</button>
+                                    <button class="btn btn-primary float-right waves-light text-center" [disabled]="!AddCustomForm.form.valid ||!isCheckboxChecked" (click)="addActivity(model);">Submit</button>
+                        </form>
+                    </div>
+                <!-- </div> -->
+            </div>
+        </div>
+    </div>
+    <div class="" *ngIf="totalActivities!=''">
+        <div class="headding-banner1">
+            <div class="col-md-8">
+                <h5 class="headding-detail">Activities</h5>
+            </div>
+        </div>
+        <div mdbModal #edit="mdb-modal" class="modal fade" id="editCustom" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content rounded">
+                    <div class="modal-header">
+                            <h4 class="modal-title w-100 float-left" >Edit Activity</h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="edit.hide();">
+                                <span aria-hidden="true">
+                                    <i class="icon-close" aria-hidden="true"></i>
+                                </span>
+                            </button>
+                            </div>
+                        <div class="modal-body">
+                            <form class="form-horizontal" novalidate #AddCustomForm="ngForm" name="form">
+                                                <div class="col-12">
+                                                    <div class="form-group">
+                                                        <div class="form-label">
+                                                            <label class="label-title required">Activity</label>
+                                                        </div>
+                                                        <!-- form-label -->
+                                                        <div class="form-content">
+                                                            <input class="form-control" type="text" name="Activity" [(ngModel)]="EditActivity.Activity" #Activity="ngModel" placeholder=""
+                                                                required>
+                                                            <div *ngIf="Activity.errors && (Activity.dirty || Activity.touched)" class="has-danger">
+                                                                <div [hidden]="!Activity.errors.required">
+                                                                    <span class="error-text-msg">Please enter activity </span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <!-- form-content -->
+                                                    </div>
+                                                    <!-- form-group -->
+                                                </div>
+                                                <!-- col-12 -->
+                                                <div class="col-12">
+                                                    <div class="form-group">
+                                                        <div class="form-label">
+                                                            <label class="label-title required">Description</label>
+                                                        </div>
+                                                        <!-- form-label -->
+                                                        <div class="form-content">
+                                                            <input class="form-control" type="text" name="Description" [(ngModel)]="EditActivity.Description" #Description="ngModel"
+                                                                placeholder="" required>
+                                                            <div *ngIf="Description.errors && (Description.dirty || Description.touched)" class="has-danger">
+                                                                <div [hidden]="!Description.errors.required">
+                                                                    <span class="error-text-msg">Please enter description </span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <!-- form-content -->
+                                                    </div>
+                                                    <!-- form-group -->
+                                                </div>
+                                                <div class="col-12">
+                                                    <div class="form-group">
+                                                        <div class="form-label">
+                                                            <label class="label-title required">Status</label>
+                                                        </div>
+                                                        <!-- collpse -->
+                                                    </div>
+                                                    <!-- form-group -->
+                                                </div>
+                                                    <div class="col-12">
+                                                        <div class="form-group">
+                                                            <div class="form-label">
+                                                                <label class="label-title required">status</label>
+                                                            </div>
+                                                            <div class="check-btn">
+                                                                <label>
+                                                                    <input type="radio" value="Active" [checked]="EditActivity.Status=='Active'" name="editCurrentStatus" (click)="updateStatus('Active')"
+                                                                        required>
+                                                                    <span>Active</span>
+                                                                </label>
+                                                            </div>
+                                                            <div class="check-btn">
+                                                                <label>
+                                                                    <input type="radio" value="Inactive" [checked]="EditActivity.Status ==='Inactive'" name="editCurrentStatus" (click)="updateStatus('Inactive')"
+                                                                        required>
+                                                                    <span>Inactive</span>
+                                                                </label>
+                                                            </div>
+                                                            <div class="check-btn">
+                                                                <label>
+                                                                    <input type="radio" value="Complete" [checked]="EditActivity.Status ==='Complete'" name="editCurrentStatus" (click)="updateStatus('Complete')"
+                                                                        required>
+                                                                    <span>Complete</span>
+                                                                </label>
+                                                            </div>
+                                                            <!-- form-content -->
+                                                        </div>
+                                                        <!-- form-group -->
+                                                    </div>
+                                        <button type="button" class="btn btn-primary float-right waves-light text-center" data-dismiss="modal" aria-label="Close" (click)="edit.hide()">Discard</button>
+                                        <button class="btn btn-primary float-right waves-light text-center" data-dismiss="modal" [disabled]="!AddCustomForm.form.valid" (click)="EditSave(EditActivity)">Submit</button>
+                            </form>
+                        </div>
+                    <!-- </div> -->
+                </div>
+            </div>
+        </div>
+
+
+
+
+        <!-- 
+            </div>
+          </div> -->
+
+        <!-- </div>
+      </div>
+    </div>
+  </div> -->
+        <div class="col-md-8">
+                <table class="theme-table table">
+                <thead>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let Activity of totalActivities let i=index">
+                        <td class='details'>{{Activity.Activity}}</td>
+                        <td class="action_btns">
+                            <!-- <button class="btn btn-nobtn pull-right" (click)="removeInterventions(i)" type="button">
+                                <i class="fa fa-trash" data-toggle="tooltip" style="cursor:pointer;color:#b23a3a;" title="delete"></i>
+                            </button> -->
+                            <a href="javascript:;;" class="remove float-right" data-toggle="modal" (click)="removeInterventions(i)">
+                                    <i class="icon-cancel float-left" aria-hidden="true"></i>
+                                    <span>delete</span>
+                                    </a>
+                            <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="onClickEdit(Activity,i);edit.show()"
+                                data-target="#editCustom" data-toggle="modal">
+                                <i class="fa fa-pencil-square-o" data-toggle="tooltip" style="cursor:pointer;color: #72cf72;" title="Edit"></i>
+                            </button> -->
+                            <a class="edit float-right" (click)="onClickEdit(Activity,i);edit.show()" data-toggle="modal">
+                                    <i aria-hidden="true" class="icon-edit float-left"></i>
+                                    <span>Edit</span>
+                                  </a>
+                            <!-- </td>
+            <td> -->
+
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="entry-content">
+                <div class="entry-action" style="margin-left: 45%;float: left;">
+                    <button class="btn btn-primary no_margin float-right waves-light text-center" href="javascript:void(0)" (click)="allActivitiesPost()" [disabled]="isSubmitted">Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,423 @@
+<div class="w-100 page-titel float-left">
+    <h4 class="float-left titel">Campaign</h4>
+    <!-- <button type="button" class="btn btn-primary no_margin width_auto float-right waves-light text-center" mdbWavesEffect>Add Pharmacy</button> -->
+    <button type="button" class="btn btn-primary no_margin width_auto float-right waves-light text-center" data-toggle="modal" data-target="#basicExample" (click)="addcampaign.show();toClear();" mdbWavesEffect>
+        Add Campaign
+    </button>
+    <div class="input-group col-lg-4 no_padding mr-3  search float-right">
+        <span class="icon-search"></span>
+        <input type="text" placeholder="Search By Name" name="barcode" [(ngModel)]="userFilter" class="form-control no_margin w-100 float-left no_margin">
+    </div>
+</div>
+<div class="w-100 float-left page-container">
+    <div class="acc-header2">
+        <!-- <div class="input-group col-lg-4 float-left">                
+                    <i class="icon-calendar waves-effect"  aria-hidden="true"  (click)="Fromdate.toggleCalendar('Fromdate')"></i>
+                    <input class="form-control float-left"  placeholder="FromDate [MM/DD/YYYY]" (keyup)="dateMask($event)" ngx-mydatepicker
+                    name="Fromdate" value="{{schModel.FromDate }}" [(ngModel)]="datemodel.FromDate" (inputFieldChanged)="onInputFieldDobChanged($event)"
+                    [options]="fromdate" #Fromdate="ngx-mydatepicker" (dateChanged)="onFromDateChanged($event)" maxlength="10" />                    
+                        <div *ngIf="enterdatests === true && validdate === false">
+                                <div style="color:red"> Invalid Date.</div>
+                            </div>
+                </div> -->
+        <div class="input-group no_padding col-lg-2 float-left">
+            <i class="icon-calendar waves-effect " aria-hidden="true" (click)="Fromdate.toggleCalendar('Fromdate')"></i>
+            <input class="form-control  w-100 float-left" placeholder="FromDate [MM/DD/YYYY]" (keyup)="dateMask($event)" ngx-mydatepicker name="Fromdate" value="{{schModel.FromDate }}" [(ngModel)]="datemodel.FromDate" (inputFieldChanged)="onInputFieldDobChanged($event)"
+                [options]="fromdate" #Fromdate="ngx-mydatepicker" (dateChanged)="onFromDateChanged($event)" maxlength="10" [ngClass]="{'error':enterdatests === true && validdate === false}" />
+            <div *ngIf="enterdatests === true && validdate === false">
+                <div style="color:red"> Invalid Date.</div>
+            </div>
+        </div>
+        <div class="input-group col-lg-2 float-left">
+            <i class="icon-calendar waves-effect" aria-hidden="true" (click)="Todate.toggleCalendar('Todate')"></i>
+            <input class="form-control w-100 float-left" (keyup)="dateMask($event)" placeholder="ToDate [MM/DD/YYYY]" ngx-mydatepicker name="Todate" value="{{schModel.ToDate }}" [(ngModel)]="datemodel.ToDate" [options]="todate" #Todate="ngx-mydatepicker" (inputFieldChanged)="onInputFieldDobChanged1($event)"
+                (dateChanged)="onToDateChanged($event)" maxlength="10" [ngClass]="{'error':enterdatests1 === true && validdate1 === false}" />
+            <div *ngIf="enterdatests1 === true && validdate1 === false">
+                <div style="color:red"> Invalid Date.</div>
+            </div>
+        </div>
+        <button class="btn btn-primary w-100 col-lg-1 waves-light text-center" mdbWavesEffect (click)="searchdate()" style="cursor:pointer;">Search</button>
+        <hr>
+
+    </div>
+    <table class="theme-table table" *ngIf="campaignData.length>0">
+        <thead>
+            <tr>
+            <th (click)="setOrder('Name')" class="curor-pointer">Name
+             <i class="fa" [ngClass]="{'fa-caret-down' : !reverse,'fa-caret-up' : reverse }" *ngIf="order=='Name'" aria-hidden="true" ></i>
+            </th>
+            <th (click)="setOrder('Description')" class="curor-pointer">Description
+                    <i class="fa" [ngClass]="{'fa-caret-down' : !reverse,'fa-caret-up' : reverse }" *ngIf="order=='Description'" aria-hidden="true" ></i>
+                </th>
+                <th>Campaign Date</th>
+                <th (click)="setOrder('Location')" class="curor-pointer">Location
+                        <i class="fa" [ngClass]="{'fa-caret-down' : !reverse,'fa-caret-up' : reverse }" *ngIf="order=='Location'" aria-hidden="true" ></i>
+                    </th>
+                <th>Status Change</th>
+                <th>Manage</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let campaigndata of campaignData | orderBy: order:reverse:'case-insensitive' | CampaignPipe : userFilter | paginate: {itemsPerPage: 10, currentPage: page}; let i=index">
+                <td data-column="Name">{{campaigndata.Name}}</td>
+                <td data-column="Description">{{campaigndata.Description}}</td>
+                <td data-column="Campaign Date">{{campaigndata.CampaignDate }}</td>
+                <td data-column="Location">{{campaigndata.Location }}</td>
+                <td data-column="Status Change">
+                    <label class="switch">
+                        <input type="checkbox" [checked]="campaigndata.IsActive" [(ngModel)]="campaigndata.IsActive" (click)="statusChange(campaigndata.Id,$event.target.checked)">
+                        <span class="slider round"></span>
+                    </label>
+
+                </td>
+                <td>
+                    <a href="javascript:;;" class="edit float-left" data-toggle="modal" data-target="#pharamaeditmodel" (click)="onEditCampaign(campaigndata);editcampaign.show()">
+                        <i class="icon-edit float-left" aria-hidden="true" title="Edit"></i>
+                        <span>Edit</span>
+                    </a>
+                    <a class="attendie float-left" routerLink="../attendies" RouterLinkActive="Active" (click)="getattendieId(campaigndata.Id,campaigndata.Guid)">
+                        <i class="icon-users float-left" title="Attendies List" data-toggle="tooltip"></i>
+                        <span>Attendies</span>
+                    </a>
+                    <a class="eye float-left" data-toggle="modal" data-target="#viewCampaign" (click)="viewcampaign.show();onEditCampaign(campaigndata)">
+                        <i class="icon-eye float-left" title="View Campaign" data-toggle="tooltip" style="cursor:pointer"></i>
+                    </a>
+                    <a class="edit float-left" routerLink="../mailupload" RouterLinkActive="Active" (click)="routing(campaigndata)">
+                        <i class="fa fa-envelope float-left" title="Invite" data-toggle="tooltip" style="cursor:pointer"></i>
+                        <span>Invite</span>
+                    </a>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <pagination-controls (pageChange)="page = $event" *ngIf="campaignData.length>0">
+    </pagination-controls>
+</div>
+<!-- add campaign model -->
+<div mdbModal #addcampaign="mdb-modal" class="modal fade" id="pharmaaddModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content rounded">
+            <div class="modal-header">
+                <h4 class="modal-title w-100" id="myModalLabel">Add Campaign</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="addcampaign.hide();toClear();">
+                    <span aria-hidden="true">
+                        <i class="icon-close" aria-hidden="true"></i>
+                    </span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- <form [formGroup]="campaignForm"> -->
+                <wizard>
+                    <wizard-step stepTitle="step 1">
+
+                        <form [formGroup]="campaignForm" class="w-100 float-left">
+
+                            <div class="input-group col-lg-4 float-left">
+                                <span class="input-title w-100 float-left">Campaign Name
+                                    <span class="color-red">*</span>
+                                </span>
+                                <input class="form-control w-100 float-left" formControlName="Name" [(ngModel)]="campaignModel.Name" maxlength="100">
+                                <app-validation [control]="campaignForm.controls.Name">
+                                </app-validation>
+                            </div>
+                            <div class="input-group col-lg-4 float-left">
+                                <span class="input-title w-100 float-left">Description
+                                    <span class="color-red">*</span>
+                                </span>
+                                <textarea class="form-control w-100 float-left" formControlName="Description" rows="2" cols="2" [(ngModel)]="campaignModel.Description"></textarea>
+                                <app-validation [control]="campaignForm.controls.Description">
+                                </app-validation>
+                            </div>
+                            <div class="input-group col-lg-4 float-left">
+                                <span class="input-title w-100 float-left">Campaign Date  <span class="color-red">*</span></span>
+                                <!-- <button type="button" style="width:45px" class="btn btn-default" (click)="CampaignDate.toggleCalendar('CampaignDate')">
+                                        <i class="fa fa-calendar" aria-hidden="true"></i>
+                                    </button> -->
+                                <i class="icon-calendar waves-effect" aria-hidden="true" (click)="CampaignDate.toggleCalendar('CampaignDate')"></i>
+                                <input class="form-control datewidth w-100 float-left" formControlName="CampaignDate" (keyup)="dateMask($event)" style="float:none" placeholder="MM/DD/YYYY" ngx-mydatepicker name="selecteddate" [(ngModel)]="campaignModel.CampaignDate" [options]="campaigndate"
+                                    #CampaignDate="ngx-mydatepicker" (inputFieldChanged)="oncampaignInputFieldDobChanged($event)" (dateChanged)="onDateChanged($event)" required />
+                                <app-validation [control]="campaignForm.controls.CampaignDate">
+                                </app-validation>
+                                <div *ngIf="camenterdatests1 === true && camvaliddate1 === false">
+                                    <div style="color:red"> Invalid Date.</div>
+                                </div>
+                            </div>
+                            <div class="input-group col-lg-4 float-left">
+                                <span class="input-title w-100 float-left">Campaign Time  <span class="color-red">*</span></span>
+                                <!-- <select class="form-control  text-center float-left" formControlName="campaigntimehr" [(ngModel)]="campaigntime.hour">
+                                    <option value="" selected disabled>-hr-</option>
+                                    <option *ngFor="let hr of Timehour">{{hr}}</option>
+                                </select> -->
+                                <app-validation [control]="campaignForm.controls.campaigntimehr">
+                                </app-validation>
+                                <input type="text" class="form-control col-lg-5 text-center float-left" onkeypress='return event.charCode >= 48 && event.charCode <= 57' placeholder="hr" formControlName="campaigntimehr" [(ngModel)]="campaigntime.hour" (change)="validatetime(campaigntime.hour,'campaignhr')" [ngClass]="{error: campaigntimhreerrormsg==true}">
+                                <!-- <select class="form-control  text-center float-left" formControlName="campaigntimemin" [(ngModel)]="campaigntime.minute">
+                                    <option value="" selected disabled>-min-</option>
+                                    <option *ngFor="let minute of minutehr">{{minute}}</option>
+                                </select> -->
+                                <input type="text" class="form-control col-lg-5 text-center float-left" placeholder="min" onkeypress='return event.charCode >= 48 && event.charCode <= 57' formControlName="campaigntimemin" [(ngModel)]="campaigntime.minute" (change)="validatetime(campaigntime.minute,'campaignmin')" [ngClass]="{error: campaigntimhreerrormsg==true}">
+                                <app-validation [control]="campaignForm.controls.campaigntimemin">
+                                </app-validation>
+                            </div>
+                            <div class="input-group col-lg-3 float-left">
+                                <span class="input-title w-100 float-left">Location
+                                    <span class="color-red">*</span>
+                                </span>
+                                <input class="form-control w-100 float-left" formControlName="Location" [(ngModel)]="campaignModel.Location" maxlength="100">
+                                <app-validation [control]="campaignForm.controls.Location">
+                                </app-validation>
+                            </div>
+
+                        </form>
+
+                        <button type="button" class="btn btn-primary  float-right waves-light text-center" nextStep [disabled]="!campaignForm.valid || validationtime==false" (click)="campainPost($event)">Next</button>
+                    </wizard-step>
+                    <wizard-step stepTitle="step 2">
+                        <div class="col-lg-6 no_padding float-left">
+                            <label class="w-100 float-left">RSVP Url
+                            </label>
+                            <div class="input-group">
+                                <input type="text" class="form-control float-left" id="inlineFormInputGroupUsername2" [(ngModel)]="createdUrl" readonly>
+                                <button class="btn btn-primary waves-light" [class.btn-success]="isCopied1" ngxClipboard [cbContent]="createdUrl" (cbOnSuccess)="isCopied1 = true" type="submit">
+                                      <span class="no_padding icon-copy float-left">
+                                      </span>
+                                      Copy                                   
+                                    </button>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 float-left text-center">
+                            <div id="upload_button">
+                                <label>
+                                    <input type="file" style="margin-top: 25px;width: 85%;display: none;" id="uplaodTemplate" accept="Template/*" (change)="changeListener($event)">
+                                    <span class="icon-html float-left w-100 mb-2" for="uplaodTemplate"></span>
+                                    <strong>Upload</strong>
+                                    <p title="{{filename}}">{{filename}}</p>
+                                </label>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary  float-right waves-light text-center" (click)="editPost()" previousStep>Confirm</button>
+                    </wizard-step>
+                </wizard>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Add Modal ends -->
+<!-- edit model  -->
+<div mdbModal #editcampaign="mdb-modal" class="modal fade" id="pharmaaddModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content rounded">
+            <div class="modal-header">
+                <h4 class="modal-title w-100" id="myModalLabel">Edit Campaign</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="editcampaign.hide();toClear();">
+                    <span aria-hidden="true">
+                        <i class="icon-close" aria-hidden="true"></i>
+                    </span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <wizard>
+                    <wizard-step stepTitle="Step 1">
+                        <form [formGroup]="campaignForm1" class="w-100 float-left">
+                            <div class="input-group col-lg-4 float-left">
+                                <span class="input-title w-100 float-left">Campaign Name
+                                    <span class="color-red">*</span>
+                                </span>
+                                <input class="form-control w-100 float-left" formControlName="Name" name="campaignname" [(ngModel)]="campaignModel.Name" maxlength="100">
+                                <app-validation [control]="campaignForm1.controls.Name">
+                                </app-validation>
+                            </div>
+                            <div class="input-group col-lg-4 float-left">
+                                <span class="input-title w-100 float-left">Description
+                                    <span class="color-red">*</span>
+                                </span>
+                                <textarea class="form-control w-100 float-left" name="campaigndescription" formControlName="Description" rows="2" cols="2" [(ngModel)]="campaignModel.Description"></textarea>
+                                <app-validation [control]="campaignForm1.controls.Description">
+                                </app-validation>
+                            </div>
+                            <div class="input-group col-lg-4 float-left">
+                                <span class="input-title w-100 float-left">Campaign Date
+                                    <span class="color-red">*</span>
+                                </span>
+                                <!-- <button type="button" style="width:45px" class="btn btn-default" (click)="CampaignDate.toggleCalendar('CampaignDate')">
+                                    <i class="fa fa-calendar" aria-hidden="true"></i>
+                                </button> -->
+                                <i class="icon-calendar waves-effect" aria-hidden="true" (click)="editDate.toggleCalendar('CampaignDate')"></i>
+                                <input class="form-control datewidth" formControlName="CampaignDate" (keyup)="dateMask($event)" style="float:none" placeholder="MM/DD/YYYY" ngx-mydatepicker name="selecteddate" [(ngModel)]="campaignModel.CampaignDate" [options]="campaigndate" #editDate="ngx-mydatepicker"
+                                    (inputFieldChanged)="oncampaignInputFieldDobChanged($event)" (dateChanged)="onDateChanged($event)" value={{selectedDate}}/>
+                                <app-validation [control]="campaignForm1.controls.CampaignDate">
+                                </app-validation>
+                                <div *ngIf="camenterdatests1 === true && camvaliddate1 === false">
+                                    <div style="color:red"> Invalid Date.</div>
+                                </div>
+                            </div>
+                            <div class="input-group col-lg-4 float-left">
+                                <span class="input-title w-100 float-left">Campaign Time
+                                    <span class="color-red">*</span>
+                                </span>
+                                <!-- <select class="form-control  text-center float-left" formControlName="campaigntimehr" [(ngModel)]="campaigntime.hour">
+                                    <option selected disabled>-hr-</option>
+                                    <option *ngFor="let hr of Timehour">{{hr}}</option>
+                                </select> -->
+                                <input type="number" class="form-control col-lg-5 text-center float-left"  min ="0" max="24" placeholder="hr" formControlName="campaigntimehr" [(ngModel)]="campaigntime.hour" (change)="validatetime(campaigntime.hour,'campaignhr')" [ngClass]="{error: campaigntimhreerrormsg==true}">
+                                <app-validation [control]="campaignForm1.controls.campaigntimehr">
+                                </app-validation>
+                                <input type="number" class="form-control col-lg-5 text-center float-left"  min ="0" max="59" placeholder="min" formControlName="campaigntimemin" [(ngModel)]="campaigntime.minute" (change)="validatetime(campaigntime.minute,'campaignmin')" [ngClass]="{error: campaigntimhreerrormsg==true}">
+                                <app-validation [control]="campaignForm1.controls.campaigntimemin">
+                                </app-validation>
+                                <!-- <select class="form-control  text-center float-left" formControlName="campaigntimemin" [(ngModel)]="campaigntime.minute">
+                                    <option selected disabled>-min-</option>
+                                    <option *ngFor="let minute of minutehr">{{minute}}</option>
+                                </select> -->
+                            </div>
+                            <div class="input-group col-lg-3 float-left">
+                                <span class="input-title w-100 float-left">Location
+                                    <span class="color-red">*</span>
+                                </span>
+                                <input class="form-control w-100 float-left" formControlName="Location" [(ngModel)]="campaignModel.Location" maxlength="100">
+                                <app-validation [control]="campaignForm1.controls.Location">
+                                </app-validation>
+                            </div>
+                        </form>
+                        <button type="button" class="btn btn-primary  float-right waves-light text-center" nextStep [disabled]="!campaignForm1.valid">Next</button>
+                    </wizard-step>
+                    <wizard-step stepTitle="Step 2">
+                        <div class="col-lg-6 no_padding float-left">
+                            <label class="w-100 float-left">RSVP Url
+                            </label>
+                            <div class="input-group">
+                                <input type="text" class="form-control float-left" id="inlineFormInputGroupUsername2" [(ngModel)]="createdUrl" readonly>
+                                <button class="btn btn-primary waves-light" [class.btn-success]="isCopied1" ngxClipboard [cbContent]="createdUrl" (cbOnSuccess)="isCopied1 = true" type="submit">
+                                  <span class="no_padding icon-copy float-left">
+                                  </span>
+                                  Copy                               
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 float-left text-center">
+                            <div id="upload_button">
+                                <label>
+                                    <input type="file" style="margin-top: 25px;width: 85%;display: none;" id="uplaodTemplate" accept="Template/*" (change)="changeListener($event)">
+                                    <span class="icon-html w-100 float-left mb-2" for="uplaodTemplate"></span>
+                                    <strong>Upload</strong>
+                                    <p title="{{filename}}">{{filename}}</p>
+                                </label>
+                            </div>
+                        </div>
+                        <button type="button" class="btn btn-primary mt-4 width_auto float-right waves-light text-center" previousStep>Back</button>
+                        <button type="button" class="btn btn-primary mt-4 width_auto float-right waves-light text-center" (click)="editPost()" previousStep>Update</button>
+                    </wizard-step>
+
+                </wizard>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- view campaign -->
+<div mdbModal #viewcampaign="mdb-modal" class="modal fade" id="pharmaaddModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">View Campaign</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="viewcampaign.hide()">
+                    <span aria-hidden="true">
+                        <i class="icon-close" aria-hidden="true"></i>
+                    </span>
+                </button>
+            </div>
+            <!-- <div class="modal-body"> -->
+
+            <div class="modal-body">
+                <div class="input-group col-lg-6 float-left">
+                    <span class="input-title w-100 float-left">Name                
+                                    </span>
+                    <input class="form-control w-100 float-left" [(ngModel)]="campaignModel.Name">
+
+                </div>
+                <div class="input-group col-lg-6 float-left">
+                    <span class="input-title w-100 float-left">Description
+                                        </span>
+                    <input class="form-control w-100 float-left" [(ngModel)]="campaignModel.Description">
+
+                </div>
+                <div class="input-group col-lg-6 float-left">
+                    <span class="input-title w-100 float-left">Campaign Date
+                                            </span>
+                    <input class="form-control w-100 float-left" [(ngModel)]="campaignModel.CampaignDate">
+
+                </div>
+                <div class="input-group col-lg-12 float-left">
+                    <span class="input-title w-100 float-left">RSVP Url
+                                                </span>
+                    <input type="text" class="form-control float-left" id="inlineFormInputGroupUsername2" [(ngModel)]="createdUrl" readonly>
+                    <button class="btn btn-primary waves-light" [class.btn-success]="isCopied1" ngxClipboard [cbContent]="createdUrl" (cbOnSuccess)="isCopied1 = true" type="submit">
+                                                          <span class="no_padding icon-copy float-left">
+                                                          </span>
+                                                          Copy                               
+                                                        </button>
+
+
+                </div>
+
+
+
+
+                <!-- <div class="col-12">
+                    <div class="form-group">
+                        <label>
+                            <b>Name</b>
+
+                        </label>
+                        <div>
+                            {{ campaignModel.Name}}
+                        </div>
+                    </div>
+                </div> -->
+
+                <!-- <div class="col-12">
+                    <div class="form-group">
+                        <label>
+                            <b>Description</b>
+                        </label>
+                        <div>
+                            {{ campaignModel.Description}}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12">
+                    <div class="form-group">
+                        <label>
+                            <b>Campaign Date
+                            </b>
+                        </label>
+                        <div>
+                            {{ campaignModel.CampaignDate}}
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="col-12">
+                    <label>
+                        <b>RSVP Url</b>
+                    </label>
+                    <div>
+                        {{createdUrl}}
+                    </div>
+
+                </div> -->
+                <!-- <button class="btn btn-primary waves-light float-right" data-dismiss="modal" (click)="viewcampaign.hide()">Close</button> -->
+
+            </div>
+
+
+
+
+
+        </div>
+    </div>
+
+</div>

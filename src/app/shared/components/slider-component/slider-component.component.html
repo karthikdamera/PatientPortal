@@ -1,0 +1,32 @@
+ <!--Carousel Wrapper-->
+ <mdb-carousel class="news-carousel" [isControls]="true" [animation]="'slide'">
+  <!-- <mdb-slide>
+      <div class="w-100 float-left ">
+          <h4>Wang Vision Institute</h4>
+          <h6>Focus on Nutrients</h6>
+          <p>Not Calories While the amount of calories you consume is crucial for weight loss, the quality of your food
+              is often more important (and often ignored). Losing weight isn't all about cutting calories.</p>
+          <img src="assets/images/banners/slider-img1.png" class="w-100 float-left">
+      </div>
+  </mdb-slide> -->
+  <mdb-slide [ngClass]="{'active': i==0}" *ngFor="let slidimg of slidsImage; let i=index;">
+        <div class="w-100 float-left ">
+                <h6>{{slidimg.Name}}</h6>
+                <!-- <h6>{{slidimg.Description}}</h6> -->
+                <p title={{slidimg.Description}}>{{slidimg.Description}} </p>
+                <img src="{{slidimg.Image}}" class="w-100 float-left" alt="{{slidimg.Name}}" style="height:170px;">
+                
+                
+                </div>
+            
+  </mdb-slide>
+  <a class="carousel-control-prev">
+      <span aria-hidden="true" class="carousel-control-prev-icon icon-arrow-left-right"></span>
+      <span class="sr-only">Previous</span>
+  </a>
+  <a class="carousel-control-next">
+      <span aria-hidden="true" class="carousel-control-next-icon icon-arrow-left-right"></span>
+      <span class="sr-only">Next</span>
+  </a>
+</mdb-carousel>
+<!--/.Carousel Wrapper-->

@@ -1,0 +1,88 @@
+.addbtn{
+    border-radius: .25rem;
+    font-size: 1rem;
+    border: 1px solid transparent;
+    background: #57c8cd;
+    color: #fff !important;
+}
+.check-btn label {
+    min-width: 100px;
+}
+
+.check-btn label input {
+    position: absolute;
+    z-index: -1;
+}
+
+.check-btn label span {
+    text-align: center;
+    padding: 5px 12px;
+    display: block;
+}
+
+.check-btn {
+    display: inline-block;
+    font-weight: 400;
+    line-height: 1;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-color: #fff;
+    border-radius: 12px;
+    border: 1px solid #57c8cd;
+    height: 25px;
+    margin-right: 10px;
+    margin-bottom: 5px;
+}
+
+.check-btn label input {
+    position: absolute;
+    z-index: -1;
+}
+
+.check-btn input:checked+span {
+    color: #333;
+    background-color: #b8eff2;
+    border: 1px solid #57c8cd;
+    border-radius: 12px;
+}
+
+.check-btn input:hover+span {
+    color: #333;
+    background-color: #b8eff2;
+    border-color: #57c8cd;
+    border-radius: 12px;
+}
+
+.check-btn label span {
+    text-align: center;
+    padding: 5px 25px;
+    display: block;
+}
+.link-previous {
+    font-size: 22px;
+    line-height: 38px;
+}
+
+.link-previous:hover {
+    text-decoration: none;
+}
+.fa-plus{
+    color: #fff;
+}
+.table-bordered{
+    border: none;
+}
+.action_btns button i{    line-height: 26px;
+    font-size: 24px;
+    padding-right: 8px;
+}
+.headding-banner {
+    border-bottom: 1px solid #d6cfdc;
+    padding: 1em;
+    background: #fff;
+}

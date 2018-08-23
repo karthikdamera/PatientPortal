@@ -1,0 +1,22 @@
+.link-previous {
+    font-size: 22px;
+    line-height: 38px;
+}
+
+.link-previous:hover {
+    text-decoration: none;
+}
+.search {
+    position: relative;
+}
+
+.search input {
+    text-indent: 30px;
+}
+
+.search .icon-search {
+    position: absolute;
+    top: 9px;
+    left: 25px;
+    font-size: 18px;
+}

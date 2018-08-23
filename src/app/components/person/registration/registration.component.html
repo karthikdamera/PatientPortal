@@ -1,0 +1,122 @@
+<div class="float-left w-100 patient-reg" *ngIf='!forget'>
+  <router-outlet></router-outlet>
+  <span class="float-right link-text override-color-green">
+      <a (click)="login()">Back To Login</a>
+    </span>
+  <div class="float-left mb-3">
+      <h4>Patient Registration</h4>
+     
+    </div>
+  <ng-scrollbar class="modal-popup-scrollbar w-100 float-left">
+     
+    <form [formGroup]="userForm" (submit)="registartion()">
+      <div class="input-group col-lg-6 pl-0 float-left">
+        <span class="input-title w-100 float-left">First Name
+          <span class="color-red">*</span>
+        </span>
+        <input class="form-control w-100 float-left" type="text" formControlName="FirstName" [(ngModel)]="regModel.FirstName" maxlength="50">
+        <app-validation [control]="userForm.controls.FirstName"></app-validation>
+      </div>
+      <div class="input-group col-lg-6 pl-0 float-left">
+        <span class="input-title w-100 float-left">Last Name
+          <span class="color-red">*</span>
+        </span>
+        <input class="form-control w-100 float-left" type="text" formControlName="LastName" [(ngModel)]="regModel.LastName" maxlength="50">
+        <app-validation [control]="userForm.controls.LastName"></app-validation>
+      </div>
+      <div class="input-group col-lg-6 pl-0 float-left">
+        <span class="input-title w-100 float-left">Address 1
+          <span class="color-red">*</span>
+        </span>
+        <input  class="form-control w-100  float-left" type="text" type="text" formControlName="Address" [(ngModel)]="regModel.Address">
+        <app-validation [control]="userForm.controls.Address"></app-validation>
+      </div>
+      <div class="input-group col-lg-6 pl-0 float-left">
+        <span class="input-title w-100 float-left">Address 2
+          <span class="color-red"></span>
+        </span>
+        <input  type="text"  class="form-control w-100 float-left"  formControlName="Address2" [(ngModel)]="regModel.Address2">
+        <app-validation [control]="userForm.controls.Address2"></app-validation>
+      </div>
+      <div class="input-group col-lg-6 pl-0 float-left">
+        <span class="input-title w-100 float-left">City
+          <span class="color-red"></span>
+        </span>
+        <input class="form-control w-100 float-left" type="text" formControlName="City" type="text" [(ngModel)]="regModel.City" maxlength="50">
+      </div>
+      <div class="input-group col-lg-6 pl-0 float-left">
+        <span class="input-title w-100 float-left">State
+          <span class="color-red"></span>
+        </span>
+        <select class="form-control btn-section ng-untouched ng-pristine ng-invalid" [(ngModel)]="regModel.State" formControlName="State">
+            <option value="" disabled>-- Choose State --</option>
+            <option *ngFor="let data of stateNames" [ngValue]="data.Name">{{data.Name}}</option>
+  
+          </select>
+      </div>
+      <div class="input-group col-lg-3 pl-0 float-left">
+        <span class="input-title w-100 float-left">Zip Code
+          <span class="color-red">*</span>
+        </span>
+        <input type="text" class="form-control w-100 float-left" formControlName="Zipcode" [(ngModel)]="regModel.Zipcode" maxlength="5" />
+        <app-validation [control]="userForm.controls.Zipcode">
+        </app-validation>
+
+      </div>
+      <div class="input-group col-lg-3 pl-0 float-left">
+        <span class="input-title w-100 float-left">Phone No
+          <span class="color-red">*</span>
+        </span>
+        <input  class="form-control w-100 float-left" type="text" [textMask]="getNHSNumberMask()" formControlName="PhoneNo" [(ngModel)]="regModel.PhoneNo" (blur)="unmasckphone()"
+        [ngClass]="{'error' : phonests}" />
+
+        <div class="bar"></div>
+        <app-validation [control]="userForm.controls.PhoneNo">
+        </app-validation>
+        <!-- <div *ngIf="phonests" class="errormsg"> Number Should Be 10 Digits</div> -->
+      </div>
+      <div class="input-group col-lg-6 pl-0 float-left">
+        <span class="input-title w-100 float-left">Email
+          <span class="color-red">*</span>
+        </span>
+        <input class="form-control w-100 float-left" type="text" formControlName="Email" [(ngModel)]="regModel.Email" />
+
+        <div class="bar"></div>
+        <app-validation [control]="userForm.controls.Email">
+        </app-validation>
+      </div>
+      <div class="input-group col-lg-3 pl-0 float-left">
+        <span class="input-title w-100 float-left">SSN
+          <span class="color-red"></span>
+        </span>
+        <input type="text" class="form-control w-100 float-left no_margin" formControlName="SSN"  [(ngModel)]="regModel.SSN"
+        maxlength="9" (keyup)="ssnverify(regModel.SSN)" />
+      <app-validation [control]="userForm.controls.SSN">
+      </app-validation>
+      <div class="alert-txt" style="margin-top:10px">
+        <b>{{error1}}</b>
+      </div>
+      </div>
+      <div class="input-group icon-input col-lg-3 pl-0 float-left">
+        <span class="input-title w-100 float-left">DOB
+          <span class="color-red"></span>
+        </span>
+        <i class="icon-calendar waves-effect " aria-hidden="true"  (click)="DOB.toggleCalendar('DOB')"></i>          
+          <input class="form-control  w-100 float-left" formControlName="DOB" (keyup)="dateMask($event)" style="float:none;margin:0;" placeholder="MM/DD/YYYY"
+            ngx-mydatepicker name="DOB" [(ngModel)]="model.DOB" [options]="dob" #DOB="ngx-mydatepicker" (inputFieldChanged)="onInputFieldDobChanged($event)"
+            (dateChanged)="onDateChanged($event)" maxlength="10" />        
+        <div *ngIf="enterdatests === true && validdate === false">
+          <div style="color:red"> Invalid Date.</div>
+        </div>
+      </div>
+      <div class="input-group col-lg-6 pl-0 float-left">
+        <span class="input-title w-100 float-left">Vision Issue
+          <span class="color-red"></span>
+        </span>
+        <textarea formControlName="Message" class="w-100 float-left"   [(ngModel)]="regModel.Message" ></textarea>
+      </div>
+<button class="btn btn-primary btn-green float-right mr-3 waves-light override-green" type="submit" [disabled]="loadingdata" *ngIf="buttonloading"
+  mdbWavesEffect>Confirm</button>
+    </form>
+  </ng-scrollbar>
+</div>

@@ -1,0 +1,171 @@
+<div class="w-100 page-titel float-left">
+    <h4 class="float-left titel">
+        <a [routerLink]="['/admin/campaign']" RouterLinkActive="Active" class="fa fa-angle-left mr-3 float-left icon_back"></a>Mail Upload</h4>
+    <!-- <button type="button" class="btn btn-primary no_margin width_auto float-right waves-light text-center" mdbWavesEffect>Add Pharmacy</button> -->
+    <button type="button" class="btn btn-primary width_auto float-right waves-light text-center" #csvfile accept=".csv" (click)="downloadtemplate($event)">
+        <!-- <i class="fa fa-download" aria-hidden="true"></i> -->
+        Download import emails template</button>
+    <button type="button" class="btn btn-primary width_auto mr-3 float-right waves-light text-center" data-toggle="modal" data-target="#uploadcsv" (click)="uploadcsv.show();clear()">
+        Import Emails
+        <i class="fa fa-angle-double-down" aria-hidden="true"></i>
+    </button>
+</div>
+<div class="camp_det">
+    <div class="user_det col-lg-9 pull-left">
+        <div class="w-100 float-left mb-2">
+            <p class="col-lg-2 col-md-2 col-sm-12 col-xs-12 pull-left  " style="font-weight:bold;">Name </p>
+            <p class="col-lg-10 col-md-10 col-sm-12 col-xs-12 pull-left" style="text-transform: capitalize;">:&nbsp;{{campaignname}}</p>
+        </div>
+        <div class="w-100 float-left mb-2">
+            <p class="col-lg-2 col-md-2 col-sm-12 col-xs-12 pull-left  " style="font-weight:bold;">Description</p>
+            <p class="col-lg-10 col-md-10 col-sm-12 col-xs-12 pull-left ">:&nbsp;{{description}}</p>
+        </div>
+        <div class="w-100 float-left mb-2">
+            <p class="col-lg-2 col-md-2 col-sm-12 col-xs-12 pull-left  " style="font-weight:bold;">Date</p>
+            <p class="col-lg-10 col-md-10 col-sm-12 col-xs-12 pull-left">:&nbsp;{{date}}</p>
+        </div>
+        <div class="w-100 float-left mb-2">
+            <p class="col-lg-2 col-md-2 col-sm-12 col-xs-12 pull-left " style="font-weight:bold;">RSVP Url</p>
+            <div class="input-group mb-2 col-lg-6 col-md-6 col-xs-12 col-sm-12 float-left">:&nbsp;
+
+                <input type="text" class=" no_margin form-control float-left" id="inlineFormInputGroupUsername2" [(ngModel)]="url" readonly>
+                <button class="ml-0 mt-0 btn btn-primary waves-light" [class.btn-success]="isCopied1" ngxClipboard [cbContent]="url" (cbOnSuccess)="isCopied1 = true" type="submit">
+                    <span class="no_padding icon-copy float-left">
+                    </span>
+                    Copy
+                </button>
+
+
+            </div>
+            <!--                                   
+                <input type="text" class="form-control py-0" id="inlineFormInputGroupUsername2" [(ngModel)]="url" readonly>
+                <div class="input-group-append mt-1">
+                        <div class="input-group-text"><a [class.btn-success]="isCopied1" ngxClipboard [cbContent]="url" (cbOnSuccess)="isCopied1 = true" type="submit">copy
+                                <span class="icon-copy"></span>
+                                </a>
+                        </div>
+                    </div> -->
+
+            <!-- <p class="col-lg-10 pull-left">{{url}}</p> -->
+        </div>
+    </div>
+</div>
+<div class="w-100 float-left page-container">
+
+    <h5 *ngIf="mailarray.length<=0" class="text-center">Please import emails to invite</h5>
+    <div class="w-100 float-left" *ngIf="mailarray.length>0">
+        <div class="search text-right col-lg-3 mt-1 pull-right">
+            <span class="icon-search"></span>
+            <input type="text" placeholder="Search By Email/Name/Phoneno" name="Name" class="form-control" [(ngModel)]="userFilter">
+        </div>
+        <button type="button" class="btn btn-primary  float-right waves-light text-center" data-toggle="modal" data-target="#sendMail" (click)="sendMail.show()" [disabled]="gobtn">
+            <i class="fa fa-paper-plane" aria-hidden="true"></i> Send</button>
+        <table class="theme-table table">
+            <thead>
+                <tr>
+                    <th>
+                        <div class="pcustome-check1 float-left">
+                            <div class="input-group no_margin no_padding float-left">
+                                <label class="container float-left">
+                                    <input type="checkbox" #checkall [(ngModel)]="selectall" (change)="selectdAll();select();">
+                                    <span class="icon-check float-left"></span>
+                                    <span class="float-left">Select All</span>
+                                </label>
+                            </div>
+                        </div>
+                        <!-- <input type="checkbox" class="icon-check" #checkall [(ngModel)]="selectall" (change)="selectdAll();select();">Select All -->
+                    </th>
+                    <th>Full Name</th>
+                    <th>Email</th>
+                    <th>Contact Number</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let data of mailarray | MailuploadPipe : userFilter | paginate: {itemsPerPage: 10, currentPage: page};">
+                    <td data-column="Select All">
+                        <div class="pcustome-check float-left">
+                            <div class="input-group no_margin no_padding float-left">
+                                <label class="container float-left">
+                                    <input type="checkbox" #check value="item.Id" [checked]="data.Checked " [(ngModel)]="data.selected" (change)="send(data,$event.target.checked,i,data.Id)">
+                                    <span class="icon-check float-left"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </td>
+                    <td data-column="Full Name">{{data.FirstName}}&nbsp;&nbsp;{{data.LastName}}</td>
+                    <td data-column="Email">{{data.Email}}</td>
+                    <td data-column="Contact Number">{{data.PhoneNumber}}</td>
+                </tr>
+
+            </tbody>
+        </table>
+        <pagination-controls (pageChange)="page = $event">
+        </pagination-controls>
+    </div>
+    <!--upload model-->
+    <div mdbModal #uploadcsv="mdb-modal" class="modal fade" id="pharmaModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title"> Upload Csv</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="uploadcsv.hide()">
+                        <span aria-hidden="true">
+                            <i class="icon-close" aria-hidden="true"></i>
+                        </span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    <form #uploadCSVForm="ngForm" name="form">
+                        <div class="row">
+                            <div class="input-group col-lg-6 float-left">
+                                <span class="input-title w-100 float-left">Name</span>
+                                <input class="form-control float-left w-100" name="name" [(ngModel)]="dataarray.Name" #name="ngModel" required />
+                                <!-- <div *ngIf="name.errors && (name.dirty || name.touched)" class="has-danger">
+                                            <div [hidden]="!name.errors.required">
+                                                <span class="error-message">required </span>
+                                            </div>
+                                        </div> -->
+                            </div>
+                            <div class="col-lg-6 float-left text-center">
+                                <div id="upload_button">
+                                    <label>
+                                                <input type="file" style="margin-top: 25px;width: 85%;display: none;" id="uplaodTemplate"  accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" (change)="changeListener($event)">
+                                                <span class="icon-csv_upload float-left w-100 mb-2" for="uplaodTemplate"></span>
+                                                <strong>Upload</strong>
+                                                <p title="{{filename}}">{{filename}}</p>
+                                            </label>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary float-right waves-light" data-dismiss="modal" [disabled]="!uploadCSVForm.form.valid || filestatus" (click)="postuploadCSVdata()">Save</button>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!-- to show modal popup when click on invite button -->
+    <div mdbModal #sendMail="mdb-modal" class="modal fade" id="pharmaModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Send Mail</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="sendMail.hide()">
+                        <span aria-hidden="true">
+                            <i class="icon-close" aria-hidden="true"></i>
+                        </span>
+                    </button>
+
+                </div>
+
+                <div class="modal-body">
+                    <h5 align="center">Do you want to Send Mail?</h5>
+                    <button class="btn btn-danger float-right waves-light" (click)="sendMail.hide()">No</button>
+                    <button class="btn btn-primary float-right waves-light" data-dismiss="modal" (click)="sendEmaildata()">Yes</button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

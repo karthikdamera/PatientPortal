@@ -1,0 +1,65 @@
+<div class="entry">
+  <div class="entry-header">
+      <div class="col-md-12 float-left header-title headding-banner">
+      <!-- <div class="title-text float-left">Moods</div> -->
+      <div class="col-md-6 search">
+        
+              <span class="icon-search"></span>
+              <input class="form-control no_margin" type="text" placeholder="Quick search" [(ngModel)]="userFilter.Description">
+            
+      </div>
+      <!-- <div class="input-group col-lg-3 float-right">
+          <input class="form-control" type="search" placeholder="quick search" [(ngModel)]="userFilter.Description">
+        </div> -->
+     
+    </div>
+  </div>
+  <!-- entry-header -->
+
+  <!-- filter-bar -->
+
+  <div class="row no-gutters headding-banner">
+    <div class="col-md-2">
+      <img src="/assets/images/happy.png" class="img-bg" />
+    </div>
+    <div class="col-md-8">
+      <div>
+        <b>Happy</b>
+      </div>
+      <div>8/2/2018, 12:52 AM</div>
+    </div>
+    <div class="col-md-2">
+    </div>
+  </div>
+
+
+
+  <div class="entry-section" *ngFor="let moodItems of mood | filterBy: userFilter let Alertindex=index">
+    <div class="entry-content">
+      <div class="entry-item">
+        <div class="col-2">
+          <span class="badge badge-primary">
+            <img src={{moodItems.ImageUrl}}> </span>
+
+
+        </div>
+        <!-- col-3 -->
+        <div class="col-7">
+          <div class="entry-text">{{moodItems.Description}}</div>
+          <!-- <div class="entry-meta"><b>{{moodItems.Date| date:'MM'}}/{{moodItems.Date | date:'dd'}}/{{moodItems.Date | date:'yyyy'}}</b> </div> -->
+          <div class="entry-meta">
+            <b>{{moodItems.Date |date:'short'}}</b>
+          </div>
+        </div>
+        <!-- col-8 -->
+        <!-- <div class="col-3 entry-action">
+          <a class="link-text" data-toggle="modal" data-target="#AlertsEdit" (click)="moodItemsId(moodItems.Id)">Edit</a>
+        </div> -->
+        <!-- entry-item -->
+      </div>
+      <!-- entry-content -->
+    </div>
+    <!-- entry-section -->
+  </div>
+</div>
+<span *ngIf="showLoader" class="loading"></span>

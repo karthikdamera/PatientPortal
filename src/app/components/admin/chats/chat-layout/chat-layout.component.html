@@ -1,0 +1,342 @@
+<div class="w-100 float-left chat-layout">
+  <div class="col-lg-3 col-md-3 colsm-12 col-sm-12 no_padding chat_left_bar" id="ex3">
+    <div class="search">
+      <div class="input-group">
+        <i class="icon-search"></i>
+        <input type="text" class="form-control" placeholder="search by phonenumber" aria-label="" aria-describedby="basic-addon1"
+          placeholder="Search" [(ngModel)]="queryString" id="search">
+      </div>
+    </div>
+    <h5 class="text-center group_name">{{groupName}}</h5>
+    <ul class="contact_list" *ngIf="getPatientdata.length==0">
+      <p class="no_data">No contacts to display</p>
+    </ul>
+    <ng-scrollbar class="contact_list-scrolling w-100 float-left" *ngIf="getPatientdata.length>0">
+      <ul class="contact_list">
+        <li class="contact" [class.active]="patientcount == i" (change)="pushPhoneNumbers($event,listofpatients,i)" *ngFor="let listofpatients of getPatientdata | ChatPipe: queryString let i=index">
+          <div class="w-100 float-left">
+            <div class="input-group col-lg-2 col-md-2 col-sm-12 col-xs-12 no_padding float-left">
+              <label class="container">
+                <input type="checkbox" [checked]="listofpatients.IsSelected">
+                <span class="icon-check"></span>
+                <!-- <input type="checkbox" [value]="listofpatients.PhoneNumber" [checked]="listofpatients.IsSelected" > -->
+              </label>
+            </div>
+            <div *ngIf="listofpatients.ImageUrl" class="col-md-4 col-sm-12 col-xs-12 col-lg-3 no_padding float-left">
+              <img [src]="listofpatients.ImageUrl" class="rounded-circle mt-20">
+            </div>
+
+            <div *ngIf="listofpatients.ImageUrl=='' || listofpatients.ImageUrl=='null' || listofpatients.ImageUrl==null" class="col-md-4 col-sm-12 col-xs-12 col-lg-3 no_padding float-left">
+              <img src="/assets/images/avatar.png" class="" class="rounded-circle mt-20">
+            </div>
+            <div class="col-md-6 col-lg-6 col-sm-12 col-xs-12 no_padding float-left">
+              <h6 *ngIf="listofpatients.PatientName !== ''">{{listofpatients.PatientName}}</h6>
+              <h6 *ngIf="listofpatients.PatientName === ''">Unknown</h6>
+              <p>{{listofpatients.PhoneNumber}}</p>
+              <!-- <p class="online_status">
+                          <span class="online"></span>Online</p> -->
+            </div>
+          </div>
+        </li>
+      </ul>
+    </ng-scrollbar>
+    <a href="javascript:void(0)" class="add_contact" data-toggle="modal" data-target="#addnewnumber" *ngIf="!addnewsts" (click)="addnewnumber.show();clear()">+ Add New Contact</a>
+  </div>
+
+  <!-- ==================================single contact selection massage_area=================================== -->
+
+  <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 massage_area no_padding" *ngIf="count.length<2">
+    <div class="strip-top no_padding">
+      <!-- <a href="javascript:void(0)" class="col-sm-1 float-left no_padding">
+                <i class="fa fa-phone bar" aria-hidden="true"></i>
+            </a> -->
+      <!-- <a href="javascript:void(0)" class="col-sm-1 no_boder float-left no_padding">
+                <i class="fa fa-video-camera" aria-hidden="true"></i>
+            </a> -->
+
+      <div class=" middle-content ">
+        <h4>
+          <span *ngFor="let push of count let i=index">{{push.phone}} </span>
+          <!-- <span class="badge" [hidden]="count.length<4" data-toggle="modal" data-target="#more">{{count.length}}</span> -->
+        </h4>
+        <!-- <p class="online_status no_margin">Active 52 minutes ago</p> -->
+      </div>
+      <!-- <a href="javascript:void(0)" class="col-sm-1 float-left no_padding">
+                <i class="icon-search bar" aria-hidden="true"></i>
+            </a> -->
+      <!-- <a href="javascript:void(0)" class="col-sm-1 no_boder float-left no_padding">
+                <i class="fa fa-ellipsis-v ellipsis" aria-hidden="true"></i>
+            </a> -->
+    </div>
+    <ng-scrollbar class="massages-scrolling w-100 float-left" #scrollRef>
+      <div class="massages no_padding">
+        <div class="conversation">
+          <div class="float-left w-100" *ngFor="let datelist of getSMS">
+            <div class="day_status col-lg-12">
+              <p>{{datelist.Date}}</p>
+            </div>
+            <div *ngFor="let msg of datelist.Messages">
+              <div class="col-lg-12 float-left msg-reply" *ngIf="msg.Status == 'received'">
+                <div *ngIf="patientprofileimage">
+                  <img src="{{patientprofileimage}}" class="chat_pic float-left">
+                </div>
+                <div *ngIf="patientprofileimage=='' || patientprofileimage=='null' || patientprofileimage==null">
+                  <img src="/assets/images/avatar.png" class="chat_pic float-left">
+                </div>
+                <div class="msg-text float-left">
+                  <img src="/assets/images/chat_toggle_reply.png" class="chat_toggle_reply">
+
+                  <p>{{msg.Message}}</p>
+                  <span>{{ msg.DateSent | date : "shortTime" }}</span>
+                </div>
+              </div>
+              <div class="col-lg-12 float-left msg-receiv" *ngIf="msg.Status == 'delivered'">
+                <img src="/assets/images/smiley.jpg" class="chat_pic pull-right">
+                <div class="msg-text pull-right">
+                  <img src="/assets/images/chat_toggle_receiv.png" class="chat_toggle_receiv">
+                  <p>{{msg.Message}}</p>
+                  <span>{{ msg.DateSent | date : "shortTime" }}</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- <div id="chatend">
+
+                  </div> -->
+          </div>
+        </div>
+        <div class="conversation2" *ngIf="providermessage.length>0">
+          <div class="col-lg-12 float-left msg-receiv" *ngFor="let mesgcount of providermessage">
+            <img src="/assets/images/smiley.jpg" class="chat_pic pull-right">
+            <div class="msg-text pull-right">
+              <img src="/assets/images/chat_toggle_receiv.png" class="chat_toggle_receiv">
+              <p>{{mesgcount}}</p>
+              <span>{{ date | date : "shortTime" }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-scrollbar>
+    <div class="strip-bottom">
+      <!-- <input type="text" class="col-sm-8 float-left no_padding" aria-label="" aria-describedby="basic-addon1" placeholder="Type a message here..."> -->
+      <textarea class="col-sm-8 float-left" id="comment" (keydown.enter)="sendSMS()" [(ngModel)]="chatmodel.Body" placeholder="Type a message here.."></textarea>
+
+      <a href="javascript:void(0)" class="col-sm-2 float-right no_padding send_message no_boder" (click)="sendSMS()">send</a>
+    </div>
+  </div>
+
+
+  <!-- ==================================multi contact selection massage_area=================================== -->
+
+
+  <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 massage_area no_padding" *ngIf="count.length>1">
+    <div class="strip-top no_padding">
+      <div class="middle-content">
+        <h4>Group Message</h4>
+        <a href="javascript:void(0)" class="online_status no_margin" data-toggle="modal" (click)="more.show()">Selected Members - ( {{count.length}}
+          <i class="fa fa-user-o" aria-hidden="true"></i> )</a>
+      </div>
+    </div>
+    <ng-scrollbar class="massages-scrolling w-100 float-left" #scrollRef>
+      <div class="massages no_padding">
+        <div class="conversation" style="display: block;">
+          <!--<div class="day_status col-lg-12">
+                      <p>Today</p>
+                  </div>
+                   <div class="col-lg-12 float-left msg-reply" *ngIf="patientmessage!=''">
+                      <img src="/assets/images/contact_img.png" class="chat_pic float-left">
+                      <div class="msg-text float-left">
+                          <img src="/assets/images/chat_toggle_reply.png" class="chat_toggle_reply">
+                          <p>{{patientmessage}}</p>
+                          <span>7.00 PM</span>
+                      </div>
+                  </div> -->
+          <div *ngIf="mulitchatmessage.length>0">
+            <div class="col-lg-12 float-left msg-receiv" *ngFor="let multichat of mulitchatmessage">
+              <img src="/assets/images/doct_img.jpg" class="chat_pic pull-right">
+              <div class="msg-text pull-right">
+                <img src="/assets/images/chat_toggle_receiv.png" class="chat_toggle_receiv">
+                <p>{{multichat}}</p>
+                <span>{{ date | date : "shortTime" }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-scrollbar>
+    <div class="strip-bottom">
+      <!-- <input type="text" class="col-sm-8 float-left no_padding" aria-label="" aria-describedby="basic-addon1" placeholder="Type a message here..."> -->
+      <textarea class="col-sm-8 float-left" rows="1" id="comment" (keydown.enter)="sendSMS()" [(ngModel)]="chatmodel.Body" placeholder="Type a message here.."></textarea>
+      <a href="javascript:void(0)" class="col-sm-2 float-right no_padding send_message no_boder" (click)="sendSMS()">send message</a>
+    </div>
+  </div>
+  <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12 no_padding chat_right_bar">
+    <div class="search">
+      <div class="input-group">
+        <i class="icon-search"></i>
+        <input type="text" class="form-control" placeholder="" aria-label="" aria-describedby="basic-addon1" placeholder="Search"
+          [(ngModel)]="providerqueryString">
+      </div>
+    </div>
+    <h5 class="text-center group_name">all groups</h5>
+    <!-- <div id="accordion" *ngFor="let orginfo of getOrgdata let i=index">
+          <div class="card">
+              <div class="card-header" id="headingOne">
+                  <a href="javascript:void(0)" class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                      <img src="assets/images/provider_logo2.png">
+                      <h4>{{orginfo.orgName}}</h4>
+                      <span>Total Members: {{getProviderdata.length}}</span>
+                  </a>
+              </div>
+              <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+                  <ul class="card-body contact_list" *ngIf="getProviderdata.length==0">
+                      <p>No doctors In this group</p>
+                  </ul>
+                  <ul class="card-body contact_list" *ngIf="getProviderdata.length>0">
+
+                      <li class="contact active" [class.active]="providercount == i" (click)="getpatientinfo($event,listofprovider,i)" *ngFor="let listofprovider of getProviderdata | filterBy:providerfilter let i=index">
+                          <div class="w-100 float-left ">
+                              <div class="col-md-3 no_padding float-left ">
+                                  <img src="/assets/images/doct_img.jpg " class="rounded-circle mt-20 ">
+                              </div>
+                              <div class="col-md-9 no_padding float-left ">
+                                  <h6>{{listofprovider.FriendlyName}}</h6>
+                                  <p>{{listofprovider.PhoneNumber}}</p>
+                              </div>
+                          </div>
+                      </li>
+
+                  </ul>
+              </div>
+          </div>
+      </div> -->
+    <ng-scrollbar class="panelgroup-scrolling w-100 float-left">
+      <div id="panel-group">
+        <div class="panel panel-default float-left w-100" *ngIf="getOrgdata.length==0">
+          <p>No Organizations to display</p>
+        </div>
+        <div class="panel panel-default float-left w-100" *ngFor="let orginfo of getOrgdata let i=index">
+          <div class="panel-heading float-left w-100" (click)="current = i">
+            <a href="javascript:void(0)" class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false"
+              aria-controls="collapseOne">
+              <div *ngIf="orginfo.Icon">
+
+                <img src="{{orginfo.Icon}}">
+              </div>
+              <div *ngIf="orginfo.Icon=='' || orginfo.Icon=='null' || orginfo.Icon==null">
+                <img src="assets/images/provider_logo2.png">
+              </div>
+              <h4 class="panel-title float-left">{{orginfo.Name}}</h4>
+              <p class="float-right">
+                <i class="fa fa-ellipsis-v ellipsis"></i>
+              </p>
+              <span class="float-left">Total Members: {{orginfo.Numbers.length}}</span>
+            </a>
+          </div>
+          <div id="collapse1" class="panel-collapse float-left w-100" [class.collapse]='current != i'>
+            <div class="panel-body float-left w-100">
+              <ul class="card-body contact_list" *ngIf="orginfo.Numbers.length==0">
+                <p class="no_data">No doctors In this group</p>
+              </ul>
+              <ul class="card-body w3-animate-top contact_list" *ngIf="orginfo.Numbers.length>0">
+
+                <li class="contact active" [class.active]="providercount == i" (click)="getpatientinfo($event,listofprovider,i)" *ngFor="let listofprovider of orginfo.Numbers | ChatPipe: providerqueryString let i=index">
+                  <div class="w-100 float-left ">
+                    <div class="col-lg-3 col-md-5 col-sm-12 col-xs-12 no_padding float-left ">
+                      <img src="/assets/images/smiley.jpg" class="rounded-circle mt-20 ">
+                    </div>
+                    <div class="col-lg-9 col-md-5 col-sm-12 col-xs-12 no_padding float-left ">
+                      <h6>{{listofprovider.Name}}</h6>
+                      <p>{{listofprovider.Number}}</p>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-scrollbar>
+  </div>
+</div>
+<div mdbModal #more="mdb-modal" class="modal fade" id="PatientCheckIn" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title w-100" id="myModalLabel">Selected Members</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="more.hide()">
+          <span aria-hidden="true">
+            <i class="icon-close" aria-hidden="true"></i>
+          </span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <span *ngFor="let popupjson of count let i=index" class="contact_badg">{{popupjson.phone}}</span>
+      </div>
+    </div>
+  </div>
+</div>
+<div mdbModal #addnewnumber="mdb-modal" class="modal fade" id="PatientCheckIn" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title w-100" id="myModalLabel">Add New Contact</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="addnewnumber.hide()">
+          <span aria-hidden="true">
+            <i class="icon-close" aria-hidden="true"></i>
+          </span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <ngx-tabset class="w-100 float-left">
+          <ngx-tab title="Search By PhoneNo">
+            <label>Person Email/Phoneno</label>
+            <div class="input-group w-100 float-left">
+
+              <input type="text" class="form-control w-100 float-left" placeholder="Search By Email/PhoneNo" [(ngModel)]="query" value="{{email}}"
+                (keyup)="filter()">
+
+              <div class="suggestions" *ngIf="filteredList.length > 0">
+                <ng-scrollbar class="inner-suggestions" *ngIf="filteredList.length > 0">
+                  <ul class="w-100 float-left">
+                    <li (click)="select(item)" *ngFor="let item of filteredList">
+                      <a class="w-100 float-left">
+                        <img class="col-lg-2 float-left no_padding" src="https://image.flaticon.com/icons/svg/236/236832.svg">
+                        <span class="col-lg-8 float-left ">{{item.FirstName}} &nbsp; {{item.LastName}} </span>
+                        <span class="col-lg-8 float-left ">{{item.Email}}</span>
+                        <span class="col-lg-8 float-left ">{{item.PhoneNo}}</span>
+                      </a>
+                    </li>
+                  </ul>
+                </ng-scrollbar>
+              </div>
+              <button class="btn btn-primary float-right waves-light" (click)="addcontact()">Submit</button>
+            </div>
+          </ngx-tab>
+          <ngx-tab title="Import CSV">
+            <div class="col-lg-6 float-left">
+              <label>Group Name:</label>
+              <div class="input-group w-100 float-left">
+
+                <input type="text" class="form-control w-100 float-left" placeholder="Group Name" [(ngModel)]="Groupname">
+              </div>
+            </div>
+            <div class="col-lg-6 float-left">
+              <div id="upload_button">
+                <label>
+                            <input type="file" style="margin-top: 25px;width: 85%;display: none;" id="uplaodTemplate"  accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" (change)="changeListener($event)">
+                            <span class="icon-csv_upload float-left w-100 mb-2" for="uplaodTemplate"></span>
+                            <strong>Upload CSV</strong>
+                            <p title="{{filename}}">{{filename}}</p>
+                        </label>
+            </div>
+            </div>
+            <button class="btn btn-primary float-right waves-light" (click)="submitcsv()">Submit</button>
+          </ngx-tab>
+        </ngx-tabset>
+      </div>
+    </div>
+  </div>
+</div>

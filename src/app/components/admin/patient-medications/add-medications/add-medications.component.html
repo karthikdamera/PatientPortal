@@ -1,0 +1,343 @@
+<div class="entry add-intervention">
+  <div class="entry-header">
+    <div class="col-lg-12 float-left header-title headding-banner">
+      <div class="col-lg-9 float-left">
+        <div class="entry-breadcrumbs">
+          <a href="javascript:void(0);" class="link-previous" (click)="back()">
+            <i class="fa fa-angle-left" aria-hidden="true"></i> Medications</a>
+        </div>
+      </div>
+      <!-- <div class=" header-action col-offset-3">
+          <a href="javascript:void(0);" (click)="templatePopup(content);" class="btn btn-primary link-add">Add New</a>
+        </div> -->
+      <div class="col-lg-3 float-right">
+        <a href="javascript:void(0);" ata-toggle="modal" data-target="#view" (click)="view.show();toClear()" class="btn btn-primary float-right waves-light text-center">
+          <i class="menu-icon fa fa-plus"></i> Add New</a>
+      </div>
+    </div>
+  </div>
+
+  <ng-scrollbar class="accordion-body-scroll w-100 float-left">
+    <!-- <div class="col-md-8"> -->
+    <table class="theme-table table">
+      <thead>
+      </thead>
+      <tbody>
+        <tr *ngFor="let Medication of postDataItem.Medications let i=index">
+          <td class='details'>{{Medication.MedicationName}}</td>
+          <td class="action_btns">
+            <!-- <button class="btn btn-nobtn float-right" (click)="removeMedications(i)" type="button">
+                  <i class="fa fa-trash" data-toggle="tooltip" style="cursor:pointer;color:#b23a3a;" title="delete"></i>
+                </button> -->
+            <a href="javascript:;;" class="remove float-right" data-toggle="modal" (click)="removeMedications(i)">
+              <i class="icon-cancel float-left" aria-hidden="true"></i>
+              <span>delete</span>
+            </a>
+            <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="onClickEdit(Medication,i);edit.show()"
+                  data-target="#editCustom" data-toggle="modal">
+                  <i class="fa fa-pencil-square-o" data-toggle="tooltip" style="cursor:pointer;color: #72cf72;" title="Edit"></i>
+                </button> -->
+            <a class="edit float-right" (click)="onClickEdit(Medication,i);edit.show()" data-toggle="modal">
+              <i aria-hidden="true" class="icon-edit float-left"></i>
+              <span>Edit</span>
+            </a>
+            <!-- </td>
+              <td> -->
+
+          </td>
+        </tr>
+      </tbody>
+      <div class="entry-action" style="margin-left: 45%;float: left;" *ngIf='showSubmit'>
+          <button class="btn btn-primary addbtn" style="margin-left:45%" href="javascript:void(0)" (click)="postMedications()" [disabled]="isSubmitted">Submit</button>
+        </div>
+
+    </table>
+
+   
+    <!-- <div class="entry-content">
+          <div class="entry-action">
+          
+          </div>
+        </div> -->
+    <!-- </div> -->
+  </ng-scrollbar>
+  <div mdbModal #view="mdb-modal" class="modal fade" id="view" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content rounded">
+        <div class="modal-header">
+          <h4 class="modal-title w-100 float-left">New Medication</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="view.hide()">
+            <span aria-hidden="true">
+              <i class="icon-close" aria-hidden="true"></i>
+            </span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form class="form-horizontal" novalidate #AddCustomForm="ngForm" name="form">
+            <div class="col-lg-12">
+              <div class="form-group">
+                <div class="form-label">
+                  <label class="label-title">Medication</label>
+                </div>
+                <div class="form-content">
+                  <select class="form-control" name="medication" [(ngModel)]="model.items" required>
+                    <option [ngValue]="undefined" selected>Please select</option>
+                    <option [ngValue]="items" *ngFor="let items of medicationDropdownItems let i=index">{{items.Name}}</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <!-- col-12 -->
+            <div class="col-lg-12">
+              <div class="form-group">
+                <div class="form-label">
+                  <label class="label-title required">Description</label>
+                </div>
+                <!-- form-label -->
+                <div class="form-content">
+                  <input class="form-control" type="text" name="Description" [(ngModel)]="model.Description" #Description="ngModel" placeholder=""
+                    required>
+                  <div *ngIf="Description.errors && (Description.dirty || Description.touched)" class="has-danger">
+                    <div [hidden]="!Description.errors.required">
+                      <span class="error-text-msg">Please enter Description </span>
+                    </div>
+                  </div>
+                </div>
+                <!-- form-content -->
+              </div>
+              <!-- form-group -->
+            </div>
+            <!-- col-12 -->
+            <div class="col-lg-12">
+              <div class="form-group">
+                <div class="form-label">
+                  <label class="label-title required">Dosage</label>
+                </div>
+                <!-- form-label -->
+                <div class="form-content">
+                  <input class="form-control" type="text" name="Dosage" [(ngModel)]="model.Dosage" #Dosage="ngModel" placeholder="" required>
+                  <div *ngIf="Dosage.errors && (Dosage.dirty || Dosage.touched)" class="has-danger">
+                    <div [hidden]="!Dosage.errors.required">
+                      <span class="error-text-msg">Please enter Dosage </span>
+                    </div>
+                  </div>
+                </div>
+                <!-- form-content -->
+              </div>
+              <!-- form-group -->
+            </div>
+            <div class="col-lg-12" >
+                <div class="form-group">
+                  <div class="form-label">
+                    <label class="label-title required">CareTeam</label>
+                  </div>
+                  <div class="form-content">
+                    <select class="form-control" name="ProviderId" [(ngModel)]="model.ProviderId" #ProviderId="ngModel" [disabled]="careteamstatus==true" required>
+                    <option   [ngValue]="0" selected>Please select</option> 
+                      <option *ngFor="let careteam of patientcarddata.CareTeam" [ngValue]="careteam.Id"  [selected]="careteam.Id==model.ProviderId">{{careteam.Name}}</option>
+                    </select>
+                    <div *ngIf="ProviderId.errors && (ProviderId.dirty || ProviderId.touched) && (model.ProviderId==0)" class="has-danger">
+                      
+                        <span class="error-text-msg">Please select CareTeam </span>
+                     
+                    </div>
+                  </div>
+                </div>
+              </div>
+            <div class="col-lg-12">
+              <div class="form-group">
+                <div class="form-label">
+                  <label class="label-title">Frequency</label>
+                </div>
+                <div class="form-content">
+                  <select class="form-control" name="frequency" [(ngModel)]="model.Frequency" required>
+                    <option value="" disabled selected>Please select</option>
+                    <option value="As needed">As needed</option>
+                    <option value="1d">1d</option>
+                    <option value="2d">2d</option>
+                    <option value="3d">3d</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-12">
+              <div class="form-group">
+                <div class="form-label">
+                  <label class="label-title required">Status</label>
+                </div>
+                <div class="check-btn">
+                  <label>
+                    <input type="radio" name="CurrentStatus" [ngValue]="isCheckboxChecked" (click)="updateStatus('Active')" value="Active"
+                      required>
+                    <span>Active</span>
+                  </label>
+                </div>
+                <div class="check-btn">
+                  <label>
+                    <input type="radio" name="CurrentStatus" [ngValue]="isCheckboxChecked" (click)="updateStatus('Inactive')" value="Inactive"
+                      required>
+                    <span>Inactive</span>
+                  </label>
+                </div>
+                <div class="check-btn">
+                  <label>
+                    <input type="radio" name="CurrentStatus" [ngValue]="isCheckboxChecked" (click)="updateStatus('Complete')" value="Complete"
+                      required>
+                    <span>Complete</span>
+                  </label>
+                </div>
+                <!-- form-content -->
+              </div>
+              <!-- form-group -->
+            </div>
+            <button type="button" class="btn btn-primary float-right waves-light text-center" data-dismiss="modal" aria-label="Close"
+              (click)="view.hide()">Discard</button>
+            <button type="button" class="btn btn-primary float-right waves-light text-center" data-dismiss="modal" [disabled]="!AddCustomForm.form.valid || !isCheckboxChecked || (model.ProviderId == 0)"
+              (click)="addMedication(model)">Submit</button>
+          </form>
+        </div>
+        <!-- </div> -->
+      </div>
+    </div>
+  </div>
+  <div mdbModal #edit="mdb-modal" class="modal fade" id="editCustom" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content rounded">
+        <div class="modal-header">
+          <h4 class="modal-title w-100 float-left">Edit Medication</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="edit.hide()">
+            <span aria-hidden="true">
+              <i class="icon-close" aria-hidden="true"></i>
+            </span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form class="form-horizontal" novalidate #AddCustomForm1="ngForm" name="form">
+            <div class="col-lg-12">
+              <div class="form-group">
+                <div class="form-label">
+                  <label class="label-title">Medication</label>
+                </div>
+                <div class="form-content">
+                  <select class="form-control" name="medication" [(ngModel)]="editMedication.MedicationName" required>
+                    <option [ngValue]="undefined" disabled selected>Please select</option>
+                    <option [ngValue]="items.Name" *ngFor="let items of medicationDropdownItems let i=index" [selected]="items.Name===editMedication.MedicationName">{{items.Name}}</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <!-- col-12 -->
+            <div class="col-lg-12">
+              <div class="form-group">
+                <div class="form-label">
+                  <label class="label-title required">Description</label>
+                </div>
+                <!-- form-label -->
+                <div class="form-content">
+                  <input class="form-control" type="text" name="Description" [(ngModel)]="editMedication.Description" #Description="ngModel"
+                    placeholder="" required>
+                  <div *ngIf="Description.errors && (Description.dirty || Description.touched)" class="has-danger">
+                    <div [hidden]="!Description.errors.required">
+                      <span class="error-text-msg">Please enter Description </span>
+                    </div>
+                  </div>
+                </div>
+                <!-- form-content -->
+              </div>
+              <!-- form-group -->
+            </div>
+            <!-- col-12 -->
+            <div class="col-lg-12">
+              <div class="form-group">
+                <div class="form-label">
+                  <label class="label-title required">Dosage</label>
+                </div>
+                <!-- form-label -->
+                <div class="form-content">
+                  <input class="form-control" type="text" name="Dosage" [(ngModel)]="editMedication.Dosage" #Dosage="ngModel" placeholder=""
+                    required>
+                  <div *ngIf="Dosage.errors && (Dosage.dirty || Dosage.touched)" class="has-danger">
+                    <div [hidden]="!Dosage.errors.required">
+                      <span class="error-text-msg">Please enter Dosage </span>
+                    </div>
+                  </div>
+                </div>
+                <!-- form-content -->
+              </div>
+              <!-- form-group -->
+            </div>
+            <div class="col-lg-12" >
+                <div class="form-group">
+                  <div class="form-label">
+                    <label class="label-title">CareTeam</label>
+                  </div>
+                  <div class="form-content">
+                    <select class="form-control" name="ProviderId" [(ngModel)]="editMedication.ProviderId"  #ProviderId="ngModel" [disabled]="careteamstatus==true" >
+                    <option   value="0" disabled selected>Please select</option> 
+                      <option *ngFor="let careteam of patientcarddata.CareTeam" [ngValue]="careteam.Id"  [selected]="careteam.Id==editMedication.ProviderId">{{careteam.Name}}</option>
+                    </select>
+                    <div *ngIf="ProviderId.errors && (ProviderId.dirty || ProviderId.touched) && (editMedication.ProviderId==0)" class="has-danger">
+                      
+                      <span class="error-text-msg">Please select CareTeam </span>
+                   
+                  </div>
+                  </div>
+                </div>
+              </div>
+            <div class="col-lg-12">
+              <div class="form-group">
+                <div class="form-label">
+                  <label class="label-title">Frequency</label>
+                </div>
+                <div class="form-content">
+                  <select class="form-control" name="frequency" [(ngModel)]="editMedication.Frequency" required>
+                    <!-- <option disabled="" selected="">Please select</option>
+                                                                                                      <option value="tid">tid</option> -->
+                    <option value="As needed">As needed</option>
+                    <option value="1d">1d</option>
+                    <option value="2d">2d</option>
+                    <option value="3d">3d</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+         
+            <div class="col-lg-12">
+              <div class="form-group">
+                <div class="form-label">
+                  <label class="label-title">Status</label>
+                </div>
+                <div class="check-btn">
+                  <label>
+                    <input type="radio" value="Active" [checked]="editMedication.Status ==='Active'" name="EditCurrentStatus" (click)="updateStatus('Active')"
+                      required>
+                    <span>Active</span>
+                  </label>
+                </div>
+                <div class="check-btn">
+                  <label>
+                    <input type="radio" value="Inactive" [checked]="editMedication.Status ==='Inactive'" name="EditCurrentStatus" (click)="updateStatus('Inactive')"
+                      required>
+                    <span>Inactive</span>
+                  </label>
+                </div>
+                <div class="check-btn">
+                  <label>
+                    <input type="radio" value="Complete" [checked]="editMedication.Status ==='Complete'" name="EditCurrentStatus" (click)="updateStatus('Complete')"
+                      required>
+                    <span>Complete</span>
+                  </label>
+                </div>
+              </div>
+            </div>
+            <button type="button" class="btn btn-primary width_auto float-right waves-light text-center" data-dismiss="modal" aria-label="Close"
+              (click)="edit.hide()">Discard</button>
+            <button class="btn btn-primary width_auto float-right waves-light text-center" data-dismiss="modal" [disabled]="!AddCustomForm1.form.valid || (editMedication.ProviderId==0)"
+              (click)="editSave(editMedication);toClear();removeSelection()">Submit</button>
+          </form>
+        </div>
+        <!-- </div> -->
+      </div>
+    </div>
+  </div>

@@ -1,0 +1,221 @@
+<div class="provider">
+    <div class="provider_logo">
+        <!-- <i class="fa fa-plus-square-o new_group"></i> -->
+    </div>
+    <p>Add New Group</p>
+    <a class="waves-light overlay" href="javascript:;;" (click)="toClear();cancel();addProvider.show()" data-toggle="modal" data-target="#addProvider"
+        mdbWavesEffect> <span class="fa fa-plus-square-o new_group"></span> </a>
+</div>
+<div class="provider" *ngFor="let chats of groupsarray">
+    <div class="provider_logo" *ngIf="(chats.Icon=='')" style="background: url(/assets/images/provider_logo.png) no-repeat; background-position: center;background-size: 100% 100%;">
+    </div>
+    <div class="provider_logo" *ngIf="(chats.Icon!='')" [ngStyle]="{ 'background-image': 'url(' + chats.Icon + ') '} "
+        style=" background-repeat: no-repeat; background-position: center;background-size: 100% 100%;">
+    </div>
+    <p>{{chats.Name}} </p>
+        <!-- <i class="badge badge-light float-right">9</i></p> -->
+    <a class="waves-light float-right edit_btn icon-edit" href="javascript:;;" (click)="edit(chats);editProvider.show()"
+        data-toggle="modal" data-target="#editProvider" mdbWavesEffect></a>    
+    <a href="javascript:;;" class="overlay" (click)="chatlayout()"></a>
+</div>
+<div id="addProvider" mdbModal #addProvider="mdb-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg add_group_popup">
+        <!-- Modal content-->
+        <form [formGroup]="GroupForm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title w-100" id="myModalLabel">Creating Group</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="addProvider.hide()">
+                        <span aria-hidden="true">
+                            <i class="icon-close" aria-hidden="true"></i>
+                        </span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group float-left">
+                        <div class=" profile_pic avatharbg float-left" *ngIf="file_srcs?.length ==''">
+                            <img *ngIf="imageshow" src="https://image.flaticon.com/icons/svg/236/236832.svg" alt="">
+                            <img *ngIf="imageshow==false" src="{{profileimage}}" alt="">
+                            <div class="overlay placeholder">
+                                <a id="upload_button">
+                                    <label>
+                                        <i class="fa fa-camera w-100 float-left text-center"></i>
+                                        <input type="file" ngf-select ng-model="new_files" ng-change="fs.uploadFiles(new_files)" value="Upload" (change)="fileChange(input)"
+                                            class="upload" #input>
+                                        <strong class=" w-100 float-left text-center">Upload</strong>
+                                    </label>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="profile_pic avatharbg" *ngFor="let file_src of file_srcs; let i = index">
+                            <img class="fa fa-user-circle" height="100" width="100" [attr.src]='file_src' alt="" />
+                            <div class="overlay">
+                                <a id="upload_button">
+                                    <label>
+                                        <i class="fa fa-camera"></i>
+                                        <input type="file" ngf-select ng-model="new_files" ng-change="fs.uploadFiles(new_files)" value="Upload" (change)="fileChange(input)"
+                                            class="upload" #input>
+                                        <strong>Upload</strong>
+                                    </label>
+                                </a>
+                            </div>
+                        </div>
+                    </div>                 
+                    <div class="input-group col-lg-8 float-left">
+                        <span class="input-title w-100 float-left">Group Name
+                            <span class="color-red">*</span>
+                        </span>
+                        <input type="text" placeholder="Group Name" formControlName="GroupName" class="form-control" maxlength="50" [(ngModel)]="postgroup.Name">
+                        <app-validation [control]="GroupForm.controls.GroupName">
+                        </app-validation>
+                    </div>
+                    <h6 class="float-left w-100 mb-2">Provider Information</h6>
+                    <div class="float-left w-100 input-group col-8">
+                        <select class="form-control" [(ngModel)]="pushproviderdata.providerId" (change)="pushproviders()" formControlName="providerlist">
+                            <option [ngValue]="undefined">--Select Provider--</option>
+                            <option [ngValue]="chat.Sid" *ngFor="let chat of chatarray">{{chat.FriendlyName}}</option>
+                        </select>
+                        <app-validation [control]="GroupForm.controls.providerlist">
+                        </app-validation>
+                    </div>
+                    <ng-scrollbar class="chat-edit-scroll w-100 float-left" *ngIf="providerarray.length>0">
+                    <table id="example" class="theme-table table" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <!-- <th>Id</th> -->
+                                <th>Name</th>
+                                <th>Phone Number</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let providerdata of providerarray let i=index;">
+                                <td>{{providerdata.Name}}</td>
+                                <td>{{providerdata.Number}}</td>
+                                <td>
+                                    <a class="link-text edit-out" data-toggle="modal" data-target="#myModal1" (click)="DeleteGroupdata(providerdata,i)">
+                                        <i class="icon-remove float-left" title="Delete" data-toggle="tooltip" style="cursor:pointer"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                   
+                        </tbody>
+                    </table>
+                    </ng-scrollbar>
+                    <div class="w-100 float-left">
+                        <button class="btn btn-primary waves-light float-right" (click)="postProviderInfo()" [disabled]="!GroupForm.valid">save</button>
+                        <button class="btn btn-danger waves-light float-right" data-dismiss="modal" (click)="cancel()">Reset</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<!-- <div id="editProvider" class="modal fade" role="dialog"> -->
+<div id="editProvider" mdbModal #editProvider="mdb-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg add_group_popup">
+        <!-- Modal content-->
+        <form [formGroup]="GroupForm1">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title w-100" id="myModalLabel">Editing Group</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="editProvider.hide()">
+                        <span aria-hidden="true">
+                            <i class="icon-close" aria-hidden="true"></i>
+                        </span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group float-left">
+                        <div class="profile_pic avatharbg " *ngIf="file_srcs?.length ==''">
+                            <img *ngIf="editicon==''" src="https://image.flaticon.com/icons/svg/236/236832.svg" alt="">
+                            <img *ngIf="editicon!=''" src="{{editicon}}">
+                            <div class="overlay placeholder">
+                                <a id="upload_button">
+                                    <label>
+                                        <i class="fa fa-camera"></i>
+                                        <input type="file" ngf-select ng-model="new_files" ng-change="fs.uploadFiles(new_files)" value="Upload" (change)="fileChange(input)"
+                                            class="upload" #input placeholder="upload">
+                                        <strong>Upload</strong>
+                                    </label>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="container profile_pic" *ngFor="let file_src of file_srcs; let i = index">
+                            <img class="person fa fa-user-circle " height="100" width="100" [attr.src]='file_src' alt="" />
+                            <div class="overlay ">
+                                <a id="upload_button">
+                                    <label>
+                                        <i class="fa fa-camera"></i>
+                                        <input type="file" ngf-select ng-model="new_files" formControlName="GroupIcon" ng-change="fs.uploadFiles(new_files)" value="Upload"
+                                            (change)="fileChange(input)" class="upload" #input>
+                                        <app-validation [control]="GroupForm1.controls.GroupIcon">
+                                        </app-validation>
+                                        <strong>Upload</strong>
+                                    </label>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="input-group col-lg-8 float-left">
+                            <span class="input-title w-100 float-left">Group Name
+                                <span class="color-red">*</span>
+                            </span>
+                            <input type="text" placeholder="Group Name" formControlName="GroupName" class="form-control" maxlength="50" [(ngModel)]="editItems.Name">
+                            <app-validation [control]="GroupForm.controls.GroupName">
+                            </app-validation>
+                        </div>
+                    </div>
+                    <h6 class="float-left w-100 mb-2">Provider Information</h6>
+                    <div class="w-100 float-left input-group col-8">
+                        <select class="form-control" [(ngModel)]="pushproviderdata.providerId" (change)="pushproviders()" formControlName="providerlist">
+                            <option [ngValue]="undefined">--Select provider--</option>
+                            <option [ngValue]="chat.Sid" *ngFor="let chat of chatarray">{{chat.FriendlyName}}</option>
+                        </select>
+                        <app-validation [control]="GroupForm1.controls.providerlist">
+                        </app-validation>
+                    </div>
+                    <ng-scrollbar class="chat-edit-scroll w-100 float-left">
+                    <table id="example" class="theme-table table" cellspacing="0" width="90%">
+                        <thead>
+                            <tr>
+                                <!-- <th>Id</th> -->
+                                <th>Name</th>
+                                <th>Phone Number</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- <tr *ngFor="let getproviderList of providerData | paginate: {itemsPerPage: 10, currentPage: page}; let i=index"> -->
+                            <!-- <td>{{i+1}}</td> -->
+                            <!-- <td>{{getproviderList.Name}} -->
+
+                            <tr *ngFor="let providerdata of editItems.Numbers let i=index;">
+                                <td>{{providerdata.Name}}</td>
+                                <td>{{providerdata.Number}}</td>
+                                <td>
+                                    <a class="link-text edit-out" data-toggle="modal" data-target="#myModal1" (click)="DeleteeditGroupdata(providerdata,i)">
+                                        <i class="icon-remove" title="Delete" data-toggle="tooltip" style="cursor:pointer"></i>
+                                    </a>
+                                </td>
+
+                            </tr>
+                        </tbody>
+                    </table>
+                </ng-scrollbar>
+                    <!--<div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="postProviderInfo(model)">Submit</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>-->
+                    <div class="w-100 float-left">
+                        <button class="btn btn-primary float-right" (click)="updateproviders(editItems)" [disabled]="!GroupForm1.valid">Save</button>
+                        
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,41 @@
+<div class="w-100 float-left table-responsive add-intervention">
+  <!-- <div class="entry-breadcrumbs"> <i class="fa fa-arrow-left" aria-hidden="true"></i><span  class="link-previous" (click)="back()" (click)="back()">Medications</span></div> -->
+
+  <div class="entry-header">
+    <div class="col-12 header-title headding-banner">
+      <div class="col-md-9 pull-left">
+        <div class="entry-breadcrumbs">
+          <a href="javascript:void(0);" class="link-previous" (click)="back()">
+            <i class="fa fa-angle-left" aria-hidden="true"></i> Medications</a>
+        </div>
+      </div>
+      <div class="search pull-right col-lg-3">
+        <span class="icon-search"></span>
+        <input type="search" placeholder="Quick Search" name="Name" [(ngModel)]="userFilter.Medication" class="form-control">
+      </div>
+    </div>
+
+  </div>
+
+  <ng-scrollbar class="accordion-body-scroll w-100 float-left">
+  <div class="entry-section" *ngFor="let medication of medicationHistory |  filterBy: userFilter">
+    <!--<div class="entry-section" *ngFor="let intervention of interventions">-->
+    <div class="entry-content">
+      <div class="entry-item">
+        <!-- col-2 -->
+        <div class="col-1 entry-status">
+          <!--<span class="status-complete" ></span>-->
+          <span class="status-complete" *ngIf="medication.Status=='Complete'"></span>
+          <span class="status-available" *ngIf="medication.Status=='Active'"></span>
+          <span class="icon-lock" *ngIf="medication.Status=='Incomplete'"></span>
+        </div>
+        <!-- col-3 -->
+        <div class="col-6 col-md-7">
+          <div class="entry-available">{{medication.Medication}}({{medication.Dosage}})</div>
+          <div class="entry-meta">{{medication.OtherName}} by client on {{medication.ModifiedDate |date:'short'}}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </ng-scrollbar>
+</div>

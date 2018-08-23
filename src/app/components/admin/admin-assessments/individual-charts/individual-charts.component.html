@@ -1,0 +1,75 @@
+<!--component html goes here -->
+<div class="entry">
+    <div class="entry-breadcrumbs">
+        <a href="javascript:void(0);" (click)="back()" class="link-previous">Assessments</a>
+    </div>
+    <div class="entry-section">
+        <div class="entry-content chart">
+            <div class="col-3 chart-nav">
+                <ul class="list-unstyled">
+                    <li class="active">
+                        <a href="javascript:void(0);" class="chart-legend legend-cyan">Custom</a>
+                    </li>
+                </ul>
+                <ul class="list-unstyled">
+                    <div class="list-title">Questions</div>
+                    <li *ngFor="let question of questionNameItems let i = index">
+                        <a href="javascript:void(0);"> {{i+1}}. {{question}}</a>
+                    </li>
+                </ul>
+                <!-- ul -->
+            </div>
+            <!-- col-4 -->
+            <div class="col-9">
+
+                <!-- <h3><a href="javascript:void(0)">{{labelHeader}}</a></h3> -->
+                <ul class="list-unstyled icon-ul">
+                    <li>
+                        <a href="javascript:void(0);" (click)="getChart('line')">
+                            <span class="line-icon"></span>
+                        </a>
+                    </li>&nbsp;&nbsp;
+                    <li>
+                        <a href="javascript:void(0);" (click)="getChart('column')">
+                            <span class="bar-icon"></span>
+                        </a>
+                    </li>&nbsp;&nbsp;
+                    <!--<li>
+                  <a href="javascript:void(0);" (click)="getChart('pie')">            
+                    <span class="pie pie1"></span>
+                  
+                  </a>
+                </li>&nbsp;&nbsp;-->
+
+                    <!-- <li>
+              <a href="javascript:void(0);" (click)="getChart('scatter')">            
+                    <span style="display: block;width: 38px;height: 38px;border-left: 2px #333 solid;border-bottom: 2px #333 solid;overflow: hidden;">
+                      <span style="color:black;padding: 0;position: absolute;bottom: 0px;font-size: 40px;left:125px;top:2px;">.</span>
+                      <span style="color: black;padding: 0;position: absolute;bottom: 12px;left: 14px;font-size: 40px;left:135px;top:-5px;">.</span>
+                      <span style="color: black;padding: 0; position: absolute; bottom: 25px; left: 25px; font-size: 40px;left:145px;top:-14px;">.</span>
+                    </span>
+                  
+                  </a>
+            </li> -->
+                    <li>
+                        <a href="javascript:void(0);" (click)="getChart('scatter')">
+                            <span class="badge-scatter-plot">
+                                <span class="badge-first">.</span>
+                                <span class="badge-second">.</span>
+                                <span class="badge-third">.</span>
+                            </span>
+
+                        </a>
+                    </li>
+                </ul>
+
+                <!-- <div [ng2-highcharts]="options"></div> -->
+            </div>
+            <!-- col-8 -->
+        </div>
+        <!-- entry-content -->
+    </div>
+    <!-- entry-section -->
+</div>
+<span *ngIf="showLoader" class="loading"></span>
+<!--entry-->

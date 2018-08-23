@@ -1,0 +1,560 @@
+<!--Navbar-->
+
+<mdb-navbar SideClass="navbar navbar-expand-lg navbar-dark landing-nav sticky-top">
+
+  <!-- Navbar brand -->
+  <logo>
+    <a class="navbar-brand" href="javascript:;;">
+      <img src="assets/images/logo/logo.png" alt="">
+    </a>
+  </logo>
+
+  <!-- Collapsible content -->
+  <links>
+
+    <!-- Links -->
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <!-- <a class="nav-link waves-light" data-toggle="modal" data-target="#login_form" (click)="login_form.show()" mdbWavesEffect>Log In</a> -->
+        <app-personlogin></app-personlogin>
+      </li>
+    </ul>
+    <!-- Links -->
+  </links>
+  <!-- Collapsible content -->
+
+</mdb-navbar>
+<!--/.Navbar-->
+<div class="landing-banner">
+  <div class="overlay">
+    <h1 class="w-100 text-center">Express Scheduler</h1>
+    <p class="w-100 text-center"> Online Scheduling Anytime, Anywhere.</p>
+    <div class="landing-container">
+      <div class="input-group col-lg-4 float-left">
+        <i class="icon-location" aria-hidden="true"></i>
+        <input class="form-control float-left" type="text" placeholder="Select your location" id='location' (keydown.Tab)="onKey($event)"
+          (change)="myFunction()" [(ngModel)]="query2" value="{{locationtype}}" (click)="filter2()">
+        <ng-scrollbar class="suggestions-scrollbar w-100 float-left" *ngIf="filteredList2.length > 0">
+          <ul class="landing-suggestions suggestions float-left w-100">
+            <li (click)="select2(item)" *ngFor="let item of filteredList2 | FilterPipe: query2">
+              <a>{{item.LocationName}}</a>
+            </li>
+          </ul>
+        </ng-scrollbar>
+        <!-- <div *ngFor="let item of selected2" style="display:none;">
+                    <div class="selected">
+                        <span>{{item.Email}}{{item.LastName}}</span>
+                        <a (click)="remove(item)">x</a>
+                    </div>
+                </div> -->
+      </div>
+      <div class="input-group col-lg-4 float-left">
+        <i class="icon-docter" aria-hidden="true"></i>
+        <input class="form-control float-left" type="text" placeholder="Select Service Type" id='appointment' (keydown.Tab)="onKey($event)"
+          (change)="myFunction()" [(ngModel)]="query1" value="{{appintmenttype}}" (click)="filter1()">
+        <ng-scrollbar class="suggestions-scrollbar w-100" *ngIf="filteredList1.length > 0">
+          <ul class="landing-suggestions suggestions float-left w-100">
+            <li (click)="select1(item)" *ngFor="let item of filteredList1 | FilterPipe: query1">
+              <a>{{item.Name}}</a>
+            </li>
+          </ul>
+        </ng-scrollbar>
+      </div>
+      <!-- <div class="input-group col-lg-3 float-left">
+                <i class="icon-calendar waves-effect " aria-hidden="true" (click)="DOB.toggleCalendar('DOB')"></i>
+                <input class="form-control  w-100 float-left" (keyup)="dateMask($event)" placeholder="DOB (optional)" ngx-mydatepicker name="DOB" [(ngModel)]="modal.DOB" [options]="myDOBOptions" #DOB="ngx-mydatepicker" (inputFieldChanged)="onInputFieldDobChanged($event,'bday')"
+                    (dateChanged)="onDOBDateChanged($event)" maxlength="10" />
+                <div *ngIf="enterdatests === true && validdate === false && modal.DOB==null">
+                    <div style="color:red"> Invalid Date.</div>
+                </div>
+
+            </div> -->
+      <div class="input-group col-lg-3 float-left">
+        <i class="icon-calendar waves-effect " aria-hidden="true" (click)="schdate.toggleCalendar('scheduledate')"></i>
+        <input class="form-control  w-100 float-left" (keyup)="dateMask($event)" placeholder="Select Appointment Date" ngx-mydatepicker
+          name="scheduledate" value="{{serachModel.today}}" [(ngModel)]="modal.schdate" [options]="myschdateOptions" #schdate="ngx-mydatepicker"
+          (inputFieldChanged)="onInputFieldDobChanged($event,'schday')" (dateChanged)="onScheduleDateChanged($event)" maxlength="10"
+        />
+        <div *ngIf="enterdatests === true && validdate === false && modal.schdate==null">
+          <div style="color:red"> Invalid Date.</div>
+        </div>
+
+      </div>
+      <div class="input-group col-lg-1 float-left">
+        <button type="submit" class="btn btn-primary btn-green w-100 waves-light text-center override-green" mdbWavesEffect (click)="getProviderInfo('search','searchbtn')">SEARCH</button>
+      </div>
+
+    </div>
+
+    <div class="w-100 filter-bar" *ngIf="searchsts == true && appointmentsModel.length>0">
+      <div class="landing-container">
+        <div class="btn-group float-right" data-toggle="buttons">
+          <div class="pull-left no_padding" *ngFor="let name of sessionnames let i=index">
+            <input type="radio" name="options" id="radio{{i}}" value="option1" [checked]="session=='AnyTime'">
+
+            <label class="btn btn-primary btn-green text-center" [ngClass]="{'active': name== session}" for="radio{{i}}" (click)="setSession(name);">
+              {{name}}
+            </label>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="w-100 landing-container float-left" *ngIf="appointmentsModel.length>0">
+  <div class="w-100 providers-list float-left mt-3 mb-3">
+    <!-- <div class="acc-header w-100 float-left" *ngIf="appointmentsModel.length>0">
+            <p class="col-lg-4 text-center float-left">Provider</p>
+            <p class="col-lg-6 text-center float-left">Available Time</p>
+        </div> -->
+    <collapsible-list [type]="'accordion'" class="w-100 float-left no_margin" *ngIf="appointmentsModel.length>0">
+      <collapsible-list-item *ngFor="let provider of appointmentsModel; let i=index">
+        <collapsible-header class="waves-effect w-100 float-left" (click)="pushProviderSlots(provider, i, true,true)" [ngClass]="{'hidden':provider.showProviderDetails == true}">
+
+          <div class="col-lg-1 col-md-1 col-sm-6 col-xs-6 text-center float-left">
+            <i class="icon-plus" aria-hidden="true"></i>
+          </div>
+          <div class="col-lg-4 col-md-11 col-sm-6 col-xs-12 float-left">
+
+            <div class="profile_pic float-left">
+              <img *ngIf="provider.profile.ImageUrl =='' || provider.profile.ImageUrl =='null'" src="assets/images/doctor.jpg" class="w-100 float-left">
+              <img *ngIf="provider.profile.ImageUrl !='' || provider.profile.ImageUrl !='null'" [src]="provider.profile.ImageUrl" class="w-100 float-left">
+
+            </div>
+
+            <div class="col-lg-6 col-md-8 col-sm-12 col-xs-12 float-left">
+              <h2 class="doctor float-left w-100 override-color-green">{{provider.profile.Name}}
+              </h2>
+              <ul class="rating2 w-100 float-left">
+                <h4>{{provider.profile.Settings.Rating}}/5</h4>
+                <!-- <li>
+                                    <i class="fa fa-star"></i>
+                                </li>
+                                <li>
+                                    <i class="fa fa-star"></i>
+                                </li>
+                                <li>
+                                    <i class="fa fa-star"></i>
+                                </li>
+                                <li>
+                                    <i class="fa fa-star"></i>
+                                </li>
+                                <li>
+                                    <i class="fa fa-star-half-o"></i>
+                                </li> -->
+
+                <!-- <div *ngIf="ratingpopup==false || ratingpopup1==false"> -->
+                <!-- <app-rating  [data]='schedular' [rating]='provider.profile.Settings.Rating' [itemId]='provider.profile.Id'  class="rating2"></app-rating> -->
+
+                <fieldset class="rating">
+                  <input type="radio" value="5" [checked]="provider.profile.Settings.Rating===5" />
+                  <label title="Rocks!">5 stars</label>
+
+                  <input type="radio" value="4" [checked]="provider.profile.Settings.Rating===4" />
+                  <label title="Pretty good">4 stars</label>
+
+                  <input type="radio" value="3" [checked]="provider.profile.Settings.Rating===3" />
+                  <label title="Meh">3 stars</label>
+
+                  <input type="radio" value="2" [checked]="provider.profile.Settings.Rating===2" />
+                  <label title="Kinda bad">2 stars</label>
+
+                  <input type="radio" value="1" [checked]="provider.profile.Settings.Rating===1" />
+                  <label title="Sucks big time">1 star</label>
+                </fieldset>
+                <!-- </div> -->
+              </ul>
+              <a class="view-profile" (click)="viewprofile(provider.profile.Id,provider.profile.ImageUrl)">View Profile</a>
+            </div>
+          </div>
+          <div class="col-lg-7 float-left textellipsis">
+            <!-- <p>Wang Inistitute</p> -->
+            {{provider.profile.Description}}
+          </div>
+          <!-- <div class="col-lg-4 float-left">
+                        <!-- <p>Opthamologist</p> -->
+          <!-- </div> -->
+
+        </collapsible-header>
+        <collapsible-body>
+          <!-- [expanded]="i==0" -->
+          <div class="w-100 float-left cbody-child" *ngIf="provider.showProviderDetails == true">
+            <a href="javascript:;;" class="col-lg-1 icon-mines col-md-1 col-sm-6 col-xs-6 text-center float-left" (click)="providerDetails(provider, i, false)">
+            </a>
+            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-6 float-left">
+              <div class="profile_pic float-left">
+
+                <img *ngIf="provider.profile.ImageUrl =='' || provider.profile.ImageUrl =='null'" src="assets/images/doctor.jpg" class="w-100 float-left">
+                <img *ngIf="provider.profile.ImageUrl !='' || provider.profile.ImageUrl !='null'" [src]="provider.profile.ImageUrl" class="w-100 float-left">
+              </div>
+              <div class="col-lg-6 col-md-8 col-sm-12 col-xs-12 float-left">
+                <h2 class="doctor float-left w-100 mt-3">{{provider.profile.Name}}
+                </h2>
+                <p class="about-doc w-100 float-left mt-2">
+                  <span class="w-100 float-left">{{provider.profile.ServiceType}}</span>
+                </p>
+                <ul class="rating2 w-100 float-left">
+                  <h4>{{provider.profile.Settings.Rating}}/5</h4>
+                  <!-- <li>
+                                        <i class="fa fa-star"></i>
+                                    </li>
+                                    <li>
+                                        <i class="fa fa-star"></i>
+                                    </li>
+                                    <li>
+                                        <i class="fa fa-star"></i>
+                                    </li>
+                                    <li>
+                                        <i class="fa fa-star"></i>
+                                    </li>
+                                    <li>
+                                        <i class="fa fa-star-half-o"></i>
+                                    </li> -->
+
+                  <app-rating [data]='schedular' [rating]='provider.profile.Settings.Rating' [itemId]='provider.profile.Id' class="rating2"></app-rating>
+
+                </ul>
+                <a class="view-profile mt-3 float-left" (click)="viewprofile(provider.profile.Id,provider.profile.ImageUrl)">View Profile</a>
+
+              </div>
+
+              <p class="about-doc w-100 float-left mt-2 textellipsis">
+                <br> {{provider.profile.Description}}
+
+              </p>
+              <!-- <p class="about-doc float-left mt-2">
+                                <span class="w-100 float-left">{{provider.profile.ServiceType}}</span>
+                            </p> -->
+              <!-- <p class="about-doc">
+                            <span class="w-100 float-left">Institute:</span>Wang Institute</p> -->
+
+            </div>
+            <div class="col-lg-7 float-left slot-carousel">
+              <!--Carousel Wrapper-->
+              <mdb-carousel #carouselRef [isControls]="true" [animation]="'slide'" data-interval="false">
+                <a class="carousel-control-prev ng-star-inserted controls2" [class.disabled]="isPrevious==true" (click)="carouselRef.previousSlide();previous(provider, i, true, false,$event)"></a>
+                <a class="carousel-control-next ng-star-inserted controls2" (click)="carouselRef.nextSlide();next(provider, i, true, false)"></a>
+                <!--First slide-->
+                <mdb-slide>
+                  <div class="w-100 float-left tpadding " *ngIf="provider.emptySlots.length==0">
+                    <p class="text-center">There are no slots available for this provider</p>
+                  </div>
+                  <div class="w-100 float-left tpadding nextavailability  text-center" *ngIf="nextavailabilitydt != ''">
+                    <button (click)="next(provider, i, true, false)">Next availability is {{nextavailabilitydt}}</button>
+                  </div>
+                  <div class="w-100 float-left" *ngIf="provider.emptySlots.length>0 ">
+
+                    <div class="col-lg-4 slot float-left" *ngFor="let daysname of provider.emptySlots">
+                      <div class="row">
+                        <span class="w-100 float-left text-center slot-title">
+                          <i class="icon-my-appointments"></i>{{daysname.Displaydate}} ({{daysname.dayname | slice:0:3}})</span>
+                      </div>
+                      <div class="w-100 float-left tpadding  text-center" *ngIf="daysname.slots.length==0 && nextavailabilitydt == ''">
+                        <p class="text-center">There are no slots available for this day</p>
+
+                      </div>
+
+                      <ng-scrollbar class="slots-container-scrollbar w-100 float-left">
+                        <div class="float-left w-100 slots-container">
+                          <div class="col-lg-6 float-left slot-date" *ngFor="let slates of daysname.slots; let i=index">
+                            <a class="w-100 float-left text-center" href="javascript:;;" data-toggle="modal" data-target="#slot_popup" (click)="slot_popup.show();choosedSloat(provider.profile.ImageUrl,provider.profile.Id,provider.profile.Name,provider.profile.ServiceType,slates,daysname,provider);"
+                              mdbWavesEffect title="Select {{slates.fromtime}} on {{daysname.Displaydate}}">{{slates.fromtime}}</a>
+                          </div>
+                        </div>
+                      </ng-scrollbar>
+                    </div>
+                  </div>
+                </mdb-slide>
+                <mdb-slide>
+                  <div class="w-100 float-left tpadding " *ngIf="provider.emptySlots.length==0">
+                    <p class="text-center">There are no slots available for this provider</p>
+                  </div>
+                  <div class="w-100 float-left tpadding nextavailability  text-center" *ngIf="nextavailabilitydt != ''">
+                    <button (click)="next(provider, i, true, false)">Next availability is {{nextavailabilitydt}}</button>
+                  </div>
+
+                  <div class="w-100 float-left" *ngIf="provider.emptySlots.length>0">
+
+                    <div class="col-lg-4 slot float-left" *ngFor="let daysname of provider.emptySlots">
+                      <div class="row">
+                        <span class="w-100 float-left text-center slot-title">
+                          <i class="icon-my-appointments"></i>{{daysname.Displaydate}} ({{daysname.dayname | slice:0:3}})</span>
+                      </div>
+                      <div class="w-100 float-left tpadding  text-center" *ngIf="daysname.slots.length==0 && nextavailabilitydt == ''">
+                        <p class="text-center">There are no slots available for this day</p>
+
+                      </div>
+                      <ng-scrollbar class="slots-container-scrollbar w-100 float-left">
+                        <div class="float-left w-100 slots-container">
+                          <div class="col-lg-6 float-left slot-date" *ngFor="let slates of daysname.slots; let i=index">
+                            <a class="w-100 float-left text-center" href="javascript:;;" data-toggle="modal" data-target="#slot_popup" (click)="slot_popup.show();choosedSloat(provider.profile.ImageUrl,provider.profile.Id,provider.profile.Name,provider.profile.ServiceType,slates,daysname,provider);"
+                              mdbWavesEffect>{{slates.fromtime}}</a>
+                          </div>
+                        </div>
+                      </ng-scrollbar>
+                    </div>
+                  </div>
+                </mdb-slide>
+              </mdb-carousel>
+              <!--/.Carousel Wrapper-->
+            </div>
+
+          </div>
+        </collapsible-body>
+      </collapsible-list-item>
+
+    </collapsible-list>
+  </div>
+</div>
+<div class="w-100" *ngIf="searchsts == false">
+  <!-- Google Map Start -->
+  <div id="googleMap"></div>
+</div>
+<div class="w-100 no-results" *ngIf="searchsts == true && appointmentsModel.length==0">
+  <!-- Google Map Start -->
+  <p class="text-center">
+    <span class="icon-no_search_re mr-3"></span>Sorry, no results found.
+  </p>
+</div>
+<div class="w-100 testimonials landing-container float-left" *ngIf="appointmentsModel.length==0">
+  <h1 class="col-lg-9 float-left text-center">Our Testimonials</h1>
+  <h1 class="col-lg-3 float-left text-center">News</h1>
+  <div class="col-lg-9 no_padding float-left">
+    <!--Carousel Wrapper-->
+    <mdb-carousel [isControls]="true" [animation]="'slide'">
+      <!--First slide-->
+      <mdb-slide>
+        <div class="col-lg-4 slide-item" *ngFor="let item of ourallTestimonials">
+          <img src="{{item.ImageUrl}}" class="rounded-circle">
+          <p class="w-100 float-left text-center">{{item.Text}}</p>
+        </div>
+        <!-- <div class="col-lg-4 slide-item">
+                    <img src="assets/images/avatar.png" class="rounded-circle">
+                    <p class="w-100 float-left text-center">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer</p>
+                </div>
+                <div class="col-lg-4 slide-item">
+                    <img src="assets/images/avatar.png" class="rounded-circle">
+                    <p class="w-100 float-left text-center">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer</p>
+                </div> -->
+      </mdb-slide>
+      <!--/First slide-->
+      <mdb-slide>
+        <div class="col-lg-4 slide-item" *ngFor="let item of ourallTestimonials">
+          <img src="{{item.ImageUrl}}" class="rounded-circle">
+          <p class="w-100 float-left text-center">{{item.Text}}</p>
+        </div>
+        <!-- <div class="col-lg-4 slide-item">
+                    <img src="assets/images/avatar.png" class="rounded-circle">
+                    <p class="w-100 float-left text-center">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer</p>
+                </div>
+                <div class="col-lg-4 slide-item">
+                    <img src="assets/images/avatar.png" class="rounded-circle">
+                    <p class="w-100 float-left text-center">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer</p>
+                </div> -->
+      </mdb-slide>
+    </mdb-carousel>
+    <!--/.Carousel Wrapper-->
+  </div>
+  <div class="col-lg-3 news no_padding float-left">
+    <!--Carousel Wrapper-->
+    <mdb-carousel [isControls]="true" [animation]="'slide'">
+      <!--First slide-->
+      <mdb-slide>
+        <div class="slide-item" *ngFor="let item of allNews">
+          <img src="{{item.ImageUrl}}" class="rounded-circle">
+          <p class="w-100 float-left text-center"> {{item.Text}} </p>
+        </div>
+      </mdb-slide>
+      <!--/First slide-->
+      <!-- <mdb-slide>
+                <div class="slide-item">
+                    <img src="assets/images/avatar.png" class="rounded-circle">
+                    <p class="w-100 float-left text-center">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer</p>
+                </div>
+            </mdb-slide> -->
+    </mdb-carousel>
+    <!--/.Carousel Wrapper-->
+  </div>
+</div>
+
+
+<div mdbModal #slot_popup="mdb-modal" class="modal fade" id="slot_popup" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title w-100" id="myModalLabel">Confirm Appointment</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="slot_popup.hide();close();">
+          <span class="icon-close" aria-hidden="true"></span>
+        </button>
+      </div>
+      <div class="modal-body  w-100">
+        <form [formGroup]="userForm" (submit)="bookslot()">
+
+          <div class="col-lg-2 profile_pic float-left no_padding">
+            <img *ngIf="imageUrl =='' || imageUrl ==null" src="assets/images/avatar.png" class="float-left w-100">
+            <img *ngIf="imageUrl !='' || imageUrl !=null" src="{{imageUrl}}">
+          </div>
+
+          <div class="col-lg-4 float-left">
+            <h5 class="override-color-green">{{providerName}}</h5>
+            <!-- <h6 class="w-100 float-left">
+                            <span class="w-100 float-left">Institute :</span> Wang Institute</h6> -->
+            <h6 class="w-100 float-left">
+              <span class="w-100 float-left mt-1">Service : {{serviceType}}</span>
+            </h6>
+          </div>
+          <div class="col-lg-3 no_padding float-left">
+            <h3 class="w-100 float-left">Your Appointment Details</h3>
+            <h6 class="w-100 mt-1 float-left">Date: {{regModel.slotdate}}</h6>
+            <h6 class="w-100 mt-1 float-left">Time: {{regModel.fromtime}}</h6>
+          </div>
+
+
+          <!-- <div *ngIf="successmessage==true">
+
+                        <p class="text-center">{{message}}</p>
+                        <i class="icon-check"></i>
+
+                    </div>
+                    <div *ngIf="errorstatus==true">
+
+                        <p class="text-center">{{message}}</p>
+
+                    </div> -->
+
+
+          <div class="w-100 float-left" *ngIf="errorstatus==true">
+            <i class="error2 icon-error "></i>
+            <p class="text-center mt-3" [innerHTML]="message"></p>
+          </div>
+
+
+
+          <ng-scrollbar *ngIf="successmessage==false" class="modal-popup-scrollbar w-100 float-left">
+            <hr *ngIf="successmessage==false" class="row no_margin">
+            <div class="float-left w-100 mt-2">
+              <div class="input-group col-lg-6  float-left">
+                <span class="input-title w-100 float-left"> First Name
+                  <span class="color-red">*</span>
+                </span>
+                <input class="form-control w-100 float-left" type="text" placeholder="First Name" formControlName="FirstName" [(ngModel)]="regModel.FirstName"
+                  maxlength="50">
+                <app-validation [control]="userForm.controls.FirstName">
+                </app-validation>
+              </div>
+              <div class="input-group col-lg-6  float-left">
+                <span class="input-title w-100 float-left">Last Name
+                  <span class="color-red">*</span>
+                </span>
+                <input class="form-control w-100 float-left" type="text" placeholder="Last Name" formControlName="LastName" [(ngModel)]="regModel.LastName"
+                  maxlength="50">
+                <app-validation [control]="userForm.controls.LastName">
+                </app-validation>
+              </div>
+              <div class="input-group col-lg-6  float-left">
+                <span class="input-title w-100 float-left">City
+                  <span class="color-red"></span>
+                </span>
+                <input class="form-control w-100 float-left" type="text" placeholder="City" formControlName="City" [(ngModel)]="regModel.City"
+                  maxlength="50">
+              </div>
+              <div class="input-group col-lg-6  float-left">
+                <span class="input-title w-100 float-left">State
+                  <span class="color-red"></span>
+                </span>
+                <select class="mdb-select form-control w-100 float-left" name="State" formControlName="State" [(ngModel)]="regModel.State">
+                  <option value='' disabled selected>-- Choose State--</option>
+
+                  <option *ngFor="let option of stateNames" [ngValue]='option.Name'>{{option.Name}}</option>
+                </select>
+              </div>
+              <div class="input-group col-lg-6  float-left">
+                <span class="input-title w-100 float-left">Zip Code
+                  <span class="color-red">*</span>
+                </span>
+                <input class="form-control w-100 float-left" type="text" placeholder="Zip Code" formControlName="Zipcode" [(ngModel)]="regModel.Zipcode"
+                  maxlength="5">
+                <app-validation [control]="userForm.controls.Zipcode">
+                </app-validation>
+              </div>
+              <div class="input-group col-lg-6  float-left">
+                <span class="input-title w-100 float-left">Phone Number
+                  <span class="color-red">*</span>
+                </span>
+                <input class="form-control w-100 float-left" type="text" placeholder="Phone Number" [textMask]="getNHSNumberMask()" formControlName="PhoneNo"
+                  [(ngModel)]="regModel.PhoneNo" (blur)="unmasckphone($event)" [ngClass]="{'error' : phonests}">
+                <app-validation [control]="userForm.controls.PhoneNo">
+                </app-validation>
+                <!-- <div *ngIf="phonests" class="errormsg"> Number Should Be 10 Digits</div> -->
+              </div>
+              <div class="input-group col-lg-6  float-left">
+                <span class="input-title w-100 float-left">Email
+                  <span class="color-red">*</span>
+                </span>
+                <input class="form-control w-100 float-left" type="text" placeholder="Email" formControlName="Email" [(ngModel)]="regModel.Email"
+                  [ngClass]="{'error':emailvalid==true}">
+                <app-validation [control]="userForm.controls.Email">
+                </app-validation>
+              </div>
+
+              <div class="input-group col-lg-3   float-left">
+                <span class="input-title w-100 float-left">DOB
+                  <!-- <span class="color-red">*</span> -->
+                </span>
+
+                <i class="icon-calendar waves-effect " aria-hidden="true" (click)="Birthdate.toggleCalendar('Birthdate')"></i>
+                <input class="form-control datewidth w-100 float-left" style="float:none" (keyup)="dateMask($event)" formControlName="Birthdate"
+                  placeholder="MM/DD/YYYY" ngx-mydatepicker name="Birthdate" [(ngModel)]="modal.Birthdate" [options]="myOptions"
+                  #Birthdate="ngx-mydatepicker" (inputFieldChanged)="onInputFieldDobChanged($event,'birthday')" (dateChanged)="onbirthdateDateChanged($event)"
+                  maxlength="10" />
+                <app-validation [control]="userForm.controls.Birthdate">
+                </app-validation>
+                <div *ngIf="enterdatests === true && validdate === false && modal.Birthdate==null">
+                  <div style="color:red"> Invalid Date.</div>
+                </div>
+              </div>
+              <div class="input-group col-lg-3   float-left">
+                <span class="input-title w-100 float-left">Age
+                  <!-- <span class="color-red">*</span> -->
+                </span>
+                <input class="form-control w-100 float-left" type="text" placeholder="Age" formControlName="Age" [(ngModel)]="regModel.Age">
+                <app-validation [control]="userForm.controls.Age">
+                </app-validation>
+              </div>
+              <div class="input-group col-lg-12 float-left">
+
+                <span for="exampleFormControlTextarea2">Vision Issue</span>
+                <textarea class="form-control rounded-0 w-100 float-left" id="exampleFormControlTextarea2" rows="5" formControlName="Message"
+                  [(ngModel)]="regModel.Message"></textarea>
+
+              </div>
+
+              <button *ngIf="(!loading)&&(successmessage==false)" type="submit" class="btn btn-primary no_margin btn-green float-right waves-light"
+                mdbWavesEffect [disabled]="!userForm.valid">Confirm</button>
+              <input *ngIf="loading" type="button" class="btn btn-secondary float-right waves-light" value="Submitting....">
+            </div>
+          </ng-scrollbar>
+        </form>
+        <div class="w-100 float-left" *ngIf="successmessage==true">
+          <i class="sucess icon-check "></i>
+          <p class="text-center">
+            <span class="w-100 float-left mt-2 mb-2"> Registration completed successfully.</span>
+            <span class="w-100">Please check your registered email for your login & appointment details.</span>
+          </p>
+          <button class="btn btn-primary btn-sm waves-light float-right" (click)="slot_popup.hide();close();" mdbWavesEffect>Ok</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- <div *ngIf="redirected">
+
+  <center>
+
+     Redirected from visioncareconnect.com
+
+  </center>
+</div> -->

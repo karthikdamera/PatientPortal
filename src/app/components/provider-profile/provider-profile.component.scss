@@ -1,0 +1,41 @@
+.icon_back,
+.fa-angle-left {
+    font-size: 32px;
+    line-height: 24px;
+    color: #fff;
+}
+
+// .person-header {
+//     margin-top: 52px;
+// }
+
+.provider_details {
+    h4,
+    span {
+        color: #fff;
+    }
+}
+
+.media {
+    background: rgba(82, 46, 146, .05);
+    padding: 1em;
+    img {
+        width: 120px;
+        height: 120px;
+    }
+    h5 {
+        font-size: 24px;
+        font-weight: 400;
+        line-height: 26px;
+    }
+}
+.nextavailability {
+  z-index: 1;
+  button {
+    height: 40px;
+    width: 80%;
+    cursor: pointer;
+    color: #ffffff !important;
+    background: #50ab50 !important;
+  }
+}

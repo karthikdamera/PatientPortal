@@ -1,0 +1,58 @@
+export class SlotConfigurationModel {
+  Id: number;
+  ProviderId: number;
+  SlotDuration = "";
+  AppointmentsLimitPerSlot: number;
+  MorningFromTime = "";
+  MorningToTime = "";
+  AfternoonFromTime = "";
+  AfternoonToTime = "";
+  EveningFromTime = "";
+  EveningToTime = "";
+  IsActive: boolean;
+  Date:  string;
+  UserName: string;
+  ConfigTypeId = "";
+  ConfigType = "";
+  MorningFromTimeFormatted = "";
+  MorningToTimeFormatted = "";
+  AfternoonFromTimeFormatted = "";
+  AfternoonToTimeFormatted = "";
+  EveningFromTimeFormatted = "";
+  EveningToTimeFormatted = "";
+  WorkingDays: string;
+  AppointmentTypeIds: string;
+  LocationId: string;
+  ProviderAppoitmentTypesDurations: Array<object>;
+  DisableSlots: boolean;
+  EndInDays: number;
+  constructor() {
+    this.Id = 0;
+    this.ProviderId = 0;
+    this.SlotDuration = null;
+    this.AppointmentsLimitPerSlot = 1;
+    this.MorningFromTime = "";
+    this.MorningToTime = "";
+    this.AfternoonFromTime = "";
+    this.AfternoonToTime = "";
+    this.EveningFromTime = "";
+    this.EveningToTime = "";
+    this.IsActive = true;
+    // this.Date = new Date();
+    this.UserName = "";
+    this.ConfigTypeId = "";
+    this.ConfigType = "";
+    this.MorningFromTimeFormatted = "";
+    this.MorningToTimeFormatted = "";
+    this.AfternoonFromTimeFormatted = "";
+    this.AfternoonToTimeFormatted = "";
+    this.EveningFromTimeFormatted = "";
+    this.EveningToTimeFormatted = "";
+    this.WorkingDays = "";
+    this.AppointmentTypeIds = "";
+    this.LocationId = "";
+    this.EndInDays = 0;
+    this.DisableSlots = false;
+    this.Date = '';
+  }
+}

@@ -1,0 +1,174 @@
+<!-- <div class="jumbotron heading">
+  <h3>Questionnaire</h3>
+</div> -->
+<div class="row" style="height:100vh;background:#fff;">
+<div class="col-md-3" style="background:#42CCFF;text-align:center;height:100vh;">
+    <img src="/assets/css/kiosk/quest.png" style="
+   margin:7em auto 4em auto;
+    text-align: center;
+    display: block;
+    border: 1px solid #598192;
+    padding: 0.5em;
+    border-radius: 50%;width:140px;
+">
+    <h3 style="color:#fff;">Solve your Problems all time with our questions for the time being. </h3>
+  
+    <a ng-reflect-router-link="/kiosk/home" href="/kiosk/home">
+        <img src="https://d30y9cdsu7xlg0.cloudfront.net/png/14135-200.png" style="width:50px;">
+    </a>
+</div>
+    <div class="col-md-9">
+
+<div class="entry">
+    <div class="entry-section">
+        <!-- <div class="entry-header">
+            <div class="col-12 header-title">
+                <div class="title-text">
+                    <h2>{{assessmentSection.SurveyDescription}}</h2>
+                </div>
+            </div>
+
+        </div> -->
+        <!-- entry-header -->
+        <div class="entry-content">
+
+            <!-- col-12 -->
+            <div class="col-12">
+                <div class="entry-title">
+                    <h5 style="color:#008d94;">{{assessmentSection.SectionName}}</h5>
+                </div>
+            </div>
+            <!-- col-12 -->
+            <!-- col-12 -->
+            <!--parent Question loop start-->
+            <div class="col-12">
+                <div class="row divChildQuestion" *ngFor="let parentQ of assessmentSection.Questions let i = index">
+                    <div class="col-4 entry-child ">
+                        <div class="form-group entry-item">
+                            <div class="form-label">
+                                <label class="label-title"> {{i+1}}. {{parentQ.QuestionName}}</label>
+                            </div>
+                            <div class="form-content" *ngIf="parentQ.TypeId==questiontype.RADIO">
+                                <div class="pill-group" data-toggle="buttons">
+                                    <label class="btn btn-secondary button-selection " *ngFor="let choice of parentQ.Choices" [ngClass]="{'active':parentQ.SelectedID == choice.ChoiceId}">
+                                        <input class="form-control" type="radio">
+                                        <div class="input-content" (click)="onSelect(choice,'',i,assessmentSection,'',m)"> {{choice.ChoiceName}} </div>
+                                    </label>
+                                </div>
+                            </div>
+                            <!--option type2="textbox"-->
+                            <div class="form-content" *ngIf="parentQ.TypeId==questiontype.TEXTBOX">
+                                <input class="form-control" #myvalue value="{{parentQ.SelectedValue}}" type="text" (blur)="onSelect(parentQ.Choices[0],myvalue.value,i,assessmentSection,'',m)"
+                                    (keypress)="enableSave()">
+                            </div>
+                            <div class="form-content" *ngIf="parentQ.TypeId==questiontype.DROPDOWN">
+                                <select class="form-control" #choice (change)="onSelect(choice,choice.value,i,assessmentSection,'',m)">
+                                    <option value="0">Choose One</option>
+                                    <option *ngFor="let choice of parentQ.Choices let i=index" [value]="choice.ChoiceId" [selected]="parentQ.SelectedID==choice.ChoiceId">{{choice.ChoiceName}}
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="form-content" *ngIf="parentQ.TypeId==questiontype.CHECKBOX">
+                                <div class="pill-group" data-toggle="checkbox">
+                                    <div class="btn" *ngFor="let choice of parentQ.Choices">
+                                        <input type="checkbox" [attr.name]="choice" [value]="choice" [checked]="choice.Checked" (click)="onSelect(choice,choice.value,i,assessmentSection,$event.target.checked,m)">{{choice.ChoiceName}}
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <!--parent Question options end -->
+                    <!--child Question loop start -->
+                    <div class="col-6 entry-child">
+                        <div class="form-group" *ngFor="let childQ of parentQ.ChildQuestions let c= index">
+
+                            <div class="form-label">
+
+                                <label class="label-title"> {{childQ.QuestionName}} </label>
+                            </div>
+
+                            <!--child Question options start-->
+
+                            <!--option type1="radio"-->
+
+                            <div class="form-content" *ngIf="childQ.TypeId==questiontype.RADIO">
+
+                                <div class="pill-group" data-toggle="buttons">
+
+                                    <label class="btn btn-secondary button-selection" *ngFor="let childChoice of childQ.Choices" [ngClass]="{'active':childQ.SelectedID == childChoice.ChoiceId}">
+
+                                        <input class="form-control" type="radio">
+
+                                        <div class="input-content" (click)="onSelectChild(childChoice,'',childQ,parentQ.QuestionId,'',c,m)"> {{childChoice.ChoiceName}} </div>
+
+                                    </label>
+
+                                </div>
+
+
+                            </div>
+
+                            <!--option type1="textbox"-->
+
+                            <div class="form-content" *ngIf="childQ.TypeId==questiontype.TEXTBOX ">
+
+                                <input class="form-control" #myvalue value="{{childQ.SelectedValue}}" *ngFor="let childChoice of childQ.Choices" type="text"
+                                    (blur)="onSelectChild(childChoice,myvalue.value,childQ,parentQ.QuestionId,'',c,m)">
+
+
+                            </div>
+
+                            <!--option type1="dropdown"-->
+
+                            <div class="form-content" *ngIf="childQ.TypeId==questiontype.DROPDOWN">
+                                <select class="form-control" #choice (change)="onSelectChild(choice,choice.value,childQ,parentQ.QuestionId,'',c,m)">
+                                    <option value="0">Choose One</option>
+                                    <option *ngFor="let choice of childQ.Choices" [value]="choice.ChoiceId" [selected]="childQ.SelectedID==choice.ChoiceId">{{choice.ChoiceName}}</option>
+                                </select>
+
+                            </div>
+                            <div class="form-content" *ngIf="childQ.TypeId==questiontype.CHECKBOX">
+                                <div class="pill-group" data-toggle="checkbox">
+                                    <div class="btn" *ngFor="let choice of childQ.Choices">
+                                        <input type="checkbox" [attr.name]="choice" [value]="choice" [checked]="choice.Checked" (click)="onSelectChild(choice,choice.value,childQ,parentQ.QuestionId,$event.target.checked,c,m)">{{choice.ChoiceName}}
+                                    </div>
+                                </div>
+
+                            </div>
+                            <!--child  Question options  end-->
+                        </div>
+                    </div>
+                    
+                    <!--child  Question loop end -->
+                </div>
+            </div>
+            <!--parent Question loop end-->
+            <!-- col-12 entry-child -->
+            
+            <div class="entry-action">
+                <button *ngIf="totalNumberOfSection>1" class="btn btn-primary btn-color" type="button" (click)="prevButton()" [disabled]="currentPage==0"><i class="fa fa-angle-left" aria-hidden="true"></i>&nbsp;Prev</button>
+                <button *ngIf="totalNumberOfSection>1" class="btn btn-primary btn-color" type="button" (click)="nextButton()" [disabled]="currentPage==(totalNumberOfSection-1)">Next&nbsp;<i class="fa fa-angle-right" aria-hidden="true"></i></button>
+                <button _ngcontent-c4="" *ngIf="loading" class="btn-round blue-btn buttonload" type="submit" [disabled]="buttonloading">
+                    <i class="fa fa-spinner fa-spin faloading"></i>Save</button>
+                <button class="btn btn-primary btn-color" [ngClass]="{'btn-hidden' : currentPage!=(totalNumberOfSection-1)}" [disabled]="disableButton || loading" *ngIf="buttonloading" type="submit"
+                    (click)="assessmentPost()">Save</button>
+                <div class="clear"></div>
+                
+            </div>
+            <!-- entry-action -->
+        </div>
+        <!-- entry-content -->
+    </div>
+    <!-- entry-section -->
+</div>
+    </div>
+</div>
+
+
+
+<!-- ***************************assessment view start ************************-->
+
+<!-- entry -->
+
+<!-- ***************************assessment view ends ************************-->

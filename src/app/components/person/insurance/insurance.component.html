@@ -1,0 +1,150 @@
+<div class="w-100 page-titel float-left">
+  <h4 class="float-left titel">Insurance & Subscriber</h4>
+  <div class="w-100 page-titel-2 float-left">
+    <h4 class="float-left titel ">Cards</h4>
+    <button type="button" class="btn btn-primary no_margin width_auto float-right waves-light text-center" data-toggle="modal"
+      data-target="#addinsurance-card" (click)="addInsurance.show();toClear('open');" mdbWavesEffect>
+      Add card
+    </button>
+  </div>
+</div>
+<div class=" w-100 float-left page-container ">
+  <div class="row">
+    <div class="insurance-card float-left" *ngFor="let insuranceinfo of insuranceData" [ngClass]="{'secondarycard':insuranceinfo.CoverageType=='Secondary'}">
+      <h5 class="float-left w-100">
+        <span class="icon-insurance float-left"></span>{{insuranceinfo.InsuranceName}}</h5>
+      <div class="float-left insu-detials">
+        <h6 class="w-100 float-left">
+          <span>Insurance ID No.</span>: {{insuranceinfo.InsuranceId}}</h6>
+        <h6 class="w-100 float-left">
+          <span>Type</span>: {{insuranceinfo.CoverageType}}</h6>
+        <h6 class="w-100 float-left" [ngClass]="{'active':insuranceinfo.IsActive == true}" *ngIf="insuranceinfo.IsActive == true">
+          <span>Status</span>: Active</h6>
+        <h6 class="w-100 float-left" [ngClass]=" {'inactive':insuranceinfo.IsActive == false}" *ngIf="insuranceinfo.IsActive == false">
+          <span>Status</span>: InActive</h6>
+          <label class="custom-check float-right" *ngIf="insuranceinfo.IsActive!=true">
+            <input type="radio" name="card" >
+            <i class="checkmark" (click)="makeInsuranceActive(insuranceinfo.Id,'true',insuranceinfo.CoverageType)"></i>
+        </label>
+        <!-- <label class="float-right" class="errormsg" *ngIf="insuranceinfo.IsActive==true">Primary</label> -->
+      </div>
+    </div>
+  </div>
+</div>
+<app-subscriber class="w-100 float-left"></app-subscriber>
+<div mdbModal #addInsurance="mdb-modal" class="modal fade" id="addinsurance-card" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+  aria-hidden="true" [config]="{backdrop: false, ignoreBackdropClick: true, keyboard:false}">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content rounded">
+      <div class="modal-header">
+        <h4 class="modal-title w-100" id="myModalLabel">Add Card</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="addInsurance.hide();toClear('close')">
+          <span aria-hidden="true">
+            <i class="icon-close" aria-hidden="true"></i>
+          </span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="input-group col-lg-4 float-left">
+            <span class="input-title w-100 float-left">Insurance Type
+              <span class="color-red"></span>
+            </span>
+            <select name="sample" class="mdb-select form-control w-100 float-left" required [(ngModel)]="insuranceModel.Insurancevalid" (change)="changeInsurance(insurancetype.value)"
+              #insurancetype>
+              <option value="" selected>Select</option>
+              <option *ngFor="let type of types" [value]="type">{{type}}</option>
+            </select>
+          </div>
+          <div class="input-group col-lg-4 float-left" *ngIf="model.instype=='Primary'">
+            <span class="input-title w-100 float-left">Primary Insurance
+              <span class="color-red">*</span>
+            </span>
+            <select name="sample" class="mdb-select form-control w-100 float-left" id="InsuranceName" [(ngModel)]="insuranceModel.InsuranceName">
+              <option value="" selected>Select</option>
+              <option *ngFor="let data of insuranceNames">{{data.payername}}</option>
+            </select>
+          </div>
+          <div class="input-group col-lg-4 float-left" *ngIf="model.instype=='Primary'">
+            <span class="input-title w-100 float-left">Primary Insurance ID.No
+              <span class="color-red">*</span>
+            </span>
+            <input autocomplete="off" autofocus="" class="mdb-select form-control w-100 float-left" id="InsuranceId" [(ngModel)]="insuranceModel.InsuranceId"
+              maxlength="20" placeholder="Primary Insurance ID No." type="text" minlength="12"/>
+          </div>
+          <div class="input-group col-lg-4 float-left" *ngIf="model.instype=='Secondary'">
+            <span class="input-title w-100 float-left">Secondary Insurance
+              <span class="color-red">*</span>
+            </span>
+            <select name="sample" class="mdb-select form-control w-100 float-left" id="InsuranceName" [(ngModel)]="insuranceModel.InsuranceName">
+              <option value="" selected disabled>Select</option>
+              <option *ngFor="let data of insuranceNames">{{data.payername}}</option>
+            </select>
+          </div>
+          <div class="input-group col-lg-4 float-left" *ngIf="model.instype=='Secondary'">
+            <span class="input-title w-100 float-left">Secondary Insurance ID.No
+              <span class="color-red">*</span>
+            </span>
+            <input autocomplete="off" autofocus="" class="mdb-select form-control w-100 float-left" maxlength="20" placeholder="Secondary Insurance ID No."
+              id="InsuranceId" [(ngModel)]="insuranceModel.InsuranceId" type="text" minlength="12" />
+          </div>
+          <div *ngIf="model.instype=='Primary'" class="float-left images-uplode w-100">
+            <h5 class="float-left col-lg-12">Upload Images</h5>
+            <div class="float-left col-lg-4">
+              <p class="fileUpload w-100 float-left">Card Front</p>
+              <div class="upload_img w-100 float-left" >
+                <div *ngFor="let file_src of file_srcs; let i = index">
+                  <img class="w-100 float-left img-fluid" [attr.src]='file_src' alt="" style="height:120px;"/>
+                </div>
+                <label class="uploadicon fa fa-camera text-center" for="upload-btn">
+                  <input id="upload-btn" type="file" multiple (change)="fileChange(input,'front')" #input>
+                </label>
+              </div>
+            </div>
+            <div class="float-left col-lg-4">
+              <p class="fileUpload w-100 float-left">Card Back</p>
+              <div class="upload_img w-100 float-left">
+                <div *ngFor="let file_src1 of file_srcs1; let i = index">
+                  <img class="w-100 float-left img-fluid" [attr.src]='file_src1' alt="" style="height:120px;"/>
+                </div>
+                <label class="uploadicon fa fa-camera text-center" for="upload-btn1">
+                  <input id="upload-btn1" type="file" multiple (change)="fileChange(input1,'back')" #input1>
+                </label>
+              </div>
+            </div>
+            <div class="w-100 float-left">
+              <button class="btn btn-primary waves-light float-right" mdbWavesEffect type="submit" (click)="eobCheckForPrimarySecondary()">Add INSURANCE</button>
+            </div>
+          </div>
+          <div *ngIf="model.instype=='Secondary'" class="float-left w-100 images-uplode">
+            <h5 class="float-left col-lg-12">Upload Images</h5>
+            <div class="float-left col-lg-4">
+              <p class="fileUpload w-100 float-left">Card Front</p>
+              <div class="upload_img w-100 float-left">
+                <div *ngFor="let file_src2 of file_srcs2; let i = index">
+                  <img [attr.src]='file_src2' alt="" />
+                </div>
+                <label class="uploadicon fa fa-camera text-center" for="upload-btn2">
+                  <input id="upload-btn2" type="file" multiple (change)="fileChange(input2,'sfront')" #input2>
+                </label>
+              </div>
+            </div>
+            <div class="float-left col-lg-4">
+              <p class="fileUpload w-100 float-left">Card Back</p>
+              <div class="upload_img w-100 float-left">
+                <div *ngFor="let file_src3 of file_srcs3; let i = index">
+                  <img [attr.src]='file_src3' alt="" />
+                </div>
+                <label class="uploadicon fa fa-camera text-center" for="upload-btn3">
+                  <input id="upload-btn3" type="file" multiple (change)="fileChange(input3,'sback')" #input3>
+                </label>
+              </div>
+            </div>
+            <div class="w-100 float-left">
+              <button class="btn btn-primary waves-light float-right" mdbWavesEffect type="submit"  (click)="eobCheckForPrimarySecondary()">Add INSURANCE</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

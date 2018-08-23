@@ -1,0 +1,295 @@
+<div class="w-100 mt-3 float-left" *ngIf="referalData.length>0">
+
+    <div class="card">
+      <div class="card-header" role="tab" id="headingFour">
+        <b>
+          <a href="javascript:void(0)">
+            Referral Information
+          </a>
+        </b>
+      </div>
+  
+      <div class="card-body" *ngIf="referalData.length>0">
+  
+  
+        <!-- <table class="table acctable"> -->
+        <form [formGroup]="referalForm">
+          <div class="input-group col-lg-6 float-left">
+            <span class="input-title w-100 float-left">Were you referred by another Physician?</span>
+            <p class="w-100 float-left input-discription" *ngIf="referalData.length>0 && !editsts"> :&nbsp;{{refferalModel.WereyouReferredByAnotherProvider}}</p>
+            <div class="form-select  w-100 float-left" *ngIf="editsts">
+              <select class="mdb-select form-control" [(ngModel)]="refferalModel.WereyouReferredByAnotherProvider" formControlName="WereyouReferredByAnotherProvider">
+                <option [ngValue]="undefined" selected>Please Select</option>
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
+              </select>
+              <app-validation [control]="refferalModel.WereyouReferredByAnotherProvider">
+              </app-validation>
+            </div>
+          </div>
+  
+  
+          <div class="input-group col-lg-6 float-left">
+            <span class="input-title w-100 float-left">Other</span>
+            <input class="form-control w-100 float-left" type="text" *ngIf="editsts" formControlName="HowDidYouHearAboutUsOther" [(ngModel)]="refferalModel.HowDidYouHearAboutUsOther">
+            <p class="w-100 float-left input-discription" *ngIf="referalData.length>0 && !editsts">:&nbsp;{{refferalModel.HowDidYouHearAboutUsOther}}</p>
+            <app-validation [control]="referalForm.controls.HowDidYouHearAboutUsOther">
+            </app-validation>
+          </div>
+  
+          <div class="input-group col-lg-6 float-left">
+            <span class="input-title w-100 float-left">Name of Referring Physician from Website</span>
+            <input class="form-control w-100 float-left" type="text" *ngIf="editsts" formControlName="NameOfReferringProviderFromWebsite"
+              [(ngModel)]="refferalModel.NameOfReferringProviderFromWebsite">
+            <p class="w-100 float-left input-discription" *ngIf="referalData.length>0 && !editsts"> :&nbsp;{{refferalModel.NameOfReferringProviderFromWebsite}}</p>
+            <app-validation [control]="referalForm.controls.NameOfReferringProviderFromWebsite">
+            </app-validation>
+          </div>
+          <div class="input-group col-lg-6 float-left">
+            <span class="input-title w-100 float-left">Name Of Referring Physician Organization If Not Listed Above</span>
+            <input class="form-control w-100 float-left" type="text" *ngIf="editsts" formControlName="ReferringProviderOrganizationIfNo"
+              [(ngModel)]="refferalModel.ReferringProviderOrganizationIfNo" [ngClass]="{error:validform==true}">
+            <p class="w-100 float-left input-discription" *ngIf="referalData.length>0 && !editsts"> :&nbsp;{{refferalModel.ReferringProviderOrganizationIfNo}}</p>
+            <app-validation [control]="referalForm.controls.ReferringProviderOrganizationIfNo">
+            </app-validation>
+          </div>
+  
+          <div class="input-group col-lg-6 float-left">
+            <span class="input-title w-100 float-left">How did you hear about us "Other"</span>
+  
+            <p class="w-100 float-left input-discription" *ngIf="referalData.length>0 && !editsts"> :&nbsp;{{refferalModel.HowDidYouHearAboutUs}}</p>
+            <div class="form-select  w-100 float-left" *ngIf="editsts">
+              <select class="mdb-select form-control" [(ngModel)]="refferalModel.HowDidYouHearAboutUs" formControlName="HowDidYouHearAboutUs">
+                <option [ngValue]="undefined" selected>Please Select</option>
+                <option value="Another Patient">Another Patient</option>
+                <option value="My Caseworker">My Caseworker</option>
+                <option value="My Insurance">My Insurance</option>
+                <option value="My Physician">My Physician</option>
+                <option value="Web">Web</option>
+                <option value="yelp">yelp</option>
+                <option value="ZocDoc">ZocDoc</option>
+                <option value="Other">Other</option>
+              </select>
+              <app-validation [control]="referalForm.controls.HowDidYouHearAboutUs">
+              </app-validation>
+            </div>
+          </div>
+          <div class="input-group col-lg-6 float-left">
+            <span class="input-title w-100 float-left">Name of Referring Physician Organization</span>
+  
+            <p class="w-100 float-left input-discription" *ngIf="referalData.length>0 && !editsts">:&nbsp;{{refferalModel.NameOfReferringProviderOrganization}}</p>
+            <div class="form-select w-100 float-left" *ngIf="editsts">
+              <select class="mdb-select form-control " [(ngModel)]="refferalModel.NameOfReferringProviderOrganization" formControlName="NameOfReferringProviderOrganization">
+                <option [ngValue]="undefined" selected>Please Select</option>
+                <option value="Beverly Hills Advanced Pain & Spine">Beverly Hills Advanced Pain & Spine</option>
+                <option value="Cedars Sinai Health Associates">Cedars Sinai Health Associates</option>
+                <option value="Cedars Sinai Medical Center">Cedars Sinai Medical Center</option>
+                <option value="Cedars Sinai Medical Group">Cedars Sinai Medical Group</option>
+                <option value="OneMedical">OneMedical</option>
+                <option value="UCLA">UCLA</option>
+                <option value="Not Listed Here - Please Enter Below">Not Listed Here - Please Enter Below</option>
+                <option value="NONE">NONE</option>
+              </select>
+              <app-validation [control]="referalForm.controls.NameOfReferringProviderOrganization">
+              </app-validation>
+            </div>
+          </div>
+  
+  
+  
+        </form>
+        <!-- </table> -->
+        <button class="btn btn-primary waves-light" title="Edit" *ngIf="!editsts" (click)="edit(refferalModel)">
+          Edit
+        </button>
+        <button class="btn btn-danger waves-light" title="Remove" *ngIf="!editsts" (click)="deletereferal.show()">
+          Remove
+        </button>
+        <button class="btn btn-primary waves-light" title="Save" *ngIf="editsts" (click)="AddandEditRefferal('refferalModel')">
+          Save
+        </button>
+        <button class="btn btn-danger waves-light" title="Cancel" *ngIf="editsts" (click)="Cancel()">
+          Cancel
+        </button>
+      </div>
+  
+    </div>
+  </div>
+  
+  <div class="container text-center" *ngIf="referalData.length<=0">
+    <p class="text-center w-100 float-left">How do you know about us..?</p>
+  
+    <button class="btn btn-primary waves-light" data-toggle="modal" data-target="#referraladdedit" (click)="addEdit.show();">
+      Let us Know</button>
+    <div *ngIf="referalData.length>0">
+      <i class="fa fa-spinner fa-spin"></i> Searching for record(s)
+    </div>
+  </div>
+  <div mdbModal #deletereferal="mdb-modal" class="modal fade" id="deletereferal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content rounded">
+      <div class="modal-header">
+        <h4>Delete Referral</h4>
+        <p hidden>{{refferalModel}}</p>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="deletereferal.hide()">
+          <span aria-hidden="true">
+            <i class="icon-close" aria-hidden="true"></i>
+          </span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p class=" text-center" id="myModalLabel">Do You want to delete?</p>
+        <button class="btn btn-danger float-right waves-light" (click)="deletereferal.hide()">No</button>
+        <button class="btn btn-primary float-right waves-light" (click)="DeleteReffral(refferalModel)">Yes</button>
+      </div>
+    </div>
+  </div>
+</div>
+  <!-- Referral tabledata end-->
+  <!-- referraladdedit model -->
+  
+  <div mdbModal #addEdit="mdb-modal" class="modal fade maincontainer" id="pharamaeditmodel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+    aria-hidden="true">
+    <!-- <div class="modal fade" id="referraladdedit" role="dialog"> -->
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content rounded">
+        <div class="modal-header">
+          <h4 class="modal-title w-100" id="myModalLabel">Referral</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="addEdit.hide()">
+            <span aria-hidden="true">
+              <i class="icon-close" aria-hidden="true"></i>
+            </span>
+          </button>
+        </div>
+  
+        <div class="modal-body">
+          <form [formGroup]="referalForm" (submit)="AddandEditRefferal()">
+            <div class="row mt-3">
+              <div class="input-group col-lg-6 float-left">
+                <span class="input-title w-100 float-left">How did you hear about us?
+                  <span class="color-red">*</span>
+                </span>
+                <div class="form-select  w-100 float-left">
+                  <select class="mdb-select form-control" formControlName="HowDidYouHearAboutUs" id="HowDidYouHearAboutUs" [(ngModel)]="refferalModel.HowDidYouHearAboutUs">
+                    <option [ngValue]="undefined" selected>Please Select</option>
+                    <option value="Another Patient">Another Patient</option>
+                    <option value="My Caseworker">My Caseworker</option>
+                    <option value="My Insurance">My Insurance</option>
+                    <option value="My Physician">My Physician</option>
+                    <option value="Web">Web</option>
+                    <option value="yelp">yelp</option>
+                    <option value="ZocDoc">ZocDoc</option>
+                    <option value="Other">Other</option>
+                  </select>
+                  <app-validation [control]="referalForm.controls.HowDidYouHearAboutUs">
+                  </app-validation>
+                </div>
+  
+              </div>
+              <div class="input-group col-lg-6 float-left">
+                <span class="input-title w-100 float-left">Other?</span>
+                <input class="form-control w-100 float-left" type="text" formControlName="HowDidYouHearAboutUsOther" id="HowDidYouHearAboutUsOther"
+                  [(ngModel)]="refferalModel.HowDidYouHearAboutUsOther">
+  
+              </div>
+  
+            </div>
+  
+            <div class="row mt-3">
+              <div class="input-group col-lg-6 float-left">
+                <span class="input-title w-100 float-left">Name of Referring Physician.
+                  <span class="color-red"> *</span>
+                </span>
+                <input class="form-control w-100 float-left" type="text" formControlName="NameOfReferringProviderFromWebsite" id="NameOfReferringProviderFromWebsite"
+                  [(ngModel)]="refferalModel.NameOfReferringProviderFromWebsite" maxlength="50">
+                <app-validation [control]="referalForm.controls.NameOfReferringProviderFromWebsite">
+                </app-validation>
+              </div>
+              <div class="input-group col-lg-6 float-left">
+                <span class="input-title w-100 float-left">Name of Referring Physician Organization
+                  <span class="color-red"> *</span>
+                </span>
+                <div class="form-select  w-100 float-left">
+                  <select class="mdb-select form-control" formControlName="NameOfReferringProviderOrganization" id="NameOfReferringProviderOrganization"
+                    [(ngModel)]="refferalModel.NameOfReferringProviderOrganization">
+                    <option [ngValue]="undefined" selected>Please Select</option>
+                    <option value="Beverly Hills Advanced Pain & Spine">Beverly Hills Advanced Pain & Spine</option>
+                    <option value="Cedars Sinai Health Associates">Cedars Sinai Health Associates</option>
+                    <option value="Cedars Sinai Medical Center">Cedars Sinai Medical Center</option>
+                    <option value="Cedars Sinai Medical Group">Cedars Sinai Medical Group</option>
+                    <option value="OneMedical">OneMedical</option>
+                    <option value="UCLA">UCLA</option>
+                    <option value="Not Listed Here - Please Enter Below">Not Listed Here - Please Enter Below</option>
+                    <option value="NONE">NONE</option>
+                  </select>
+                  <app-validation [control]="referalForm.controls.NameOfReferringProviderOrganization">
+                  </app-validation>
+                </div>
+              </div>
+  
+            </div>
+  
+            <div class="row mt-3">
+              <div class="input-group col-lg-6 float-left">
+                <span class="input-title w-100 float-left">Were you referred to our group by another Physician?
+                  <span class="color-red"> *</span>
+                </span>
+                <div class="form-select  w-100 float-left">
+                  <select class="form-control input-md btn-section" formControlName="WereyouReferredByAnotherProvider" id="WereyouReferredByAnotherProvider"
+                    [(ngModel)]="refferalModel.WereyouReferredByAnotherProvider">
+                    <option [ngValue]="undefined" selected>Please Select</option>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                  </select>
+                  <app-validation [control]="referalForm.controls.WereyouReferredByAnotherProvider">
+                  </app-validation>
+                </div>
+                
+                </div>
+                <div class="input-group col-lg-6 float-left">
+                    <span class="input-title w-100 float-left"> Name of Referring Physician, if Not Listed Above. </span>
+                    <input class="form-control w-100 float-left" type="text" formControlName="ReferringProviderOrganizationIfNo" id="ReferringProviderOrganizationIfNo"
+                      [(ngModel)]="refferalModel.ReferringProviderOrganizationIfNo" maxlength="50" >
+      
+                  </div>
+                <!-- <div class="input-group col-lg-6 float-left">
+                  <span class="input-title w-100 float-left">Name of Referring Physician Organization
+                    <span class="color-red"> *</span>
+                  </span>
+                  <div class="form-select  w-100 float-left">
+                    <select class="mdb-select form-control" formControlName="NameOfReferringProviderOrganization" id="NameOfReferringProviderOrganization"
+                      [(ngModel)]="refferalModel.NameOfReferringProviderOrganization">
+                      <option [ngValue]="undefined" selected>Please Select</option>
+                      <option value="Beverly Hills Advanced Pain & Spine">Beverly Hills Advanced Pain & Spine</option>
+                      <option value="Cedars Sinai Health Associates">Cedars Sinai Health Associates</option>
+                      <option value="Cedars Sinai Medical Center">Cedars Sinai Medical Center</option>
+                      <option value="Cedars Sinai Medical Group">Cedars Sinai Medical Group</option>
+                      <option value="OneMedical">OneMedical</option>
+                      <option value="UCLA">UCLA</option>
+                      <option value="Not Listed Here - Please Enter Below">Not Listed Here - Please Enter Below</option>
+                      <option value="NONE">NONE</option>
+                    </select>
+                    <app-validation [control]="referalForm.controls.NameOfReferringProviderOrganization">
+                    </app-validation>
+                  </div>
+                </div> -->
+              
+            </div>
+            <div class="form-group">
+              <div class="col-sm-offset-3 col-sm-12">
+                <p align="center">
+                  <button type="submit" class="btn btn-primary btn-sm waves-light float-right" mdbwaveseffect [disabled]="!referalForm.valid || disableButton">SUBMIT</button>
+                </p>
+  
+              </div>
+            </div>
+  
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- referraladdedit model end -->
+  <!-- end of referral-->

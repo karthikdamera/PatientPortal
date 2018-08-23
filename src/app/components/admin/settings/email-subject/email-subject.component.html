@@ -1,0 +1,184 @@
+<div class="w-100 float-left page-container no_padding">
+    <table class="theme-table table">
+        <thead>
+            <tr>
+                <th>Registration</th>
+                <th>Change Password</th>
+                <th>Forgot Password</th>
+                <th>Campaign Registration</th>
+                <th>Appointment Cancellation</th>
+                <!-- <th scope="col">AppointmentReScheduling</th> -->
+                <th>Appointment Booking</th>
+                <th>Patient Request</th>
+                <th>Manage</th>
+              </tr>
+        </thead>
+        <tbody>
+            <tr>
+               <td data-column="Registration">{{emailData.Registration}}</td>
+              <td data-column="Change Password">{{emailData.ChangePassword }}</td>
+              <td data-column="Forgot Password">{{emailData.ForgotPassword}}</td>
+              <td data-column="Campaign Registration">{{emailData.CampaignRegistraion}}</td>
+              <td data-column="Appointment Cancellation">{{emailData.AppointmentCancellation}}</td>
+              <!-- <td>{{data.AppointmentReScheduling}}</td> -->
+              <td data-column="Appointment Booking" >{{emailData.AppointmentBooking}}</td>
+              <td data-column="Patient Request">{{emailData.PatientRequest}}</td>
+              <td>
+                    <a href="javascript:;;" class="edit float-left" data-toggle="modal" data-target="#maileditmodel" (click)="maileditmodel.show();onEdit(emailData)" >
+                        <i class="icon-edit float-left" aria-hidden="true" title="Edit"></i><span>Edit</span></a>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+  
+</div>
+<div class="page-container add-record w-100 text-center mt-5 float-left" [hidden]="emailData!==''">
+    <i class="w-100 icon-add-file icon float-left" aria-hidden="true"   (click)="emailaddModal.show();toClearModel()"  data-toggle="modal" data-target="#emailaddModal"></i>
+    <p class="w-100 float-left">Add New</p>
+</div>
+
+
+
+<div mdbModal #emailaddModal="mdb-modal" class="modal fade" id="emailaddModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content rounded">
+                <div class="modal-header">
+                    <h4 class="modal-title w-100" id="myModalLabel">Subject Details</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="emailaddModal.hide()">
+                        <span aria-hidden="true">
+                            <i class="icon-close" aria-hidden="true"></i>
+                        </span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- <form [formGroup]="pharmacyForm"> -->
+                        <div class="row">
+                            
+                            <div class="input-group col-lg-4 float-left">
+                                <span class="input-title w-100 float-left">Registration
+                                    <span class="color-red">*</span>
+                                </span>
+                                <input class="form-control" [(ngModel)]="emailsubject.Registration" />
+                            </div>
+                            <div class="input-group col-lg-4 float-left">
+                                <span class="input-title w-100 float-left">Change Password
+                                    <span class="color-red">*</span>
+                                </span>
+                                <input class="form-control" placeholder="Change Password" [(ngModel)]="emailsubject.ChangePassword" />
+                            </div>
+                            <div class="input-group col-lg-4 float-left">
+                                <span class="input-title w-100 float-left">Forgot Password
+                                    <span class="color-red"></span>
+                                </span>
+                                <input class="form-control" placeholder="Forgot Password" [(ngModel)]="emailsubject.ForgotPassword" />
+                            </div>
+                            <div class="input-group col-lg-4 float-left">
+                                <span class="input-title w-100 float-left">Campaign Registration
+                                    <span class="color-red">*</span>
+                                </span>
+                                <input class="form-control" placeholder="" [(ngModel)]="emailsubject.CampaignRegistraion" />
+                            </div>
+                            <div class="input-group col-lg-4 float-left">
+                                <span class="input-title w-100 float-left">Appointment Cancellation
+                                    <span class="color-red">*</span>
+                                </span>
+                                <input class="form-control" placeholder="" [(ngModel)]="emailsubject.AppointmentCancellation" />
+                            </div>
+                            <div class="input-group col-lg-4 float-left">
+                                <span class="input-title w-100 float-left">Appointment Booking
+                                    <span class="color-red">*</span>
+                                </span>
+                                <input class="form-control" placeholder="" [(ngModel)]="emailsubject.AppointmentBooking" />
+                            </div>
+                            <div class="input-group col-lg-4 float-left">
+                                <span class="input-title w-100 float-left">Patient Request
+                                    <span class="color-red">*</span>
+                                </span>
+                                <input class="form-control" placeholder="" [(ngModel)]="emailsubject.PatientRequest" />
+                            </div>
+                        </div>
+                      
+
+                        <button class="btn btn-primary btn-sm waves-light float-right" (click)="AddEmailSetting()" mdbWavesEffect>SUBMIT</button>
+                    <!-- </form> -->
+                </div>
+                <!-- <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary btn-sm waves-light" data-dismiss="modal" (click)="demoBasic.hide()" mdbWavesEffect>Close</button>
+                  <button type="button" class="btn btn-primary btn-sm waves-light" mdbWavesEffect>Save changes</button>
+              </div> -->
+            </div>
+        </div>
+    </div>
+
+
+
+<div mdbModal #maileditmodel="mdb-modal" class="modal fade" id="maileditmodel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content rounded">
+                <div class="modal-header">
+                        <h4 class="modal-title w-100" id="myModalLabel">Edit Subject</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="maileditmodel.hide()">
+                            <span aria-hidden="true">
+                                <i class="icon-close" aria-hidden="true"></i>
+                            </span>
+                        </button>
+                    </div>
+            <div class="modal-body">
+                <!-- <form [formGroup]="pharmacyForm"> -->
+                    <div class="row">
+                        
+                        <div class="input-group col-lg-4 float-left">
+                            <span class="input-title w-100 float-left">Registration
+                                <span class="color-red">*</span>
+                            </span>
+                            <input class="form-control" [(ngModel)]="emailsubject.Registration" />
+                        </div>
+                        <div class="input-group col-lg-4 float-left">
+                            <span class="input-title w-100 float-left">Change Password
+                                <span class="color-red">*</span>
+                            </span>
+                            <input class="form-control" placeholder="Change Password" [(ngModel)]="emailsubject.ChangePassword" />
+                        </div>
+                        <div class="input-group col-lg-4 float-left">
+                            <span class="input-title w-100 float-left">Forgot Password
+                                <span class="color-red"></span>
+                            </span>
+                            <input class="form-control" placeholder="Forgot Password" [(ngModel)]="emailsubject.ForgotPassword" />
+                        </div>
+                        <div class="input-group col-lg-4 float-left">
+                            <span class="input-title w-100 float-left">Campaign Registration
+                                <span class="color-red">*</span>
+                            </span>
+                                <input class="form-control" placeholder="" [(ngModel)]="emailsubject.CampaignRegistraion" />
+                        </div>
+                        <div class="input-group col-lg-4 float-left">
+                            <span class="input-title w-100 float-left">Appointment Cancellation
+                                <span class="color-red">*</span>
+                            </span>
+                            <input class="form-control" placeholder="" [(ngModel)]="emailsubject.AppointmentCancellation" />
+                        </div>
+                        <div class="input-group col-lg-4 float-left">
+                            <span class="input-title w-100 float-left">Appointment Booking
+                                <span class="color-red">*</span>
+                            </span>
+                            <input class="form-control" placeholder="" [(ngModel)]="emailsubject.AppointmentBooking" />
+                        </div>
+                        <div class="input-group col-lg-4 float-left">
+                            <span class="input-title w-100 float-left">Patient Request
+                                <span class="color-red">*</span>
+                            </span>
+                            <input class="form-control" placeholder="" [(ngModel)]="emailsubject.PatientRequest" />
+                        </div>
+                    </div>
+                   
+                    <button class="btn btn-primary btn-sm waves-light float-right" (click)="Editupdatemail()"  mdbWavesEffect>UPDATE</button>
+                <!-- </form> -->
+            </div>
+            <!-- <div class="modal-footer">
+              <button type="button" class="btn btn-secondary btn-sm waves-light" data-dismiss="modal" (click)="demoBasic.hide()" mdbWavesEffect>Close</button>
+              <button type="button" class="btn btn-primary btn-sm waves-light" mdbWavesEffect>Save changes</button>
+          </div> -->
+        </div>
+    </div>
+</div>

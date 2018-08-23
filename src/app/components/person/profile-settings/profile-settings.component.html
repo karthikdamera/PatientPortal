@@ -1,0 +1,284 @@
+<div class=" float-left">
+  <div class="col-lg-10  float-left no_padding">
+    <div class="person-header float-left w-100">
+      <!-- <img src="assets/images/Robort.png" /> -->
+      <div class="float-left user-pic">
+        <div class=" profile_pic" *ngIf="file_srcs?.length ==''">
+          <img *ngIf="imageshow" src="https://image.flaticon.com/icons/svg/236/236832.svg" alt="">
+          <img *ngIf="imageshow==false" src="{{profileimage}}" alt="">
+          <div class="overlay placeholder">
+            <a id="upload_button">
+              <label>
+                <i class="fa fa-camera"></i>
+                <br>
+                <input type="file" ngf-select ng-model="new_files" ng-change="fs.uploadFiles(new_files)" value="Upload" (change)="fileChange(input)"
+                  class="upload" #input>
+                <strong>Upload</strong>
+              </label>
+            </a>
+          </div>
+        </div>
+        <div class=" profile_pic" *ngFor="let file_src of file_srcs; let i = index">
+          <img class="fa fa-user-circle" height="100" width="100" [attr.src]='file_src' alt="" />
+          <div class="overlay">
+            <a id="upload_button">
+              <label>
+                <i class="fa fa-camera"></i>
+                <br>
+                <input type="file" ngf-select ng-model="new_files" ng-change="fs.uploadFiles(new_files)" value="Upload" (change)="fileChange(input)"
+                  class="upload" #input>
+                <strong>Upload</strong>
+              </label>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-9 col-md-8 col-sm-12 col-xs-12 float-left user-info">
+        <h2 class="float-left w-100">{{profileInfo.FirstName}}
+        </h2>
+        <div class="w-100 float-left">
+          <p class="float-left width_auto">
+            <span class="float-left">Gender :</span>&nbsp;{{profileInfo.Gender}}
+          </p>
+          <!-- <p class="float-left width_auto">
+          <span class="float-left">Marrital Status :</span>&nbsp;{{profileInfo.MaritialStatus}}
+        </p> -->
+          <p class="float-left width_auto">
+            <span class="float-left">Date of Birth :</span>&nbsp;{{profileInfo.DOB}}
+          </p>
+          <!-- <p class="float-left width_auto">
+          <span class="float-left">SSN :</span>&nbsp;555-55-5555
+        </p> -->
+        </div>
+        <div class="w-100 float-left">
+          <!-- <p class="float-left width_auto">
+          <span class="float-left">Address :</span>&nbsp;{{profileInfo.Address}}
+        </p> -->
+        </div>
+        <div class="w-100 float-left">
+          <p class="float-left width_auto">
+            <span class="float-left">Phone No. :</span>&nbsp;{{profileInfo.PhoneNo}}
+          </p>
+          <p class="float-left width_auto">
+            <span class="float-left">Emg.Contact No :</span>&nbsp;{{profileInfo.AltPhoneNo}}
+          </p>
+          <p class="float-left width_auto">
+            <span class="float-left">Email :</span>&nbsp;{{profileInfo.Email}}
+          </p>
+        </div>
+      </div>
+
+      <!-- <a href="javascript:;;" class="icon-user-settings float-right"></a> -->
+    </div>
+    <div class="w-100 page-container float-left">
+
+      <ngx-tabset class="w-100 float-left">
+        <ngx-tab title="Edit Profile" [id]="editprofile">
+          <div [formGroup]="personalForm">
+            <div class="row mt-3">
+              <div class="input-group col-lg-4 float-left">
+                <span class="input-title w-100 float-left">First Name
+                  <span class="color-red">*</span>
+                </span>
+                <input class="form-control input-md" formControlName="FirstName"  [(ngModel)]="profileInfo.FirstName"
+                  maxlength="50" />
+                <app-validation [control]="personalForm.controls.FirstName">
+                </app-validation>
+              </div>
+              <div class="input-group col-lg-4 float-left">
+                <span class="input-title w-100 float-left">Last Name
+                  <span class="color-red">*</span>
+                </span>
+                <input class="form-control input-md" formControlName="LastName"  [(ngModel)]="profileInfo.LastName"
+                  maxlength="50" />
+                <app-validation [control]="personalForm.controls.LastName">
+                </app-validation>
+              </div>
+              <div class="input-group col-lg-2 float-left">
+                <span class="input-title w-100 float-left">Gender
+                  <span class="color-red">*</span>
+                </span>
+                <select class="form-control btn-section input_textbox" formControlName="Gender"  [(ngModel)]="profileInfo.Gender">
+                  <option value="" disabled selected>Please Select</option>
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
+                </select>
+                <app-validation [control]="personalForm.controls.Gender">
+                </app-validation>
+              </div>
+              <div class="input-group col-lg-2 float-left">
+                <span class="input-title w-100 float-left">Marital Status
+                  
+                </span>
+                <select class="form-control btn-section input_textbox" formControlName="MaritialStatus" 
+                  [(ngModel)]="profileInfo.MaritialStatus">
+                  <option value="" disabled selected>Please Select</option>
+                  <option value="Single">Single</option>
+                  <option value="Married">Married</option>
+                </select>
+              </div>
+              <div class="input-group col-lg-4 float-left">
+                <span class="input-title w-100 float-left">Address 1
+                  <span class="color-red">*</span>
+                </span>
+                <input class="form-control input-md" formControlName="Address" class="form-control input_textbox" rows="3" 
+                  [(ngModel)]="profileInfo.Address" />
+                <app-validation [control]="personalForm.controls.Address">
+                </app-validation>
+              </div>
+              <div class="input-group col-lg-4 float-left">
+                <span class="input-title w-100 float-left">Address 2
+                  
+                </span>
+                <input class="form-control input-md" class="form-control input_textbox" formControlName="Address2" rows="3" 
+                  [(ngModel)]="profileInfo.Address2" />
+                <app-validation [control]="personalForm.controls.Address2">
+                </app-validation>
+              </div>
+              <div class="input-group col-lg-2 float-left">
+                <span class="input-title w-100 float-left">City
+                  <span class="color-red">*</span>
+                </span>
+                <input class="form-control input-md" formControlName="City"  [(ngModel)]="profileInfo.City" maxlength="50"
+                />
+                <app-validation [control]="personalForm.controls.City">
+                </app-validation>
+              </div>
+              <div class="input-group col-lg-2 float-left">
+                <span class="input-title w-100 float-left">Zip Code
+                  <span class="color-red">*</span>
+                </span>
+                <input class="form-control input-md" formControlName="Zipcode" class="form-control input_textbox" 
+                  [(ngModel)]="profileInfo.Zipcode" maxlength="5" />
+                <app-validation [control]="personalForm.controls.Zipcode">
+                </app-validation>
+              </div>
+              <div class="input-group col-lg-2 float-left">
+                <span class="input-title w-100 float-left">Country
+                  <span class="color-red">*</span>
+                </span>
+                <select class="form-control btn-section ng-untouched ng-pristine ng-invalid input_textbox" formControlName="Country" [(ngModel)]="profileInfo.Country"
+                  (change)="Countryid(profileInfo.Country)" disabled>
+                  <option [ngValue]="" disabled selected>-- Choose Country --</option>
+                  <option *ngFor="let country of countries" [ngValue]="country.Name" [selected]="country.Id==profileInfo.CountryId">{{country.Name}}</option>
+                </select>
+                <app-validation [control]="personalForm.controls.Country">
+                </app-validation>
+              </div>
+              <div class="input-group col-lg-2 float-left">
+                <span class="input-title w-100 float-left">State
+                  <span class="color-red">*</span>
+                </span>
+                <select class="form-control btn-section ng-untouched ng-pristine ng-invalid input_textbox" formControlName="State" [(ngModel)]="profileInfo.State"
+                  (change)="Stateid(profileInfo.State)">
+                  <option [ngValue]="undefined" selected>-- Choose State --</option>
+                  <option *ngFor="let data of stateNames" [ngValue]="data.Name" [selected]="data.Name==profileInfo.State">{{data.Name}}</option>
+
+                </select>
+                <app-validation [control]="personalForm.controls.State">
+                </app-validation>
+              </div>
+              <div class="input-group col-lg-2 float-left">
+                <span class="input-title w-100 float-left">SSN
+                  <span class="color-red">*</span>
+                </span>
+                <div *ngIf="ssnshow" class="w-100 float-left">
+                  <input type="text" class="form-control input_textbox" formControlName="SSN"  [(ngModel)]="profileInfo.SSN"
+                    maxlength="9" (keyup)="ssnverify(profileInfo.SSN)" />
+                  <app-validation [control]="personalForm.controls.SSN">
+                  </app-validation>
+                  <div class="alert-txt">
+                    <b>{{error}}</b>
+                  </div>
+                </div>
+
+
+                <div *ngIf="ssnshow==false" class="w-100 float-left">
+                  <input type="text" class="form-control input_textbox" formControlName="SSN" [(ngModel)]="profileInfo.SSN" maxlength="9" disabled />
+                  <app-validation [control]="personalForm.controls.SSN1"></app-validation>
+                  <app-validation [control]="personalForm.controls.SSN">
+                </app-validation>
+
+                </div>
+              </div>
+              <!-- <div class="row date "> -->
+              <div class="input-group col-lg-2 float-left ">
+                <span class="input-title w-100 float-left">DOB
+                  <!-- <span class="color-red">*</span> -->
+                </span>
+
+                <div *ngIf="dobselect==false" class="float-left date ">
+                  <i class="icon-calendar waves-effect " aria-hidden="true" (click)="Birthdate.toggleCalendar('Birthdate')"></i>
+                  <input type="text" class="form-control datewidth w-100 float-left" formControlName="DOB" placeholder="[MM/DD/YYYY]" ngx-mydatepicker
+                    name="Birthdate" [(ngModel)]="model.Birthdate" [options]="myOptions" #Birthdate="ngx-mydatepicker" (inputFieldChanged)="onInputFieldDobChanged($event)"
+                    (dateChanged)="onDateChanged($event)" maxlength="10" maxlength="10" />
+                  <div *ngIf="enterdatests === true && validdate === false">
+                    <div style="color:red"> Invalid Date.</div>
+                  </div>
+                </div>
+                <div *ngIf="dobselect" class="w-100 float-left">
+                  <input type="text" class="w-100 float-left form-control input_textbox" value="{{profileInfo.DOB}}" disabled/>
+                </div>
+              </div>
+              <!-- </div> -->
+
+              <div class="input-group col-lg-4 float-left">
+                <span class="input-title w-100 float-left">Phone No
+                  <span class="color-red">*</span>
+                </span>
+                <input class="form-control input-md" class="form-control input_textbox" formControlName="PhoneNo" [textMask]="{mask: mask}"
+                  formControlName="PhoneNo"  [(ngModel)]="profileInfo.PhoneNo"  [ngClass]="{'error' : phonests}" (blur)="unmasckphone()"/>
+                <app-validation [control]="personalForm.controls.PhoneNo">
+                </app-validation>
+                <!-- <div *ngIf="phonests" class="errormsg"> Number Should Be 10 Digits</div> -->
+              </div>
+              <div class="input-group col-lg-4 float-left">
+                <span class="input-title w-100 float-left">Emergency Contact No
+                  <span class="color-red">*</span>
+                </span>
+                <input class="form-control input-md" class="form-control input_textbox" formControlName="AltPhoneNo" [textMask]="{mask: mask}"
+                  formControlName="AltPhoneNo"  [(ngModel)]="profileInfo.AltPhoneNo"  [ngClass]="{'error' : emergencyphonests}" (blur)="emergencymask()"/>
+                <app-validation [control]="personalForm.controls.AltPhoneNo">
+                </app-validation>
+                <!-- <div *ngIf="emergencyphonests" class="errormsg"> Number Should Be 10 Digits</div> -->
+              </div>
+              <div class="input-group col-lg-4 float-left">
+                <span class="input-title w-100 float-left">Email
+                  <span class="color-red">*</span>
+                </span>
+                <input class="form-control input-md" class="form-control input_textbox" rows="3" formControlName="Email" 
+                  [(ngModel)]="profileInfo.Email"/>
+                <app-validation [control]="personalForm.controls.Email">
+                </app-validation>
+              </div>
+              <div class="col-md-12">
+                <div class="form-group text-center">
+                  <div class="btn-justify">
+                    <button class="btn btn-primary waves-light" title="Update" (click)="updateProfile()" [disabled]="ssnverified">Update</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ngx-tab>
+        <!-- <ngx-tab title="Option 2">
+        This is content of the contacts tab
+      </ngx-tab>
+      <ngx-tab title="Reviews">
+        Its all about me.
+      </ngx-tab> -->
+        <ngx-tab title="Referral" [id]="referal">
+          <app-referal></app-referal>
+
+        </ngx-tab>
+        <ngx-tab title="Change Password" [id]="changepwd">
+          <app-resetpassword></app-resetpassword>
+        </ngx-tab>
+      </ngx-tabset>
+    </div>
+  </div>
+  <div class="col-lg-2 float-left dashboard_right">
+    <app-slider-component></app-slider-component>
+    <app-bmi-component></app-bmi-component>
+  </div>
+</div>

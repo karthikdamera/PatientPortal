@@ -1,0 +1,105 @@
+<div class="w-100 page-titel no_padding float-left">
+  <h4 class="float-left titel">Designation Details</h4>
+  <button type="button" class="btn btn-primary no_margin width_auto float-right waves-light text-center" data-toggle="modal"
+    data-target="#addDesignation" (click)="addDesignation.show()" mdbWavesEffect>
+   ADD Designation
+  </button>
+  <div class="input-group col-lg-4 no_padding mr-3  search float-right">
+      <span class="icon-search"></span>
+  <input type="text" placeholder="Search By Name" name="barcode" [(ngModel)]="userFilter" class="form-control w-100 float-left no_margin">
+</div>
+</div>
+<div class="w-100 float-left no_padding page-container" *ngIf="model.length>0">
+  <table class="theme-table table">
+    <thead>
+      <tr>
+        <th (click)="setOrder('Name')" class="curor-pointer">Designation Name
+            <i class="fa" [ngClass]="{'fa-caret-down' : !reverse,'fa-caret-up' : reverse }" *ngIf="order=='Name'" aria-hidden="true"></i>
+          </th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let items of model | DesignationPipe : userFilter | orderBy: order:reverse:'case-insensitive'| paginate: {itemsPerPage: 10, currentPage: page, id: 'designationpage'}; let i=index">
+        <!-- <td>{{data.PharmacyName}}</td> -->
+        <td data-column="Designation Name">{{items.Name}}</td>
+        <td>
+          <a href="javascript:;;" class="edit float-left" data-toggle="modal" data-target="#myModaldesg" (click)="edit(items);edit1.show()">
+            <i class="icon-edit float-left" title="Edit" style="cursor:pointer"></i>
+            <span>Edit</span>
+          </a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <pagination-controls (pageChange)="page = $event" id="designationpage">
+  </pagination-controls>
+</div>
+<div class=" page-container add-record w-100 text-center mt-5 float-left" *ngIf="model.length==0">
+  <i class="w-100 icon icon-add-file float-left" aria-hidden="true"></i>
+  <p class="w-100 float-left">Add New Designation</p>
+</div>
+<div mdbModal #addDesignation="mdb-modal" class="modal fade" id="addDesignation" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content rounded">
+      <div class="modal-header">
+        <h4 class="modal-title w-100" id="myModalLabel">Add Designation</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="addDesignation.hide();cancel()">
+          <span aria-hidden="true">
+            <i class="icon-close" aria-hidden="true"></i>
+          </span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form  [formGroup]="f1">
+          <div class="row">
+            <div class="input-group col-lg-6 float-left">
+              <span class="input-title w-100 float-left">Designation name</span>
+              <input type="text" class="form-control" id="name" maxlength="50" formControlName="Name" name="Name" [(ngModel)]="designation.Name"/>
+                <app-validation [control]="f1.controls.Name">
+                </app-validation>
+              <!-- <div [hidden]="!Name.hasError('pattern')" class="errormsg">Only alphabets allowed</div> -->
+              <!-- <div *ngIf="f1.submitted && !Name.valid" class="help-block">Username is required</div> -->
+            </div>
+          </div>
+          <button class="btn btn-primary btn-sm waves-light float-right" type="submit" (click)="!savePost(designation,f1)" [disabled]="disableButton">Save</button>
+          <!-- <div class="col-md-12 text-center" *ngIf="Success">
+              <a class="btn btn-round blue-btn" data-dismiss="modal">Close</a>
+          </div> -->
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<div mdbModal #edit1="mdb-modal" class="modal fade" id="myModaldesg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content rounded">
+      <div class="modal-header">
+        <h4 class="modal-title w-100" id="myModalLabel">Edit Designation</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="edit1.hide();cancel()">
+          <span aria-hidden="true">
+            <i class="icon-close" aria-hidden="true"></i>
+          </span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="f">
+          <div class="row" >
+            <div class="input-group col-lg-6 float-left">
+              <span class="input-title w-100 float-left">Name
+              </span>
+              <input type="text" class="form-control" name="Name" formControlName="Name" [(ngModel)]="editItem.Name"/>
+              <!-- <div *ngIf="f.submitted && !Name.valid" class="help-block">Designation is required
+              </div> -->
+              <app-validation [control]="f.controls.Name">
+              </app-validation>
+            </div>
+          </div>
+          <button class="btn btn-primary btn-sm waves-light float-right" (click)="!editpost(editItem)" [disabled]="disableButton">save</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

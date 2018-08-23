@@ -1,0 +1,61 @@
+[{
+        "name": "Pharmacy",
+        "icon": "fa fa-hospital-o",
+        "title": "Pharmacy",
+        "routername": "pharmacy"
+    },
+    {
+        "name": "Referral",
+        "icon": "fa fa-user-o",
+        "title": "Referral",
+        "routername": "referal"
+    },
+    {
+        "name": "Schedule",
+        "icon": "fa fa-calendar-check-o",
+        "title": "Schedule",
+        "routername": "schedule"
+    },
+    {
+        "name": "My Appointments",
+        "icon": "fa fa-stethoscope",
+        "title": "My Appointments",
+        "routername": "my-appointments"
+    },
+    {
+        "name": "Payment",
+        "icon": "fa fa-credit-card-alt",
+        "title": "Credit Card",
+        "routername": "creditcard"
+    },
+    {
+        "name": "Questionnaire",
+        "icon": "fa fa-book",
+        "title": "Questionnaire",
+        "routername": "assessments"
+    },
+    {
+        "name": "Insurance",
+        "icon": "fa fa-heartbeat",
+        "title": "Insurance",
+        "routername": "insurance"
+    },
+    {
+        "name": "Subscriber Info",
+        "icon": "fa fa-info-circle",
+        "title": "Subscriber",
+        "routername": "subscriber"
+    },
+    {
+        "name": "My Profile",
+        "icon": "fa fa-user",
+        "title": "profile-settings",
+        "routername": "profile-settings"
+    },
+    {
+        "name": "Requests",
+        "icon": "fa fa-envelope",
+        "title": "Requests",
+        "routername": "requests"
+    }
+]

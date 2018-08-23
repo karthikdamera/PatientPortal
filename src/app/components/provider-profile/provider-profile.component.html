@@ -1,0 +1,350 @@
+<mdb-navbar SideClass="navbar navbar-expand-lg  landing-nav profile-nav fixed-top" *ngIf='topnavbar'>
+    <!-- Navbar brand -->
+    <logo>
+        <a class="navbar-brand" href="javascript:;;">
+            <img src="assets/images/logo/logo.png" alt="">
+        </a>
+    </logo>
+</mdb-navbar>
+
+<div class="person-header float-left w-100" *ngFor="let provider of appointmentsModel;let i=index" [ngStyle]="{'margin-top': topnavbar == true ? '52px' : '0' } ">
+
+    <a class="fa fa-angle-left mr-3 float-left icon_back" (click)="back1();" href="javascript:;;" *ngIf='!topnavbar'></a>
+
+    <a class="fa fa-angle-left mr-3 float-left icon_back" (click)="back();" href="javascript:;;" *ngIf='topnavbar'></a>
+
+    <!-- <div class="profile_pic" *ngIf="provider.profile.ImageUrl=='' || provider.profile.ImageUrl=='null' ||provider.profile.ImageUrl==null">
+                            <img src="assets/images/avatar.png" alt=""/>
+                    </div>
+                    <div class="profile_pic">
+                        <img src="{{provider.profile.ImageUrl}}" alt="" />
+                    </div> -->
+    <div class="profile_pic float-left">
+
+        <img *ngIf="provider.profile.ImageUrl =='' || provider.profile.ImageUrl =='null'" src="assets/images/doctor.jpg" class="w-100 float-left">
+        <img *ngIf="provider.profile.ImageUrl !='' || provider.profile.ImageUrl !='null'" [src]="provider.profile.ImageUrl" class="w-100 float-left">
+    </div>
+    <!-- <div class=" profile_pic">
+                <img class="fa fa-user-circle" height="100" width="100" alt="" />
+              </div> -->
+
+
+    <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12 float-left user-info provider_details">
+        <h2 class="float-left">{{provider.profile.Name}}</h2>
+
+        <span class="float-left w-100 mb-3">({{provider.profile.ServiceType}} )</span>
+
+        <!-- <p class="w-100 float-left text-left">"The receptionists, nurses, and doctor were all well organized and made a great a... " Ming Wang Clinic 1801
+                        West End Ave, Suite 1150 Nashville, TN 37203</p> -->
+        <p class="w-100 float-left text-left">{{provider.profile.Description}}</p>
+        <ul class="rating1 float-left">
+            <h4>{{provider.profile.Settings.Rating}}/5</h4>
+            <!-- <li>
+                    <i class="fa fa-star"></i>
+                </li>
+                <li>
+                    <i class="fa fa-star"></i>
+                </li>
+                <li>
+                    <i class="fa fa-star"></i>
+                </li>
+                <li>
+                    <i class="fa fa-star"></i>
+                </li>
+                <li>
+                    <i class="fa fa-star-half-o"></i>
+                </li> -->
+            <app-rating [data]='schedular' [rating]='provider.profile.Settings.Rating' [itemId]='provider.profile.Id' class="rating2"></app-rating>
+        </ul>
+    </div>
+
+    <!-- <a href="javascript:;;" class="icon-user-settings float-right"></a> -->
+</div>
+
+<div class="page-container w-100 float-left">
+
+    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 float-left" *ngFor="let provider of appointmentsModel">
+        <ngx-tabset class="w-100 float-left">
+            <ngx-tab title="Overview">
+                <div class="w-100 float-left">
+                    <!-- <h3>
+                             {{provider.profile.Name}}
+    
+                            <span>({{provider.profile.ServiceType}})</span>
+                        </h3> -->
+                    <p class="w-100 float-left">
+                        {{provider.profile.Description}}</p>
+                </div>
+            </ngx-tab>
+            <ngx-tab title="Services">
+                <div class="tile-group w-100 float-left">
+                    <div *ngFor="let servicename of serviceTypedata">
+                        <div class="col-lg-3 float-left" *ngIf="servicename.IsActive==true">
+                            <span class="text-center w-100 float-left service-badge" title="{{servicename.AppointmentName}}">{{servicename.AppointmentName}}</span>
+                        </div>
+                    </div>
+                </div>
+            </ngx-tab>
+        </ngx-tabset>
+    </div>
+    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 no_padding float-left">
+        <div *ngFor="let provider of appointmentsModel; let i=index" class="w-100 providers-list float-left mt-3">
+            <div class=" slot-carousel">
+                <mdb-carousel #carouselRef [isControls]="true" [animation]="'slide'" data-interval="false">
+                    <a class="carousel-control-prev ng-star-inserted controls2" [class.disabled]="isPrevious==true" (click)="carouselRef.previousSlide();previous(provider, i, true, false,$event)"></a>
+                    <a class="carousel-control-next ng-star-inserted controls2" (click)="carouselRef.nextSlide();next(provider, i, true, false)"></a>
+                    <!--First slide-->
+                    <mdb-slide>
+                        <div class="w-100 float-left tpadding " *ngIf="provider.emptySlots.length==0">
+                            <p class="text-center">There are no slots available for this provider</p>
+                        </div>
+<div class="w-100 float-left tpadding nextavailability  text-center" *ngIf="nextavailabilitydt != ''">
+  <button (click)="next(provider, i, true, false)">Next availability is {{nextavailabilitydt}}</button>
+</div>
+                        <div class="w-100 float-left" *ngIf="provider.emptySlots.length>0">
+                            <div class="col-lg-4 slot float-left" *ngFor="let daysname of provider.emptySlots">
+                                <div class="row">
+                                    <span class="w-100 float-left text-center slot-title">
+                                            <i class="icon-my-appointments"></i>{{daysname.Displaydate}} ({{daysname.dayname | slice:0:3}})</span>
+                                </div>
+<div class="w-100 float-left tpadding  text-center" *ngIf="daysname.slots.length==0 && nextavailabilitydt == ''">
+                                    <p class="text-center">There are no slots available for this day</p>
+                                </div>
+                                
+                                <ng-scrollbar class="slots-container-scrollbar w-100 float-left">
+                                    <div class="float-left w-100 slots-container">
+                                        <div class="col-lg-6 float-left slot-date" *ngFor="let slates of daysname.slots; let i=index">
+                                            <a class="w-100 float-left text-center" href="javascript:;;" data-toggle="modal" data-target="#slot_popup" (click)="slot_popup.show();choosedSloat(provider.profile.ImageUrl,provider.profile.Id,provider.profile.Name,provider.profile.ServiceType,slates,daysname,provider);"
+                                                mdbWavesEffect title="Select {{slates.fromtime}} on {{daysname.Displaydate}}">{{slates.fromtime}}</a>
+                                        </div>
+                                    </div>
+                                </ng-scrollbar>
+                            </div>
+                        </div>
+                    </mdb-slide>
+                    <mdb-slide>
+                        <div class="w-100 float-left tpadding " *ngIf="provider.emptySlots.length==0">
+                            <p class="text-center">There are no slots available for this provider</p>
+                        </div>
+<div class="w-100 float-left tpadding nextavailability  text-center" *ngIf="nextavailabilitydt != ''">
+  <button (click)="next(provider, i, true, false)">Next availability is {{nextavailabilitydt}}</button>
+</div>
+                        <div class="w-100 float-left" *ngIf="provider.emptySlots.length>0">
+                            <div class="col-lg-4 slot float-left" *ngFor="let daysname of provider.emptySlots">
+                                <div class="row">
+                                    <span class="w-100 float-left text-center slot-title">
+                                            <i class="icon-my-appointments"></i>{{daysname.Displaydate}}  ({{daysname.dayname | slice:0:3}})</span>
+                                </div>
+<div class="w-100 float-left tpadding  text-center" *ngIf="daysname.slots.length==0 && nextavailabilitydt == ''">
+                                    <p class="text-center">There are no slots available for this day</p>
+                                </div>
+                                <ng-scrollbar class="slots-container-scrollbar w-100 float-left">
+                                    <div class="float-left w-100 slots-container">
+                                        <div class="col-lg-6 float-left slot-date" *ngFor="let slates of daysname.slots; let i=index">
+                                            <a class="w-100 float-left text-center" href="javascript:;;" data-toggle="modal" data-target="#slot_popup" (click)="slot_popup.show();choosedSloat(provider.profile.ImageUrl,provider.profile.Id,provider.profile.Name,provider.profile.ServiceType,slates,daysname);"
+                                                mdbWavesEffect>{{slates.fromtime}}</a>
+                                        </div>
+                                    </div>
+                                </ng-scrollbar>
+                            </div>
+                        </div>
+                    </mdb-slide>
+                </mdb-carousel>
+            </div>
+        </div>
+    </div>
+</div>
+<div mdbModal #slot_popup="mdb-modal" class="modal fade" id="slot_popup" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document" *ngIf='topnavbar'>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title w-100" id="myModalLabel">Confirm Appointment</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="slot_popup.hide();close();">
+                        <span class="icon-close" aria-hidden="true"></span>
+                    </button>
+            </div>
+            <div class="modal-body w-100">
+                <form [formGroup]="userForm" (submit)="bookslot()">
+                    <div class="col-lg-2 profile_pic  float-left no_padding">
+
+                        <img *ngIf="imageUrl =='' || imageUrl ==null" src="assets/images/doctor.jpg" class="float-left w-100">
+                        <img *ngIf="imageUrl !='' || imageUrl !=null" src="{{imageUrl}}">
+                    </div>
+                    <div class="col-lg-4 float-left">
+                        <h5>{{providerName}}</h5>
+                        <h6 class="w-100 float-left mt-1">
+                            <span class=" float-left ">Service :</span> {{serviceType}}</h6>
+                    </div>
+                    <div class="col-lg-4 no_padding float-left">
+                        <h3 class="w-100 float-left">Your Appointment Details</h3>
+                        <h6 class="w-100 mt-1 float-left">Date: {{regModel.slotdate}}</h6>
+                        <h6 class="w-100 mt-1 float-left">Time: {{regModel.fromtime}}</h6>
+                    </div>
+                    <div class="w-100 float-left" *ngIf="successmessage==true">
+                        <i class="sucess icon-check "></i>
+                        <p class="text-center">
+                            <span class="w-100 float-left mt-2 mb-2"> Registration completed successfully.</span>
+                            <span class="w-100">Please check your registered email for your login & appointment details.</span>
+                        </p>
+                        <button class="btn btn-primary btn-sm waves-light float-right" (click)="slot_popup.hide();close();" mdbWavesEffect>Ok</button>
+                    </div>
+                    <div class="w-100 float-left" *ngIf="errorstatus==true">
+                        <i class="error2 icon-error "></i>
+                        <p class="text-center mt-3" [innerHTML]="message"></p>
+                    </div>
+                    <ng-scrollbar *ngIf="successmessage==false" class="modal-popup-scrollbar w-100 float-left">
+                        <hr *ngIf="successmessage==false" class="row no_margin">
+                        <div class="float-left w-100 mt-2">
+                            <div class="input-group col-lg-6  float-left">
+                                <span class="input-title w-100 float-left"> First Name
+                                        <span class="color-red">*</span>
+                                </span>
+                                <input class="form-control w-100 float-left" type="text" placeholder="First Name" formControlName="FirstName" [(ngModel)]="regModel.FirstName" maxlength="50">
+                                <app-validation [control]="userForm.controls.FirstName">
+                                </app-validation>
+                            </div>
+                            <div class="input-group col-lg-6  float-left">
+                                <span class="input-title w-100 float-left">Last Name
+                                        <span class="color-red">*</span>
+                                </span>
+                                <input class="form-control w-100 float-left" type="text" placeholder="Last Name" formControlName="LastName" [(ngModel)]="regModel.LastName" maxlength="50">
+                                <app-validation [control]="userForm.controls.LastName">
+                                </app-validation>
+                            </div>
+                            <div class="input-group col-lg-6  float-left">
+                                <span class="input-title w-100 float-left">City
+                                        <span class="color-red"></span>
+                                </span>
+                                <input class="form-control w-100 float-left" type="text" placeholder="City" formControlName="City" [(ngModel)]="regModel.City" maxlength="50">
+                            </div>
+                            <div class="input-group col-lg-6  float-left">
+                                <span class="input-title w-100 float-left">State
+                                        <span class="color-red"></span>
+                                </span>
+                                <select class="mdb-select form-control w-100 float-left" name="State" formControlName="State" [(ngModel)]="regModel.State">
+                                        <option value='' disabled selected>-- Choose State--</option>
+    
+                                        <option *ngFor="let option of stateNames" [ngValue]='option.Name'>{{option.Name}}</option>
+                                    </select>
+                            </div>
+                            <div class="input-group col-lg-6  float-left">
+                                <span class="input-title w-100 float-left">Zip Code
+                                        <span class="color-red"></span>
+                                </span>
+                                <input class="form-control w-100 float-left" type="text" placeholder="Zip Code" formControlName="Zipcode" [(ngModel)]="regModel.Zipcode" maxlength="5">
+                                <app-validation [control]="userForm.controls.Zipcode">
+                                </app-validation>
+                            </div>
+                            <div class="input-group col-lg-6  float-left">
+                                <span class="input-title w-100 float-left">Phone Number
+                                        <span class="color-red">*</span>
+                                </span>
+                                <input class="form-control w-100 float-left" type="text" placeholder="Phone Number" [textMask]="getproprofileMask()" formControlName="PhoneNo" [(ngModel)]="regModel.PhoneNo" (blur)="unmasckprofilephone($event)" [ngClass]="{'error' : phonests}">
+                                <app-validation [control]="userForm.controls.PhoneNo">
+                                </app-validation>
+                                <!-- <div *ngIf="phonests" class="errormsg"> Number Should Be 10 Digits</div> -->
+                            </div>
+                            <div class="input-group col-lg-6  float-left">
+                                <span class="input-title w-100 float-left">Email
+                                        <span class="color-red">*</span>
+                                </span>
+                                <input class="form-control w-100 float-left" type="text" placeholder="Email" formControlName="Email" [(ngModel)]="regModel.Email">
+                                <app-validation [control]="userForm.controls.Email">
+                                </app-validation>
+                            </div>
+
+                            <div class="input-group col-lg-3   float-left">
+                                <span class="input-title w-100 float-left">DOB
+                                    </span>
+                                <i class="icon-calendar waves-effect " aria-hidden="true" (click)="Birthdate.toggleCalendar('Birthdate')"></i>
+                                <input class="form-control datewidth w-100 float-left" style="float:none" (keyup)="dateMask($event)" formControlName="Birthdate" placeholder="DOB [MM/DD/YYYY]" ngx-mydatepicker name="Birthdate" [(ngModel)]="modal.Birthdate" [options]="myOptions" #Birthdate="ngx-mydatepicker"
+                                    (inputFieldChanged)="onInputFieldDobChanged($event,'birthday')" (dateChanged)="onbirthdateDateChanged($event)" maxlength="10" />
+                                <app-validation [control]="userForm.controls.Birthdate">
+                                </app-validation>
+                                <div *ngIf="enterdatests === true && validdate === false && modal.Birthdate==null">
+                                    <div style="color:red"> Invalid Date.</div>
+                                </div>
+                            </div>
+                            <div class="input-group col-lg-3   float-left">
+                                <span class="input-title w-100 float-left">Age
+                                        <!-- <span class="color-red">*</span> -->
+                                </span>
+                                <input class="form-control w-100 float-left" type="text" placeholder="Age" formControlName="Age" [(ngModel)]="regModel.Age">
+                                <app-validation [control]="userForm.controls.Age">
+                                </app-validation>
+                            </div>
+                            <div class="input-group col-lg-12 float-left">
+                                <span for="exampleFormControlTextarea2">Vision Issue</span>
+                                <textarea class="form-control rounded-0 w-100 float-left" id="exampleFormControlTextarea2" rows="5" formControlName="Message" [(ngModel)]="regModel.Message"></textarea>
+                            </div>
+                            <button *ngIf="(!loading)&&(successmessage==false)" type="submit" class="btn btn-primary no_margin float-right waves-light" mdbWavesEffect [disabled]="!userForm.valid">Confirm</button>
+                            <input *ngIf="loading" type="button" class="btn btn-secondary float-right waves-light" value="Submitting....">
+                        </div>
+                    </ng-scrollbar>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="modal-dialog modal-lg" role="document" *ngIf='!topnavbar'>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title w-100" id="myModalLabel">CONFIRM APPOINTMENT</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="slot_popup.hide();close();">
+                        <span class="icon-close" aria-hidden="true"></span>
+                    </button>
+            </div>
+            <div class="modal-body w-100">
+                <!-- <img src="assets/images/Amy.png" class="col-lg-2 float-left no_padding"> -->
+                <div class="col-lg-2 profile_pic float-left no_padding">
+
+                    <img *ngIf="imageUrl !='' || imageUrl !='null'" src="{{imageUrl}}">
+                    <img *ngIf="imageUrl =='' || imageUrl =='null'" src="assets/images/doctor.jpg" class="float-left w-100">
+                </div>
+                <div class="col-lg-3   float-left">
+                    <h5>{{providerName}}</h5>
+                    <!-- <h6 class="w-100 float-left">
+                                        <span class="w-100 float-left">Institute :</span> Wang Institute</h6> -->
+                    <h6 class="w-100 float-left ">
+                        <span class="w-100 mt-1  float-left">Service :</span> {{serviceType}}</h6>
+                </div>
+                <div class="col-lg-4 no_padding float-left">
+                    <h3 class="w-100 float-left">Your Appointment Details</h3>
+                    <h6 class="w-100 mt-1 float-left">Date: {{followupUserPost.SlotDate}}</h6>
+                    <h6 class="w-100 mt-1 float-left">Time: {{followupUserPost.FromTime}}</h6>
+                </div>
+                <div class="input-group col-lg-4 float-left" *ngIf="successmessage==false">
+                    <div class="form-group">
+                        <span for="exampleFormControlTextarea2">Vision Issue</span>
+                        <textarea class="form-control rounded-0" id="exampleFormControlTextarea2" rows="3" [(ngModel)]="followupUserPost.Message"></textarea>
+                    </div>
+                </div>
+
+                <!-- <div *ngIf="successmessage==true" align="center">
+                        <div class="alert-success alert-text row">
+                            <b>{{message}}</b>
+                        </div>
+                    </div>
+                    <div *ngIf="errorstatus==true" align="center">
+                        <div class="alert-success alert-text row">
+                            <b styel="color:red">{{message}}</b>
+                        </div>
+                    </div> -->
+                <div class="w-100 float-left" *ngIf="successmessage==true">
+                    <i class="sucess icon-check "></i>
+                    <p class="text-center">
+                        <span class="w-100 float-left mt-2 mb-2"> Your Appointment has been confirmed</span>
+                        <span class="w-100">Please check your email for your appointment details.</span>
+                    </p>
+                    <!-- <button class="btn btn-primary btn-sm waves-light float-right" (click)="slot_popup.hide();close();" mdbWavesEffect>Ok</button> -->
+                </div>
+                <div class="w-100 float-left" *ngIf="errorstatus==true">
+                    <i class="error2 icon-error "></i>
+                    <p class="text-center mt-3" [innerHTML]="message"></p>
+                </div>
+                <button *ngIf="(!loading)&&(successmessage==false)" type="submit" class="btn btn-primary no_margin float-right waves-light" mdbWavesEffect (click)="bookslot1()">Confirm</button>
+                <!-- <input *ngIf="loading" type="button" class="btn btn-secondary w-100 no_margin width_auto waves-light text-center" value="Confirming...."> -->
+
+            </div>
+        </div>
+    </div>
+</div>

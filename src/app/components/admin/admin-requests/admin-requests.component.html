@@ -1,0 +1,377 @@
+<div class="w-100 page-titel float-left">
+  <h4 class="float-left titel">Requests</h4>
+  <div class="input-group search no_padding col-lg-3 float-right">
+    <span class="icon-search"></span>
+    <!-- <input class="form-control w-100 float-left" type="text" placeholder="Search by Email" [(ngModel)]="userFilter.Email"> -->
+    <input type="text" class="form-control no_margin" placeholder="" aria-label="" aria-describedby="basic-addon1" placeholder="Enter Email/Phone/Name"
+    [(ngModel)]="requestfilter" id="search">
+  </div>
+  <div class="acc-header2 request float-right">
+
+    <div class="btn-group pr-3  float-right" data-toggle="buttons">
+      <div class="float-left " *ngFor="let name of statusname let i=index">
+        <input type="radio" name="options" id="radio{{i}}" value="option3"  [checked]="name=== sample" >
+        <label class="btn btn-primary text-center" for="radio{{i}}" (click)="filterstatus(name)"  [ngClass]="{'active': name=== sample}">
+          {{name}}
+        </label>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="w-100 float-left page-container">
+  <ngx-tabset class="w-100 float-left"   [pills]="false" (onSelect)="OnTabSelect($event)">
+    <ngx-tab  title="Request for Refills">
+      <div class="w-100 float-left" *ngIf="(requestsList | filterBy: userFilter).length > 0">
+        <table class="theme-table table mt-2">
+          <thead>
+            <tr>
+              <th>Provider Name</th>
+              
+              <th>Phone Number</th>
+              <th>Email</th>
+              <th>Medication Name</th>
+              <th>Pharmacy Name</th>
+              <th>CreatedOn</th>
+              <th>Reply message</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            
+            <tr *ngFor="let data of requestsList | adminrequestSearchPipe : requestfilter | filterBy:userFilter | paginate: {itemsPerPage: 10, currentPage: page , id: 'requestrefiil'};">
+              <td [ngClass]="{'cancelbg':data.BookingStatus == 'Cancelled','sucessbg':data.Status == 'Approved'}" data-column="Provider Name">{{data.ProviderName}}</td>
+              
+              <td [ngClass]="{'cancelbg':data.BookingStatus == 'Cancelled','sucessbg':data.Status == 'Approved'}" data-column="PhoneNo">
+              {{data.PhoneNo}}</td>
+              <td [ngClass]="{'cancelbg':data.BookingStatus == 'Cancelled','sucessbg':data.Status == 'Approved'}" data-column="Email">{{data.Email}}</td>
+              <td [ngClass]="{'cancelbg':data.BookingStatus == 'Cancelled','sucessbg':data.Status == 'Approved'}" class='details'>{{data.SelectedMecationNames}}</td>
+              <td [ngClass]="{'cancelbg':data.BookingStatus == 'Cancelled','sucessbg':data.Status == 'Approved'}" data-column="Pharmacy Name">{{data.PharmacyName}}</td>
+              <td [ngClass]="{'cancelbg':data.BookingStatus == 'Cancelled','sucessbg':data.Status == 'Approved'}" data-column="CreatedOn">{{data.CreatedOn}}</td>
+              <td [ngClass]="{'cancelbg':data.BookingStatus == 'Cancelled','sucessbg':data.Status == 'Approved'}" class='details'>{{data.ReplyMessage}}</td>
+              <td [ngClass]="{'cancelbg':data.BookingStatus == 'Cancelled','sucessbg':data.Status == 'Approved'}">
+                <a href="javascript:;;" *ngIf="data.Status == 'Pending'||data.Status == 'PENDING'" class="edit float-left" data-toggle="modal"
+                  data-target="#basicExample" (click)="reply.show();patientstatus(data);replymsgs('Approve');" [hidden]="data.BookingStatus == 'Cancelled'">
+                  <i class="icon-compass float-left" aria-hidden="true"></i>
+                  <span>Reply</span>
+                </a>
+                <span *ngIf="data.Status == 'Approved' || data.Status == 'Declined'" [ngClass]="{'cancel_lable':data.BookingStatus == 'Cancelled','sucess_lable':data.Status == 'Approved'}">
+                  {{data.Status}}
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <pagination-controls (pageChange)="page = $event" id="requestrefiil">
+        </pagination-controls>
+      </div>
+      <!-- <div *ngIf="requestsList.length == 0 || norecordstspending == false">
+        <p class="text-center">There is no data to display</p>
+      </div> -->
+      <div  *ngIf="(requestsList | filterBy: userFilter).length === 0">
+        <p class="text-center">There is no data to display</p>
+      </div>
+    
+    </ngx-tab>
+    <ngx-tab title="Medical Record Requests"   >
+      
+      <div class="w-100 float-left" *ngIf="(requestsList | filterBy: userFilter).length > 0">
+        <table class="theme-table table mt-2">
+          <thead>
+            <tr>
+              <th>Email</th>
+              <th>Phone Number</th>
+              
+              <th>Sender Email</th>
+              <th>Sender Phone</th>
+              <th>Sender FAX</th>
+              <th>CreatedOn</th>
+              <th>Reply message</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let data of requestsList | MedicalRecordPipe : requestfilter | filterBy:userFilter | paginate: {itemsPerPage: 10, currentPage: page , id: 'Medicalreport'};">
+              <td [ngClass]="{'cancelbg':data.BookingStatus == 'Cancelled','sucessbg':data.Status == 'Approved'}" data-column="Email">{{data.Email}}</td>
+              <td [ngClass]="{'cancelbg':data.BookingStatus == 'Cancelled','sucessbg':data.Status == 'Approved'}" data-column="PhoneNo">{{data.PhoneNo}}</td>
+              
+              <td [ngClass]="{'cancelbg':data.BookingStatus == 'Cancelled','sucessbg':data.Status == 'Approved'}" data-column="Sender Email">{{data.RecordSenderEmail}}</td>
+              <td [ngClass]="{'cancelbg':data.BookingStatus == 'Cancelled','sucessbg':data.Status == 'Approved'}" data-column="Sender Phone">{{data.RecordSenderPhone}}</td>
+              <td [ngClass]="{'cancelbg':data.BookingStatus == 'Cancelled','sucessbg':data.Status == 'Approved'}" data-column="Sender FAX">{{data.RecordSenderFAX}}</td>
+              <td [ngClass]="{'cancelbg':data.BookingStatus == 'Cancelled','sucessbg':data.Status == 'Approved'}" data-column="CreatedOn">{{data.CreatedOn}}</td>
+              <td [ngClass]="{'cancelbg':data.BookingStatus == 'Cancelled','sucessbg':data.Status == 'Approved'}" class='details'>{{data.ReplyMessage}}</td>
+              <td [ngClass]="{'cancelbg':data.BookingStatus == 'Cancelled','sucessbg':data.Status == 'Approved'}">
+                <a href="javascript:;;" *ngIf="data.Status == 'Pending'||data.Status == 'PENDING'" class="edit float-left" data-toggle="modal"
+                  data-target="#basicExample" (click)="reply.show();patientstatus(data);replymsgs('Approve');" [hidden]="data.BookingStatus == 'Cancelled'">
+
+                  <i class="icon-compass float-left" aria-hidden="true"></i>
+                  <span>Reply</span>
+                </a>
+                <span *ngIf="data.Status == 'Approved' || data.Status == 'Declined'" [ngClass]="{'cancel_lable':data.BookingStatus == 'Cancelled','sucess_lable':data.Status == 'Approved'}">
+                  {{data.Status}}
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <pagination-controls (pageChange)="page = $event" id="Medicalreport">
+        </pagination-controls>
+      </div>
+      <div *ngIf="(requestsList | filterBy: userFilter).length === 0">
+        <p class="text-center">There is no data to display</p>
+      </div>
+    </ngx-tab>
+    <ngx-tab title="Test Result Requests"  >
+      <div class="w-100 float-left" *ngIf="(requestsList | filterBy: userFilter).length > 0">
+        <table class="theme-table table mt-2">
+          <thead>
+            <tr>
+              <th>Provider Name</th>
+              
+              <th>Phone Number</th>
+              <th>Email</th>
+              <th>CreatedOn</th>
+              <th>Message</th>
+              <th>Reply message</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let data of requestsList | adminrequestSearchPipe : requestfilter | filterBy:userFilter | paginate: {itemsPerPage: 10, currentPage: page ,  id: 'testresult'};  let i=index">
+              <td [ngClass]="{'cancelbg':data.BookingStatus == 'Cancelled','sucessbg':data.Status == 'Approved'}" data-column="Provider Name">{{data.ProviderName}}</td>
+              
+              <td [ngClass]="{'cancelbg':data.BookingStatus == 'Cancelled','sucessbg':data.Status == 'Approved'}" data-column="PhoneNo">{{data.PhoneNo}}</td>
+              <td [ngClass]="{'cancelbg':data.BookingStatus == 'Cancelled','sucessbg':data.Status == 'Approved'}" data-column="Email">{{data.Email}}</td>
+              <td [ngClass]="{'cancelbg':data.BookingStatus == 'Cancelled','sucessbg':data.Status == 'Approved'}" data-column="CreatedOn">{{data.CreatedOn}}</td>
+              <td [ngClass]="{'cancelbg':data.BookingStatus == 'Cancelled','sucessbg':data.Status == 'Approved'}" class='details'>{{data.Details}}</td>
+              <td [ngClass]="{'cancelbg':data.BookingStatus == 'Cancelled','sucessbg':data.Status == 'Approved'}" class='details'>{{data.ReplyMessage}}</td>
+              <td [ngClass]="{'cancelbg':data.BookingStatus == 'Cancelled','sucessbg':data.Status == 'Approved'}">
+                <a href="javascript:;;" *ngIf="data.Status == 'Pending'||data.Status == 'PENDING'" class="edit float-left" data-toggle="modal"
+                  data-target="#basicExample" (click)="reply.show();patientstatus(data);replymsgs('Approve');" [hidden]="data.BookingStatus == 'Cancelled'">
+
+                  <i class="icon-compass float-left" aria-hidden="true"></i>
+                  <span>Reply</span>
+                </a>
+                <span *ngIf="data.Status == 'Approved' || data.Status == 'Declined'" [ngClass]="{'cancel_lable':data.BookingStatus == 'Cancelled','sucess_lable':data.Status == 'Approved'}">
+                  {{data.Status}}
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <pagination-controls (pageChange)="page = $event" id="testresult">
+        </pagination-controls>
+      </div>
+      <div *ngIf="(requestsList | filterBy: userFilter).length === 0">
+        <p class="text-center">There is no data to display</p>
+      </div>
+    </ngx-tab>
+    <ngx-tab title="Patient Questions"  >
+      <div class="w-100 float-left" *ngIf="(requestsList | filterBy: userFilter).length > 0">
+        <table class="theme-table table mt-2">
+          <thead>
+            <tr>
+              <th>Provider Name</th>
+              
+              <th>Phone Number</th>
+              <th>Email</th>
+              <th>Question</th>
+              <th>CreatedOn</th>
+              <th>Reply message</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let data of requestsList  | adminrequestSearchPipe : requestfilter | filterBy:userFilter | paginate: {itemsPerPage: 10, currentPage: page , id: 'patientque'};">
+               
+              <td [ngClass]="{'cancelbg':data.BookingStatus == 'Cancelled','sucessbg':data.Status == 'Approved'}" data-column="Provider Name">{{data.ProviderName}}</td>
+              
+              <td [ngClass]="{'cancelbg':data.BookingStatus == 'Cancelled','sucessbg':data.Status == 'Approved'}" data-column="PhoneNo">{{data.PhoneNo}}</td>
+              <td [ngClass]="{'cancelbg':data.BookingStatus == 'Cancelled','sucessbg':data.Status == 'Approved'}" data-column="Email">{{data.Email}}</td>
+              <td [ngClass]="{'cancelbg':data.BookingStatus == 'Cancelled','sucessbg':data.Status == 'Approved'}" class='details'>{{data.Details}}</td>
+              <td [ngClass]="{'cancelbg':data.BookingStatus == 'Cancelled','sucessbg':data.Status == 'Approved'}" data-column="CreatedOn">{{data.CreatedOn}}</td>
+              <td [ngClass]="{'cancelbg':data.BookingStatus == 'Cancelled','sucessbg':data.Status == 'Approved'}" class='details'>{{data.ReplyMessage}}</td>
+              <td [ngClass]="{'cancelbg':data.BookingStatus == 'Cancelled','sucessbg':data.Status == 'Approved'}">
+                <a href="javascript:;;" class="edit float-left" *ngIf="data.Status == 'Pending'||data.Status == 'PENDING'" data-toggle="modal"
+                  data-target="#basicExample" (click)="reply.show();patientreply(data);replymsgs('Approve');" [hidden]="data.BookingStatus == 'Cancelled'">
+                  <i class="icon-compass float-left" aria-hidden="true"></i>
+                  <span>Reply</span>
+                </a>
+                <span *ngIf="data.Status == 'Approved' || data.Status == 'Declined'" [ngClass]="{'cancel_lable':data.BookingStatus == 'Cancelled','sucess_lable':data.Status == 'Approved'}">
+                  {{data.Status}}
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <pagination-controls (pageChange)="page = $event" id="patientque">
+        </pagination-controls>
+      </div>
+      <div *ngIf="(requestsList | filterBy: userFilter).length === 0">
+        <p class="text-center">There is no data to display</p>
+      </div>
+    </ngx-tab>
+    <ngx-tab title="Patient Billing" >
+      <div class="w-100 float-left" *ngIf="(requestsList | filterBy: userFilter).length > 0">
+        <table class="theme-table table mt-2">
+          <thead>
+            <tr>
+              <th>Email</th>
+              <th>Phone Number</th>
+              
+              <th>Claim no</th>
+              <th>Billing Issue Description</th>
+              <th>Date of service</th>
+              <th>CreatedOn</th>
+              <th>Reply message</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let data of requestsList  | MedicalRecordPipe : requestfilter | filterBy:userFilter | paginate: {itemsPerPage: 10, currentPage: page , id: 'patientbill'};">
+              <td [ngClass]="{'cancelbg':data.BookingStatus == 'Cancelled','sucessbg':data.Status == 'Approved'}" data-column="Email">{{data.Email}}</td>
+              <td [ngClass]="{'cancelbg':data.BookingStatus == 'Cancelled','sucessbg':data.Status == 'Approved'}" data-column="PhoneNo">{{data.PhoneNo}}</td>
+              
+              <td [ngClass]="{'cancelbg':data.BookingStatus == 'Cancelled','sucessbg':data.Status == 'Approved'}" data-column="Claim no">{{data.BillClaimNo}}</td>
+              <td [ngClass]="{'cancelbg':data.BookingStatus == 'Cancelled','sucessbg':data.Status == 'Approved'}" class='details'>{{data.Details}}</td>
+              <td [ngClass]="{'cancelbg':data.BookingStatus == 'Cancelled','sucessbg':data.Status == 'Approved'}" data-column="Date of service">{{data.BillDateOfService}}</td>
+              <td [ngClass]="{'cancelbg':data.BookingStatus == 'Cancelled','sucessbg':data.Status == 'Approved'}" data-column="CreatedOn">{{data.CreatedOn}}</td>
+              <td [ngClass]="{'cancelbg':data.BookingStatus == 'Cancelled','sucessbg':data.Status == 'Approved'}" class='details'>{{data.ReplyMessage}}</td>
+              <td [ngClass]="{'cancelbg':data.BookingStatus == 'Cancelled','sucessbg':data.Status == 'Approved'}">
+                <a href="javascript:;;" *ngIf="data.Status == 'Pending'||data.Status == 'PENDING'" class="edit float-left" data-toggle="modal"
+                  data-target="#basicExample" (click)="reply.show();patientreply(data);replymsgs('Approve');" [hidden]="data.BookingStatus == 'Cancelled'">
+                  <i class="icon-compass float-left" aria-hidden="true"></i>
+                  <span>Reply</span>
+                </a>
+                <span *ngIf="data.Status == 'Approved' || data.Status == 'Declined'" [ngClass]="{'cancel_lable':data.BookingStatus == 'Cancelled','sucess_lable':data.Status == 'Approved'}">
+                  {{data.Status}}
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <pagination-controls (pageChange)="page = $event" id="patientbill">
+        </pagination-controls>
+      </div>
+      <div *ngIf="(requestsList | filterBy: userFilter).length === 0">
+        <p class="text-center">There is no data to display</p>
+      </div>
+    </ngx-tab>
+    <ngx-tab title=" Patient Information" >
+      <div class="w-100 float-left" *ngIf="(requestsList | filterBy: userFilter).length > 0">
+        <table class="theme-table table mt-2 mt-1">
+          <thead>
+            <tr>
+              <th>Provider Name</th>
+              
+              <th>Phone Number</th>
+              <th>Email</th>
+              <th>Information description</th>
+              <th>CreatedOn</th>
+              <th>Reply message</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let data of requestsList  | adminrequestSearchPipe : requestfilter | filterBy:userFilter  |  paginate: {itemsPerPage: 10, currentPage: page , id: 'patientinfo'};">
+              <!-- <td [ngClass]="{'cancelbg':data.BookingStatus == 'Cancelled','sucessbg':data.Status == 'Approved'}"  *ngIf="data.Status=='approve'"> -->
+              <td [ngClass]="{'cancelbg':data.BookingStatus == 'Cancelled','sucessbg':data.Status == 'Approved'}" data-column="Provider Name">{{data.ProviderName}}</td>
+              
+              <td [ngClass]="{'cancelbg':data.BookingStatus == 'Cancelled','sucessbg':data.Status == 'Approved'}" data-column="PhoneNo">{{data.PhoneNo}}</td>
+              <td [ngClass]="{'cancelbg':data.BookingStatus == 'Cancelled','sucessbg':data.Status == 'Approved'}" data-column="Email">{{data.Email}}</td>
+              <td [ngClass]="{'cancelbg':data.BookingStatus == 'Cancelled','sucessbg':data.Status == 'Approved'}" class='details'>{{data.Details}}</td>
+              <td [ngClass]="{'cancelbg':data.BookingStatus == 'Cancelled','sucessbg':data.Status == 'Approved'}" data-column="CreatedOn">{{data.CreatedOn}}</td>
+              <td [ngClass]="{'cancelbg':data.BookingStatus == 'Cancelled','sucessbg':data.Status == 'Approved'}" class='details'>{{data.ReplyMessage}}</td>
+              <td [ngClass]="{'cancelbg':data.BookingStatus == 'Cancelled','sucessbg':data.Status == 'Approved'}">
+                <a href="javascript:;;" *ngIf="data.Status == 'Pending'||data.Status == 'PENDING'" class="edit float-left" data-toggle="modal"
+                  data-target="#basicExample" (click)="reply.show();patientstatus(data);replymsgs('Approve');" [hidden]="data.BookingStatus == 'Cancelled'">
+                  <i class="icon-compass float-left" aria-hidden="true"></i>
+                  <span>Reply</span>
+                </a>
+                <span *ngIf="data.Status == 'Approved' || data.Status == 'Declined'" [ngClass]="{'cancel_lable':data.BookingStatus == 'Cancelled','sucess_lable':data.Status == 'Approved'}">
+                  {{data.Status}}
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <pagination-controls (pageChange)="page = $event" id="patientinfo">
+        </pagination-controls>
+      </div>
+      <div *ngIf="(requestsList | filterBy: userFilter).length === 0">
+        <p class="text-center">There is no data to display</p>
+      </div>
+    </ngx-tab>
+  </ngx-tabset>
+</div>
+
+
+<!-- <div  mdbModal id="Patientstatus" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Approval</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+
+            </div>
+
+            <div class="modal-body">
+                <p style="text-align:center">Do you want to Approve this request?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn blue-btn" (click)="approve('aprove')">Yes</button>
+                <button type="button" class="btn grey-btn" data-dismiss="modal">No</button>
+            </div>
+        </div>
+    </div>
+</div> -->
+
+
+
+<div mdbModal #reply="mdb-modal" class="modal fade" id="basicExample" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content rounded">
+      <div class="modal-header">
+        <h4 class="modal-title w-100" id="myModalLabel">Reply Message</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="reply.hide()">
+          <span aria-hidden="true">
+            <i class="icon-close" aria-hidden="true"></i>
+          </span>
+        </button>
+      </div>
+      <div class="modal-body">
+  <div class="acc-header2 request float-right">
+    <div class="btn-group  float-right" data-toggle="buttons">
+      <div class="float-left no_padding" *ngFor="let name1 of statusenum1 let i=index">
+        <input type="radio" name="options2" id="radio1{{i}}" value="option2"  [checked]="checksts==name1"  value="option2"
+        (click)="radioCheck(name1)" >
+        <label class="btn btn-primary text-center" for="radio1{{i}}">
+          {{name1}}
+        </label>
+      </div>
+    </div>
+  </div>
+  <!-- <div class="form-check filter-right" *ngFor="let name1 of stastusreply let i=index">
+              
+    <input class="form-check-input" type="radio" name="options2" id="radio1{{i}}" value="option2" [checked]="checksts==name1" 
+      (click)="radioCheck(name1)">
+    <label class="form-check-label" for="radio1{{i}}">{{name1}}</label>
+  </div> -->
+
+        <!-- <div class="form-check filter-right" *ngFor="let name of statusenum1 let i=index">
+          <input class="form-check-input" type="radio" name="options" id="radio{{i}}" [checked]="name==='Approve'" value="option1"
+            (click)="replymsgs(name)">
+          <label class="form-check-label" for="radio{{i}}">{{name}}</label>
+        </div>
+        <hr class="w-100 pull-left"> -->
+        <div class="w-100 no_padding">
+        <p class="replyline col-lg-12 w-100 float-left mb-3 col-md-12 no_padding"> Requested Date : {{binddata}}</p>
+        <p class="replyline col-lg-12 col-md-12 w-100 float-left mb-3 no_padding"> Phone No : {{binddataphone}}</p>
+        <p class="replyline col-lg-12 col-md-12 w-100 float-left mb-3 no_padding">Email : {{bindemail}}</p>
+      </div>
+        <textarea cols="10" placeholder="Reply here.." [(ngModel)]="replymsg.Message" class="form-control"></textarea>
+        <button type="button" class="btn btn-primary btn-sm waves-light ml-6" (click)="approve('reply');" mdbWavesEffect>Reply</button>
+      </div>
+    </div>
+  </div>
+</div>

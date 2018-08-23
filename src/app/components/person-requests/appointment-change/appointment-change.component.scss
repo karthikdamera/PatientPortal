@@ -1,0 +1,258 @@
+@import "../../../../app/shared/styles/variables";
+@import "../../../../app/shared/styles/icons";
+.user_detials {
+    margin: 40px 0 0 0;
+    padding: 0 20px;
+    position: relative;
+}
+
+.user_detials img {
+    width: 120px;
+    border-radius: 50%;
+    margin: 0 auto;
+    display: block;
+    -webkit-box-shadow: 0px 0px 4px 1px rgba(32, 32, 32, 0.2);
+    -moz-box-shadow: 0px 0px 4px 1px rgba(32, 32, 32, 0.2);
+    box-shadow: 0px 0px 4px 1px rgba(32, 32, 32, 0.2);
+}
+
+.user_detials h5 {
+    width: 100%;
+    padding: 20px 0;
+    margin-bottom: 20px;
+    float: left;
+    text-align: center;
+    font-size: 24px;
+    color: #61636e;
+    font-weight: 600px;
+    border-bottom: 1px solid #d6d6d6;
+}
+
+.user_detials .fa-angle-left {
+    font-size: 40px;
+    position: absolute;
+    top: 0px;
+    left: 20%;
+}
+
+.meeting_detials {
+    margin: 0 0 40px 0;
+    font-size: 18px;
+    color: #61636e;
+    width: 100%;
+    float: left;
+}
+
+.appointment_calendly {
+    padding: 0 40px;
+    max-width: 992px;
+    margin: 0 auto;
+}
+
+.appointment_calendly h6 {
+    font-size: 18px;
+    font-weight: 600;
+    width: 100%;
+    float: left;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.appointment_calendly .fa {
+    color: $text-color;
+    font-size: 60px;
+    border: none;
+    background: none button {
+        position: absolute;
+    }
+}
+
+.cal-date {
+    border-radius: 50%;
+    border: 2px solid $theme-color;
+    width: 100px;
+    height: 100px;
+    margin: 0 auto;
+    display: block;
+}
+
+.cal-date:hover,
+.cal-date:focus {
+    text-decoration: none;
+}
+
+.cal-date h6 {
+    float: left;
+    width: 100%;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 600;
+    color: $text-color;
+    margin: 30px 0 0 0;
+}
+
+.cal-date span {
+    float: left;
+    width: 100%;
+    text-align: center;
+}
+
+.slotdata {
+    margin: 10px 0;
+    border: none;
+}
+
+.slotdata .btn-primar {
+    border-radius: 0;
+}
+
+.slotdata .collapse {
+    float: left;
+    width: 100%;
+    padding: 10px;
+    border: 2px solid #6c9ed4;
+}
+
+.slotdata .collapse p {
+    font-size: 16px;
+}
+
+.slotdata .btn-primar {
+    padding: 0 10px;
+    background-color: #03a9f3 !important;
+    color: #fff;
+    font-size: 16px;
+}
+
+.slotdata .btn-primar:focus {
+    background-color: #03a9f3 !important;
+}
+
+.user-action div {
+    float: left;
+    margin-right: 8px;
+}
+
+.slotdata .btn-outline-success {
+    border-radius: 0;
+    padding: 0px 10px;
+    font-size: 14px;
+}
+
+.previous-appnt {
+    border-right: 2px solid #61636e;
+    padding: 14px;
+}
+
+.next-appnt {
+    padding: 14px;
+}
+
+.previous-appnt h5,
+.next-appnt h5 {
+    color: #61636e;
+}
+
+.previous-appnt p {
+    font-size: 18px;
+    line-height: 30px;
+    color: #ff4a4a;
+    text-decoration: line-through;
+}
+
+.next-appnt p {
+    font-size: 18px;
+    line-height: 30px;
+    color: #2aaf28;
+}
+
+.next-appnt p i,
+.previous-appnt p i {
+    font-size: 18px;
+    line-height: 30px;
+    color: #61636e;
+}
+
+.jumbotron {
+    background: none;
+}
+
+.jumbotron h1 {
+    font-size: 24px;
+}
+
+collapsible-list {
+    box-shadow: none;
+}
+
+collapsible-list-item {
+    margin-bottom: 10px;
+    border: 1px solid #a5a5a5;
+}
+
+collapsible-header {
+    min-height: 2rem;
+    line-height: 2rem;
+    padding: 0 10px;
+    background-color: #f3f3f3 !important;
+    font-size: 16px;
+    text-align: center;
+}
+
+collapsible-body {
+    padding: 1rem;
+}
+
+@media screen and (max-width: 331px) {
+    .navbar-toggler {
+        padding: 5px;
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .cal-date {
+        margin-bottom: 20px;
+    }
+    .previous-appnt {
+        border: none;
+        border-bottom: 2px solid #61636e;
+        padding: 16px;
+    }
+}
+
+p span {
+    font-weight: 600;
+}
+
+.container {
+    i {
+        font-size: 38px;
+    }
+}
+
+.disabled {
+    cursor: not-allowed;
+}
+
+.slot-scrollbar {
+    height: 40vh;
+}
+
+.w-90 {
+    width: 97%;
+}
+
+.carousel-item {
+    flex-wrap: wrap;
+}
+
+.nextavailabilitydt {
+    width: 40%;
+    text-align: center;
+    padding: 10px 0;
+    font-size: 16px;
+    background: #50ab50;
+    color: #fff;
+    display: block;
+    margin: 0 auto;
+}

@@ -1,0 +1,13 @@
+[{"RequestType":"Refills", "Status":"Approve", "Message":"Your Medication  Approved.Please Collect at front office"},
+{"RequestType":"Refills", "Status":"Decline", "Message":"Your Medication Was Declined "},
+{"RequestType":"Medical", "Status":"Approve", "Message":"Your Medical Record  Approved.Please Collect at front office"},
+{"RequestType":"Medical", "Status":"Decline", "Message":"Your Medical Record Was Declined"},
+{"RequestType":"Test", "Status":"Approve", "Message":"Your Test Result  Approved.Please Collect at front office"},
+{"RequestType":"Test", "Status":"Decline", "Message":"Your Test Result  was declined"},
+{"RequestType":"Questions", "Status":"Approve", "Message":"Your Questions  was  approved"},
+{"RequestType":"Questions", "Status":"Decline", "Message":"Your Questions  was  declined"},
+{"RequestType":"Billings", "Status":"Approve", "Message":"Your billings  was  approved"},
+{"RequestType":"Billings", "Status":"Decline", "Message":"Your billings  was  declined"},
+{"RequestType":"Information", "Status":"Approve", "Message":"Your info  was  approved"},
+{"RequestType":"Information", "Status":"Decline", "Message":"Your info  was  Declined"}
+]

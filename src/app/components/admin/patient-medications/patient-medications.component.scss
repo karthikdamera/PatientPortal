@@ -1,0 +1,90 @@
+@import "../../../../app/shared/styles/variables";
+.addbtn{
+    border: none;
+    background: $theme-blue;
+    color: $color-white !important;
+    margin-left: 12px;
+}
+.search {
+    position: relative;
+}
+
+.search input {
+    text-indent: 30px;
+}
+
+.search .icon-search {
+    position: absolute;
+    top: 9px;
+    left: 25px;
+    font-size: 18px;
+}
+.check-btn label {
+    min-width: 100px;
+}
+
+.check-btn label input {
+    position: absolute;
+    z-index: -1;
+}
+
+.check-btn label span {
+    text-align: center;
+    padding: 5px 12px;
+    display: block;
+}
+
+.check-btn {
+    display: inline-block;
+    font-weight: 400;
+    line-height: 1;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-color: $color-white;
+    border-radius: 12px;
+    border: 1px solid $theme-blue !important;
+    height: 25px;
+    margin-right: 10px;
+    margin-bottom: 5px;
+}
+
+.check-btn label input {
+    position: absolute;
+    z-index: -1;
+}
+
+.check-btn input:checked+span {
+    color: $text-color;
+    background-color: $theme-blue-light;
+    border: 1px solid $theme-blue;
+    border-radius: 12px;
+}
+
+.check-btn input:hover+span {
+    color: $text-color;
+    background-color: $theme-blue-light;
+    border-color: $theme-blue;
+    border-radius: 12px;
+}
+
+.check-btn label span {
+    text-align: center;
+    padding: 5px 25px;
+    display: block;
+}
+.fa-plus{
+    color: $color-white;
+}
+.fa-check {
+    color: $theme-green;
+}
+.headding-banner {
+    border-bottom: 1px solid $border-color;
+    padding: 1em;
+    background: $color-white;
+}

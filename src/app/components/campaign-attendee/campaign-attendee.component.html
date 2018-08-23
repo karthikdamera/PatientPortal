@@ -1,0 +1,142 @@
+<!-- <admin-header>
+
+</admin-header> -->
+<!-- <main role="main">
+    <div class="container">
+        <router-outlet></router-outlet>
+    </div>
+</main> -->
+<div class="row no-gutters" style="background:#fff;">
+    <div class="col-md-3" style="background:#23cc9f;text-align:center;height:100vh;">
+        <img src="https://cdn1.iconfinder.com/data/icons/anchor/128/megaphone.png" style="
+       margin:7em auto 3em auto;
+        text-align: center;
+        display: block;
+        border: 1px solid #6cd2b8;
+        padding: 0.5em;
+        border-radius: 50%;
+    ">
+        <h3 style="color:#fff;font-size:1.5em;padding:0 1em;">Attend Our Exiting Campaign with your family members and friends win Surprising Gifts...!</h3>
+
+        <div *ngIf="addattendeests=='admin'">
+            <a (click)="close()">
+                <img src="https://d30y9cdsu7xlg0.cloudfront.net/png/14135-200.png" style="width:50px;">
+            </a>
+        </div>
+    </div>
+    <div class="col-md-9">
+        <h3 align="center" style="    color: #23cc9f;margin:1em 0;text-transform:capitalize;">{{name}}</h3>
+        <hr />
+        <!-- <div *ngIf="successfullyenrolled==false"> -->
+        <form [formGroup]="attendeeForm" (submit)="attendeePost()" style="width: 80%; margin: 1em auto; display: grid;">
+            <div class="col-lg-12 pull-left" style="margin-bottom: 18px;">
+                <h6 class="pull-left">Campaign Date&nbsp;:</h6>
+                <span class="pull-left">&nbsp;{{campaigndate}}</span>
+                <span class="pull-right">&nbsp;{{location}}</span>
+                <h6 class="pull-right">Location&nbsp;:</h6>
+            </div>
+            <div class="w-100 float-left">
+                <div class="input-group col-lg-6 float-left">
+                    <span class="input-title w-100 float-left">First Name
+                        <span class="color-red">*</span>
+                    </span>
+                    <input type="text" class="form-control w-100 float-left" placeholder="First Name" formControlName="FirstName" [(ngModel)]="attendeeModel.FirstName"
+                        maxlength="50">
+                    <app-validation [control]="attendeeForm.controls.FirstName">
+                    </app-validation>
+                </div>
+                <div class="input-group col-lg-6 float-left">
+                    <span class="input-title w-100 float-left">Last Name
+                        <span class="color-red">*</span>
+                    </span>
+                    <input type="text" class="form-control w-100 float-left" placeholder="Last Name" formControlName="LastName" [(ngModel)]="attendeeModel.LastName"
+                        maxlength="50">
+                    <app-validation [control]="attendeeForm.controls.LastName">
+                    </app-validation>
+                </div>
+                <div class="input-group col-lg-6 float-left">
+                    <span class="input-title w-100 float-left">Age Range
+
+                    </span>
+                    <select formControlName="AgeRange" class="form-control" [(ngModel)]="attendeeModel.AgeRange">
+                        <option [ngValue]="undefined" selected>-- Please Select--</option>
+                        <option value="18 - 30">18 - 30</option>
+                        <option value="30 - 40">30 - 40</option>
+                        <option value="40 - 60">40 - 60</option>
+                        <option value="60+">60+</option>
+                    </select>
+                </div>
+                <div class="input-group col-lg-6 float-left">
+                    <span class="input-title w-100 float-left">Email
+                        <span class="color-red">*</span>
+                    </span>
+                    <input type="text" placeholder="Email" formControlName="Email" class="form-control" [(ngModel)]="attendeeModel.Email">
+                    <app-validation [control]="attendeeForm.controls.Email">
+                    </app-validation>
+                </div>
+                <div class="input-group col-lg-6 float-left">
+                    <span class="input-title w-100 float-left">Phone Number
+                        <span class="color-red">*</span>
+                    </span>
+                    <input type="text" placeholder="Phone Number" [textMask]="getphoneno()" formControlName="ContactNumber" class="form-control"
+                        [(ngModel)]="attendeeModel.ContactNumber" (blur)="unmasckphone()"  [ngClass]="{'error' : phonestssec}" >
+                    <app-validation [control]="attendeeForm.controls.ContactNumber">
+                    </app-validation>
+                    <!-- <div *ngIf="phonestssec" class="errormsg"> Number Should Be 10 Digits</div> -->
+                </div>
+                <div class="input-group col-lg-6 float-left">
+                    <span class="input-title w-100 float-left">Gender
+                    </span>
+                    <select formControlName="Gender" class="form-control" [(ngModel)]="attendeeModel.Gender">
+                        <option [ngValue]="undefined" selected>-- Please Select--</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                    </select>
+                </div>
+                <div class="input-group col-lg-6 float-left">
+                    <span class="input-title w-100 float-left">Comments or Questions
+                    </span>
+                    <textarea formControlName="Message" class="form-control" rows="2" cols="2" [(ngModel)]="attendeeModel.Message"></textarea>
+                </div>
+            </div>
+            <div class="w-100 ml-2 float-left">
+                 <button class="btn btn-primary col-lg-1 waves-light float-left" [disabled]="!attendeeForm.valid" mdbWavesEffect>Submit</button>
+                <button class="btn btn-primary  col-lg-1 waves-light float-left" *ngIf="addattendeests=='admin'" tabindex="0" type="button" (click)="close()"
+                    mdbWavesEffect>Close</button></div>
+           
+        </form>
+      
+        <div mdbModal #registration="mdb-modal" class="modal fade" id="basicExample" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    
+                                <h2>Thank you for Registering!</h2>
+                          
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="registration.hide()">
+                            <span aria-hidden="true">
+                                <i class="icon-close" aria-hidden="true"></i>
+                            </span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <h4 class="modal-title w-100 text-center">NEXT STEP</h4>
+                        <p class="mb-3 no_padding">You will receive an email shortly asking to confirm your seat at Dr. Wang's seminar. To confirm simply
+                            reply to the email.</p>
+                        <p class="mb-3 no_padding">If you do not receive a confirmation email within 24 hours please send an inquiry to
+                            <!-- <a href="">support@harrisonmediaholdings.com</a> -->
+                        </p>
+                            <a href="" class="link-text">support@harrisonmediaholdings.com</a>
+                        <button type="button" class="btn btn-primary no_margin float-right waves-light text-center" data-dismiss="modal" (click)="enrollno()">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- </div> -->
+        <!-- </div> -->
+    </div>
+</div>
+
+<!--<client-footer></client-footer>-->

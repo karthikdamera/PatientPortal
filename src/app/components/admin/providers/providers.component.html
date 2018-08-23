@@ -1,0 +1,370 @@
+<div class="w-100 page-titel float-left">
+  <h4 class="float-left titel">Providers Information</h4>
+  <button type="button" class="btn btn-primary no_margin width_auto float-right waves-light text-center" data-toggle="modal"
+    data-target="addProvider" (click)="addProvider.show();toClear()" mdbWavesEffect>
+    Add Providers
+  </button>
+  <div class="input-group col-lg-4 no_padding mr-3  search float-right">
+    <span class="icon-search"></span>
+    <input type="text" placeholder="Search By Email/PhoneNo/Name" name="barcode" [(ngModel)]="userFilter" class="form-control no_margin w-100 float-left no_margin">
+  </div>
+</div>
+<div class="w-100 float-left page-container" *ngIf="providerData.length>0">
+  <table class="theme-table table">
+    <thead>
+      <tr>
+        <th (click)="setOrder('ProviderName')" class="curor-pointer">Provider Name
+          <i class="fa" [ngClass]="{'fa-caret-down' : !reverse,'fa-caret-up' : reverse }" *ngIf="order=='ProviderName'" aria-hidden="true"></i>
+        </th>
+        <th (click)="setOrder('ProviderType')" class="curor-pointer">Provider Type
+          <i class="fa" [ngClass]="{'fa-caret-down' : !reverse,'fa-caret-up' : reverse }" *ngIf="order=='ProviderType'" aria-hidden="true"></i>
+        </th>
+        <th (click)="setOrder('ServiceType')" class="curor-pointer">Service Type
+          <i class="fa" [ngClass]="{'fa-caret-down' : !reverse,'fa-caret-up' : reverse }" *ngIf="order=='ServiceType'" aria-hidden="true"></i>
+        </th>
+        <th (click)="setOrder('Email')" class="curor-pointer">Email
+          <i class="fa" [ngClass]="{'fa-caret-down' : !reverse,'fa-caret-up' : reverse }" *ngIf="order=='Email'" aria-hidden="true"></i>
+        </th>
+        <th (click)="setOrder('PhoneNo')" class="curor-pointer">Phone No
+            <i class="fa" [ngClass]="{'fa-caret-down' : !reverse,'fa-caret-up' : reverse }" *ngIf="order=='PhoneNo'" aria-hidden="true"></i>
+        </th>
+        <th>Manage</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let providerInfo of providerData | orderBy: order:reverse:'case-insensitive'| ProviderPipe : userFilter | paginate: {itemsPerPage: 10, currentPage: page, id: 'providerpage'}; let i=index">
+        <td data-column="Provider Name">{{providerInfo.ProviderName}}</td>
+        <td data-column="Provider Type">{{providerInfo.ProviderType}}</td>
+        <td data-column="Service Type">{{providerInfo.ServiceType}}</td>
+        <td data-column="Email">{{providerInfo.Email}}</td>
+        <td data-column="PhoneNo">{{providerInfo.PhoneNo}}</td>
+        <td>
+          <a href="javascript:;;" class="edit float-left" data-toggle="modal" data-target="#pedit" (click)="edit(providerInfo);pedit.show()">
+            <i class="icon-edit float-left" aria-hidden="true" title="Edit"></i>
+            <span>Edit</span>
+          </a>
+          <!-- <a routerLink="../provider-slot-details" RouterLinkActive="Active" (click)="getProviderData(providerInfo)" class="settings-out1"
+                title="Slot Details" data-toggle="tooltip">
+                <i class="material-icons">&#xE8B8;</i>
+              </a> -->
+          <a href="javascript:;;" routerLink="../providerslotdetails" RouterLinkActive="Active" (click)="getProviderData(providerInfo)"
+            class="setting float-left" (click)="edit(providerInfo)">
+            <i class="icon-user-settings float-left" aria-hidden="true" title="Slot Details" style="cursor:pointer"></i>
+            <span>Slot Settings</span>
+          </a>
+          <a href="javascript:;;" routerLink="../slotsAvailability" RouterLinkActive="Active" (click)="getProviderData(providerInfo)"
+            class="edit float-left">
+            <i class="icon-calendar float-left" aria-hidden="true" title="Slot Details" style="cursor:pointer"></i>
+            <span>Upload Slots</span>
+          </a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <pagination-controls (pageChange)="page = $event" id="providerpage">
+  </pagination-controls>
+</div>
+<div mdbModal #addProvider="mdb-modal" class="modal fade" id="addProvider" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content rounded">
+      <div class="modal-header">
+        <h4 class="modal-title w-100" id="myModalLabel">Add Provider Information</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="addProvider.hide()">
+          <span aria-hidden="true">
+            <i class="icon-close" aria-hidden="true"></i>
+          </span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="providerForm">
+          <div class="col-lg-3 float-left user-pic">
+            <div class=" profile_pic avatharbg" *ngIf="file_srcs?.length ==''">
+              <img *ngIf="profileimage==''" class="img-circle" src="" alt="">
+              <img *ngIf="profileimage!=''" class="img-circle" src="{{profileimage}}" alt="">
+              <div class="overlay placeholder">
+                <a id="upload_button">
+                  <label>
+                    <i class="fa fa-camera"></i>
+
+                    <input type="file" ngf-select ng-model="new_files" ng-change="fs.uploadFiles(new_files)" value="Upload" (change)="fileChange(input)"
+                      class="upload" #input>
+                    <strong>Upload</strong>
+                  </label>
+                </a>
+              </div>
+            </div>
+            <div class=" profile_pic avatharbg" *ngFor="let file_src of file_srcs; let i = index">
+              <img class="fa fa-user-circle img-circle no_padding no_margin" height="100" width="100" [attr.src]='file_src' alt="" />
+              <div class="overlay">
+                <a id="upload_button">
+                  <label>
+                    <i class="fa fa-camera"></i>
+
+                    <input type="file" ngf-select ng-model="new_files" ng-change="fs.uploadFiles(new_files)" value="Upload" (change)="fileChange(input)"
+                      class="upload" #input>
+                    <strong>Upload</strong>
+                  </label>
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-9 float-left">
+            <div class="input-group col-lg-6 float-left">
+              <span class="input-title w-100 float-left">Provider Name
+                <span class="color-red">*</span>
+              </span>
+              <input type="text" placeholder="Provider Name" class="form-control" formControlName="ProviderName" [(ngModel)]="model.ProviderName">
+              <app-validation [control]="providerForm.controls.ProviderName">
+              </app-validation>
+            </div>
+            <div class="input-group col-lg-6 float-left">
+              <span class="input-title w-100 float-left">Service Type
+                <span class="color-red">*</span>
+              </span>
+              <select class="form-control" name="ServiceType" formControlName="ServiceTypeRefId" [(ngModel)]="model.ServiceTypeRefId">
+                <option [ngValue]="undefined" selected>-Please Select-</option>
+                <option [ngValue]="providerInfo.ServiceTypeRefId" *ngFor="let providerInfo of data.ServiceTypes">{{providerInfo.ServiceType}}</option>
+              </select>
+              <app-validation [control]="providerForm.controls.ServiceTypeRefId">
+              </app-validation>
+            </div>
+            <div class="input-group col-lg-6 float-left">
+              <span class="input-title w-100 float-left">ProviderType
+                <span class="color-red">*</span>
+              </span>
+              <select class="form-control" name="ProviderType" formControlName="ProviderTypeRefId" [(ngModel)]="model.ProviderTypeRefId">
+                <option [ngValue]="undefined" selected>-Please Select-</option>
+                <option [ngValue]="providerInfo.ProviderTypeRefId" *ngFor="let providerInfo of data.ProviderTypes">{{providerInfo.ProviderType}}</option>
+              </select>
+              <app-validation [control]="providerForm.controls.ProviderTypeRefId">
+              </app-validation>
+            </div>
+            <div class="input-group col-lg-6 float-left">
+              <span class="input-title w-100 float-left">Designation
+                <span class="color-red">*</span>
+              </span>
+              <select class="form-control" formControlName="DesignationId" name="Designation" [(ngModel)]="model.DesignationId">
+                <option [ngValue]="providerInfo.Id" *ngFor="let providerInfo of data.ProviderRole" [selected]="providerInfo.Id==providerid">{{providerInfo.Name}}</option>
+              </select>
+              <app-validation [control]="providerForm.controls.DesignationId">
+              </app-validation>
+            </div>
+            <div class="input-group col-lg-6 float-left">
+              <span class="input-title w-100 float-left">Email
+                <span class="color-red">*</span>
+              </span>
+              <input type="email" placeholder="Email Address" formControlName="Email" class="form-control" [(ngModel)]="model.Email">
+              <app-validation [control]="providerForm.controls.Email">
+              </app-validation>
+            </div>
+            <div class="input-group col-lg-6 float-left">
+              <span class="input-title w-100 float-left">Phone No
+                <span class="color-red">*</span>
+              </span>
+              <input type="text" placeholder="Phone No" [textMask]="getphoneno()" class="form-control" [(ngModel)]="model.PhoneNo" formControlName="PhoneNo"
+                (blur)="unmasckphone('addphno')" [ngClass]="{'error' : phonestssec}">
+              <app-validation [control]="providerForm.controls.PhoneNo">
+              </app-validation>
+              <!-- <div *ngIf="phonestssec" class="errormsg"> Number Should Be 10 Digits</div> -->
+            </div>
+            <div class="input-group col-lg-6 float-left">
+              <span class="input-title w-100 float-left">Alternate PhoneNo
+                <span class="color-red">*</span>
+              </span>
+              <input type="text" placeholder="Alternate PhoneNo" [textMask]="getaltphoneno()" class="form-control" [(ngModel)]="model.AltPhoneNo"
+                formControlName="AltPhoneNo" (blur)="unmasckaltphone('addaltphno')" [ngClass]="{'error' : phonealtstssec}">
+              <app-validation [control]="providerForm.controls.AltPhoneNo">
+              </app-validation>
+              <!-- <div *ngIf="phonealtstssec" class="errormsg"> Number Should Be 10 Digits</div> -->
+            </div>
+            <div class="input-group col-lg-6 float-left">
+              <span class="input-title w-100 float-left">Google Location Maps Url
+                <span class="color-red">*</span>
+              </span>
+              <input type="text" placeholder="Google Location Maps Url" class="form-control" [(ngModel)]="model.LocationUrl" formControlName="Locationurl"
+              />
+              <app-validation [control]="providerForm.controls.Locationurl">
+              </app-validation>
+            </div>
+            <div class=" col-lg-6 float-left">
+              <span class="input-title w-100 float-left">Description
+                <span class="color-red">*</span>
+              </span>
+              <textarea cols="5" placeholder="Description" class="form-control" [(ngModel)]="model.Description" formControlName="Description"></textarea>
+              <app-validation [control]="providerForm.controls.Description">
+              </app-validation>
+
+            </div>
+            <div class="col-lg-6 float-left">
+              <span class="input-title w-100 float-left">Address
+                <span class="color-red">*</span>
+              </span>
+              <textarea cols="5" placeholder="Address" class="form-control" [(ngModel)]="model.Address1" formControlName="Address1"></textarea>
+              <app-validation [control]="providerForm.controls.Address1">
+              </app-validation>
+
+            </div>
+          </div>
+          <!-- <button class="btn btn-primary btn-sm waves-light float-right" (click)="cancel()" mdbWavesEffect>Cancel</button> -->
+          <button class="btn btn-primary btn-sm waves-light float-right" (click)="postProviderInfo(model)" [disabled]="!providerForm.valid || disableButton "
+            mdbWavesEffect>Save</button>
+
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div mdbModal #pedit="mdb-modal" class="modal fade" id="pedit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content rounded">
+      <div class="modal-header">
+        <h4 class="modal-title w-100" id="myModalLabel">Edit Provider Information</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="pedit.hide()">
+          <span aria-hidden="true">
+            <i class="icon-close" aria-hidden="true"></i>
+          </span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <ng-scrollbar class="edit-provider-scroll w-100 float-left">
+          <form [formGroup]="providerForm1">
+            <div class="col-lg-3 float-left user-pic">
+
+              <div class=" profile_pic avatharbg " *ngIf="file_srcs?.length ==''">
+                <img *ngIf="profileimage==''" class="img-circle" src="" alt="">
+                <img *ngIf="profileimage!=''" class="img-circle" src="{{profileimage}}" alt="">
+                <div class="overlay placeholder">
+                  <a id="upload_button">
+                    <label>
+                      <i class="fa fa-camera"></i>
+
+                      <input type="file" ngf-select ng-model="new_files" ng-change="fs.uploadFiles(new_files)" value="Upload" (change)="fileChange(input)"
+                        class="upload" #input>
+                      <strong>Upload</strong>
+                    </label>
+                  </a>
+                </div>
+              </div>
+              <div class=" profile_pic avatharbg" *ngFor="let file_src of file_srcs; let i = index">
+                <img class="fa fa-user-circle img-circle no_padding no_margin" height="100" width="100" [attr.src]='file_src' alt="" />
+                <div class="overlay">
+                  <a id="upload_button">
+                    <label>
+                      <i class="fa fa-camera"></i>
+
+                      <input type="file" ngf-select ng-model="new_files" ng-change="fs.uploadFiles(new_files)" value="Upload" (change)="fileChange(input)"
+                        class="upload" #input>
+                      <strong>Upload</strong>
+                    </label>
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-9 float-left">
+              <div class="input-group col-lg-6 float-left">
+                <span class="input-title w-100 float-left">Provider Name
+                  <span class="color-red">*</span>
+                </span>
+                <input type="text" placeholder="Provider Name" class="form-control" formControlName="ProviderName" [(ngModel)]="editItems.ProviderName">
+                <app-validation [control]="providerForm1.controls.ProviderName">
+                </app-validation>
+              </div>
+              <div class="input-group col-lg-6 float-left">
+                <span class="input-title w-100 float-left">Service Type
+                  <span class="color-red">*</span>
+                </span>
+                <select class="form-control" name="ServiceType" formControlName="ServiceTypeRefId" [(ngModel)]="editItems.ServiceTypeRefId">
+                  <option [ngValue]="providerInfo.ServiceTypeRefId" selected="editItems.ServiceTypeRefId==value" *ngFor="let providerInfo of data.ServiceTypes">{{providerInfo.ServiceType}}</option>
+                </select>
+                <app-validation [control]="providerForm1.controls.ServiceTypeRefId">
+                </app-validation>
+              </div>
+              <div class="input-group col-lg-6 float-left">
+                <span class="input-title w-100 float-left">ProviderType
+                  <span class="color-red">*</span>
+                </span>
+                <select class="form-control" name="ProviderType" formControlName="ProviderTypeRefId" [(ngModel)]="editItems.ProviderTypeRefId">
+                  <option [ngValue]="providerInfo.ProviderTypeRefId" selected="editItems.ProviderTypeRefId==value" *ngFor="let providerInfo of data.ProviderTypes">{{providerInfo.ProviderType}}</option>
+                </select>
+                <app-validation [control]="providerForm1.controls.ProviderTypeRefId">
+                </app-validation>
+              </div>
+              <div class="input-group col-lg-6 float-left">
+                <span class="input-title w-100 float-left">Designation
+                  <span class="color-red">*</span>
+                </span>
+                <select class="form-control" formControlName="DesignationId" name="Designation" [(ngModel)]="editItems.DesignationName">
+                  <option [ngValue]="providerInfo.Id" [selected]="editItems.DesignationName==providerInfo.Name" *ngFor="let providerInfo of data.ProviderRole">{{providerInfo.Name}}</option>
+                </select>
+                <app-validation [control]="providerForm1.controls.DesignationId">
+                </app-validation>
+              </div>
+              <div class="input-group col-lg-6 float-left">
+                <span class="input-title w-100 float-left">Email
+                  <span class="color-red">*</span>
+                </span>
+                <input type="email" placeholder="Email Address" formControlName="Email" class="form-control" [(ngModel)]="editItems.Email"
+                  disabled>
+                <app-validation [control]="providerForm1.controls.Email">
+                </app-validation>
+              </div>
+              <div class="input-group col-lg-6 float-left">
+                <span class="input-title w-100 float-left">PhoneNo
+                  <span class="color-red">*</span>
+                </span>
+                <input type="text" placeholder="Phone No" [textMask]="{mask: mask}" class="form-control" [(ngModel)]="editItems.PhoneNo"
+                  formControlName="PhoneNo" (blur)="unmasckphone('editphno')" [ngClass]="{'error' : phonestssec}">
+                <app-validation [control]="providerForm1.controls.PhoneNo">
+                </app-validation>
+                <!-- <div *ngIf="phonestssec" class="errormsg"> Number Should Be 10 Digits</div> -->
+              </div>
+              <div class="input-group col-lg-6 float-left">
+                <span class="input-title w-100 float-left">Alternate PhoneNo
+                  <span class="color-red">*</span>
+                </span>
+                <input type="text" placeholder="Alternate PhoneNo" [textMask]="{mask: mask}" class="form-control" [(ngModel)]="editItems.AltPhoneNo"
+                  formControlName="AltPhoneNo" (blur)="unmasckaltphone('editaltphno')" [ngClass]="{'error' : phonealtstssec}">
+                <app-validation [control]="providerForm1.controls.AltPhoneNo">
+                </app-validation>
+                <!-- <div *ngIf="phonealtstssec" class="errormsg"> Alternate Number Should Be 10 Digits</div> -->
+              </div>
+              <div class="input-group col-lg-6 float-left">
+                <span class="input-title w-100 float-left">Google Location Maps Url
+                  <span class="color-red">*</span>
+                </span>
+                <input type="text" placeholder="Google Location Maps Url" class="form-control" [(ngModel)]="editItems.LocationUrl" formControlName="Locationurl"
+                />
+                <app-validation [control]="providerForm1.controls.Locationurl">
+                </app-validation>
+              </div>
+              <div class=" col-lg-6 float-left">
+                <span class="input-title w-100 float-left">Description
+                  <span class="color-red">*</span>
+                </span>
+                <textarea cols="5" placeholder="Description" class="form-control" [(ngModel)]="editItems.Description" formControlName="Description"></textarea>
+                <app-validation [control]="providerForm1.controls.Description">
+                </app-validation>
+              </div>
+              <div class=" col-lg-6 float-left">
+                <span class="input-title w-100 float-left">Address
+                  <span class="color-red">*</span>
+                </span>
+                <textarea cols="5" placeholder="Address" class="form-control" [(ngModel)]="editItems.Address1" formControlName="Address1"></textarea>
+                <app-validation [control]="providerForm1.controls.Address1">
+                </app-validation>
+
+              </div>
+            </div>
+            <!-- <button class="btn btn-primary btn-sm waves-light float-right" (click)="cancel()" mdbWavesEffect>Cancel</button> -->
+            <button class="btn btn-primary btn-sm waves-light float-right" (click)="editPost(editItems)" [disabled]="!providerForm1.valid || disableButton "
+              mdbWavesEffect>Save</button>
+
+          </form>
+        </ng-scrollbar>
+      </div>
+    </div>
+  </div>
+</div>

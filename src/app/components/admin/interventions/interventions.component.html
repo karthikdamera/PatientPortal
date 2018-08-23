@@ -1,0 +1,85 @@
+<div class="entry">
+    <div class="entry-header">
+            <div class="col-lg-12 float-left header-title headding-banner">
+                    <div class="col-lg-6 search float-left">
+                            <!-- <div class=" float-right col-lg-3"> -->
+                                    <span class="icon-search"></span>
+                                    <input type="search" placeholder="Quick Search" name="Name" [(ngModel)]="userfilter.InterventionName" class="form-control">
+                                <!-- </div> -->
+            </div>
+            <button class="btn btn-primary no_margin float-right waves-light text-center" (click)="addIntervention()">
+                <i class="menu-icon fa fa-plus"></i> Add New</button>
+               
+        </div>
+
+    </div>
+    <div *ngIf="getinterventionData.length>0">
+        <div class="row no-gutters headding-banner" *ngFor="let interventiondata of getinterventionData | filterBy:userfilter">
+                <div class="col-lg-2 float-left entry-status">
+                <i class="fa fa-lock" *ngIf="interventiondata.Status=='Inactive'"></i>
+                <i class="fa fa-check" *ngIf="interventiondata.Status=='Complete'"></i>
+                <i class="fa fa-unlock" *ngIf="interventiondata.Status=='Active'"></i>
+            </div>
+            <div class="col-lg-7 float-left">
+                <div class="row">
+                    <b>{{interventiondata.InterventionName}}</b>
+                </div>
+                <div class="row">{{interventiondata.Status}} by client on {{interventiondata.Date}}</div>
+            </div>
+            <div class="col-lg-3 float-left">
+                <button class="btn btn-primary no_margin float-right waves-light text-center" (click)="onEdit(interventiondata);edit.show()" data-toggle="modal" data-target="#editCustom">Update</button>
+            </div>
+        </div>
+    </div>
+
+
+    <div mdbModal #edit="mdb-modal" class="modal fade" id="editCustom" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content rounded">
+                <div class="modal-header">
+                    <h4>Update Intervention</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="edit.hide()">
+                        <span aria-hidden="true">
+                            <i class="icon-close" aria-hidden="true"></i>
+                        </span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                            <b class="mb-2">Call a family member today</b>
+                    <div class="form-group">
+                        <span class="form-label">Current Status</span>
+                        <span class="text-red">*</span>
+                        <div class="row" style="margin-top: 10px;margin-left: 0px;">
+                            <div class="check-btn">
+                                <label>
+                                    <input type="radio" value="Active" [checked]="updatedata.Status ==='Active'" name="CurrentStatus" (click)="updateStatus('Active')"
+                                        required>
+                                    <span>Active</span>
+                                </label>
+                            </div>
+                            <div class="check-btn">
+                                <label>
+                                    <input type="radio" value="Inactive" [checked]="updatedata.Status ==='Inactive'" name="CurrentStatus" (click)="updateStatus('Inactive')"
+                                        required>
+                                    <span>Inactive</span>
+                                </label>
+                            </div>
+                            <div class="check-btn">
+                                <label>
+                                    <input type="radio" value="Complete" [checked]="updatedata.Status ==='Complete'" name="CurrentStatus" (click)="updateStatus('Complete')"
+                                        required>
+                                    <span>Complete</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+               
+                    <button type="button" class="btn btn-primary float-right waves-light text-center" data-dismiss="modal" aria-label="Close" (click)="edit.hide()">Discard</button>
+
+                    <button type="button" class="btn btn-primary float-right waves-light text-center" data-dismiss="modal" [disabled]="insstatus" (click)="editRequest()">Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

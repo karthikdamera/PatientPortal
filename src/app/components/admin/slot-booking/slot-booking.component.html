@@ -1,0 +1,259 @@
+<!-- fullCalModal model start-->
+<div mdbModal #fullCalModal="mdb-modal" class="modal fade right fullCalModal" id="pharmaaddModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-full-height modal-right">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title w-100" id="myModalLabel">Add Appointment</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="fullCalModal.hide();clear()">
+                    <span aria-hidden="true">
+                        <i class="icon-close" aria-hidden="true"></i>
+                    </span>
+                </button>
+            </div>
+            <div class="modal-body add-appointment-scrollbar">
+                <div class="w-100 popup-input float-left">
+                    <div class="float-left w-100 scheduler-popup" *ngIf="model.ImageUrl==''">
+                        <img alt="Patient" class=" profile_pic" src="https://image.flaticon.com/icons/svg/236/236832.svg">
+                    </div>
+                    <div class="float-left w-100 scheduler-popup  " *ngIf="model.ImageUrl!=''">
+                        <img alt="Patient" class=" profile_pic " src="{{model.ImageUrl}}">
+                    </div>
+                    <div class="input-group w-100" *ngIf="IsNameEditable">
+                        <input type="text" class="form-control float-left" placeholder="Email/PhoneNo" id='withoutappoinmentfilter' [(ngModel)]="query" value="{{email}}" (keyup)="filter()">
+                        <ng-scrollbar class="inner-suggestions" *ngIf="filteredList.length > 0">
+                            <ul class="w-100 float-left">
+                                <li (click)="select(item)" *ngFor="let item of filteredList">
+                                    <a class="w-100 float-left">
+                                        <img class="col-lg-2 float-left no_padding" src="https://image.flaticon.com/icons/svg/236/236832.svg">
+                                        <span class="col-lg-8 float-left ">{{item.FirstName}} ({{item.Email}}) </span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </ng-scrollbar>
+                    </div>
+                    <h3 class="float-left w-100 text-center mt-2 user-name" *ngIf="!IsNameEditable">
+                        {{model.firstname}}&nbsp;{{model.lastname}}, {{model.patientdob}}
+                    </h3>
+                </div>
+                <!-- <div class="w-100 float-right ">
+                    <button *ngIf="Newnewevent" (click)="newPatient()" class="btn btn-primary waves-light float-right">
+                        <i class="fa fa-plus right"></i>New Patient</button>
+                </div> -->
+                <div class="popup-input new-patient float-left">
+                    <!-- <ng-scrollbar class="add-appointment-scrollbar w-100 float-left"> -->
+                    <form [formGroup]="slotForm" class="w-100 float-left">
+                        <div class="input-group w-50 float-left">
+                            <span class="input-title w-100 float-left">First Name
+                                <span class="color-red">*</span>
+                            </span>
+                            <input class="form-control " type="text" formControlName="firstname" name="FirstName" id="FirstName" [(ngModel)]="model.firstname" maxlength="50" [attr.disabled]="addnewevent == false?'':null && model.firstname!=''">
+                            <app-validation [control]="slotForm.controls.firstname">
+                            </app-validation>
+                        </div>
+                        <div class="input-group w-50 float-left">
+                            <span class="input-title w-100 float-left">Last Name
+                                <span class="color-red">*</span>
+                            </span>
+                            <input class="form-control" type="text" name="LastName" formControlName="lastname" id="LastName" [(ngModel)]="model.lastname" maxlength="50" [attr.disabled]="addnewevent == false?'':null">
+                            <app-validation [control]="slotForm.controls.lastname">
+                            </app-validation>
+                        </div>
+                        <div class="input-group w-50 float-left">
+                            <span class="input-title w-100 float-left">Email
+                                <span class="color-red">*</span>
+                            </span>
+                            <input class="form-control" type="text" formControlName="email" name="Email" id="Email" [(ngModel)]="model.email" [attr.disabled]="addnewevent == false?'':null">
+                            <app-validation [control]="slotForm.controls.email">
+                            </app-validation>
+                        </div>
+                        <div class="input-group w-50 float-left">
+                            <span class="input-title w-100 float-left">Phone Number
+                                <span class="color-red">*</span>
+                            </span>
+                            <input class="form-control" type="text" formControlName="mobilenumber" name="PhoneNumber" [textMask]="{mask: mask}" (blur)="unmasckphone()" id="PhoneNumber" [(ngModel)]="model.mobilenumber" [attr.disabled]="addnewevent == false?'':null" [ngClass]="{'error' : phonestssec}">
+                            <app-validation [control]="slotForm.controls.mobilenumber">
+                            </app-validation>
+                            <!-- <div *ngIf="phonestssec"> Number Should Be 10 Digits</div> -->
+                        </div>
+                        <div class="input-group w-50 float-left">
+                            <span class="input-title w-100 float-left">Appointment Date
+                                <span class="color-red">*</span>
+                            </span>
+                            <i class="icon-calendar waves-effect " aria-hidden="true" (click)="selecteddate.toggleCalendar('selecteddate')"></i>
+                            <input class="form-control datewidth" formControlName="selecteddate" (keyup)="dateMask($event)" placeholder="MM/DD/YYYY" ngx-mydatepicker name="selecteddate" value="{{model.patientslotdate}}" [(ngModel)]="model.selecteddate" [options]="appointmentdate"
+                                #selecteddate="ngx-mydatepicker" (inputFieldChanged)="onInputFieldDobChanged($event,'slotdate')" (dateChanged)="onDateChanged($event)" maxlength="10" />
+                            <!-- <div *ngIf="(model.patientslotdate == '') || (model.patientslotdate == null) || (model.patientslotdate == 'null')">
+                                        <div> Invalid Date.</div>
+                                    </div> -->
+                            <app-validation [control]="slotForm.controls.selecteddate">
+                            </app-validation>
+                        </div>
+                        <div class="input-group w-50 float-left">
+                            <span class="input-title w-100 float-left">Provider
+                                <span class="color-red">*</span>
+                            </span>
+                            <select class="form-control btn-section" formControlName="providerId" id="providername" name="providername" [(ngModel)]="model.providerId" (change)="providerClick()">
+                                <option value="" selected>Select Provider</option>
+                                <option *ngFor='let doc of providerdata' [selected]="doc.ProviderId === model.providerId" [value]="doc.ProviderId">{{doc.ProviderName}}</option>
+                            </select>
+                            <app-validation [control]="slotForm.controls.providerId">
+                            </app-validation>
+                        </div>
+                        <div class="input-group w-50  float-left" *ngIf="model.patientdob!= '' && !addnewevent">
+                            <span class="input-title w-100 float-left">Birth Date
+                            </span>
+                            <i class="icon-calendar waves-effect " aria-hidden="true" (click)="selectedbirthdate.toggleCalendar('selectedbirthdate')" disabled></i>
+                            <input class="form-control datewidth" formControlName="selectedbirthdate" placeholder="YYYY-MM-DD" ngx-mydatepicker name="selectedbirthdate" value="{{model.patientdob}}" [options]="myOptions" #selectedbirthdate="ngx-mydatepicker" (inputFieldChanged)="onInputFieldDobChanged($event,'bday')"
+                                (dateChanged)="onDatebirthdateChanged($event)" maxlength="10" disabled/>
+                        </div>
+                        <div class="input-group w-50  float-left" *ngIf="model.patientdob=='' || addnewevent">
+                            <span class="input-title w-100 float-left">Birth Date
+                            </span>
+                            <i class="icon-calendar waves-effect " aria-hidden="true" (click)="selectedbirthdate.toggleCalendar('selectedbirthdate')"></i>
+                            <input class="form-control datewidth" formControlName="selectedbirthdate" (keyup)="dateMask($event)" placeholder="MM/DD/YYYY" ngx-mydatepicker name="selectedbirthdate" value="{{model.patientdob}}" [(ngModel)]="model.selectedbirthdate" [options]="myOptions"
+                                #selectedbirthdate="ngx-mydatepicker" (inputFieldChanged)="onInputFieldDobChanged($event,'bday')" (dateChanged)="onDatebirthdateChanged($event)" maxlength="10" />
+                        </div>
+                        <div class="input-group w-50 float-left" *ngIf="model.PatientId != 0">
+                            <div class="w-50 pr-1 float-left">
+                                <span class="input-title w-100 float-left">From
+                                </span>
+                                <input class="form-control w-100" type="text" name="From" id="From" formControlName="slotfromtime" [(ngModel)]="model.slotfromtime" value="{{model.slotfromtime}}" disabled>
+                            </div>
+                            <div class="w-50 pl-1 float-left">
+                                <span class="input-title w-100 float-left">To
+                                </span>
+                                <input class="form-control w-100" type="text" name="To" id="To" [(ngModel)]="model.slottotime" formControlName="slottotime" value="{{model.slottotime}}" disabled>
+                            </div>
+                        </div>
+                        <!-- <ng-scrollbar class="Available-timming-scroll w-100 float-left"> -->
+                        <h4 class="noSlots w-100 float-left" *ngIf="availableSlotsbaesdonDate">There is no slots on this date</h4>
+                        <div class="w-100 float-left" *ngFor="let provider of appointmentsModel">
+                            <div class="w-100 slot-green form-group" *ngFor="let daysname of provider.emptySlots">
+                                <label class="w-100 float-left">Available Timings</label>
+                                <a href="javascript:;;" class="badge col-lg-3" *ngFor="let slates of daysname.slots; let i=index" (click)="getslottime(slates,i)" [ngClass]="{active: i==selectedSlot}">{{slates.fromtime}}</a>
+                            </div>
+                        </div>
+                        <div class="w-100 float-left">
+                            <span class="input-title w-100 float-left">Problem
+                            </span>
+                            <textarea class="form-control" cols="2" id="Message" name="Message" formControlName="Message" [(ngModel)]="model.Message" value="{{model.Message}}" rows="2"></textarea>
+                        </div>
+                        <div class="w-100 float-left" *ngIf="model.BookingStatus != 'Cancelled'">
+                            <button *ngIf="addnewevent == false && checkInsts == 'FALSE'" class="btn btn-primary waves-light float-right" type="submit" (click)="cancel('checkin')" title="Check-In" data-toggle="tooltip"> Check-In</button>
+                            <button [disabled]="loading" *ngIf="(!addnewevent && checkInsts == 'FALSE') || (!addnewevent && checkInsts == undefined)" class="btn btn-primary waves-light float-right" type="submit" (click)="updateevent()" title="Change Appointment" data-toggle="tooltip">Change</button>
+
+                            <button [disabled]="loading" *ngIf="addnewevent" class="btn btn-primary waves-light float-right" type="submit" (click)="updateevent()" title="New Appointment" data-toggle="tooltip">Save</button>
+                            <button class="btn btn-danger waves-light float-right" *ngIf="Newnewevent" (click)="newPatient()">Clear</button>
+                            <button class="btn btn-primary waves-light float-right" type="submit" *ngIf="!addnewevent && checkInsts == 'FALSE'" (click)="cancel('cancel')" title="Cancel Appointment" data-toggle="tooltip">Cancel</button>
+                        </div>
+                        <h4 class="noSlots w-100 float-left" *ngIf="model.BookingStatus == 'Cancelled'">Your Appointment has been cancelled</h4>
+                        <!-- </ng-scrollbar> -->
+                    </form>
+                    <!-- </ng-scrollbar> -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- fullCalModal ends -->
+
+<!-- cancel modal start-->
+
+<div mdbModal #CancelAppointment="mdb-modal" class="modal fade CancelAppointment" id="pharmaaddModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content rounded">
+            <div class="modal-header">
+                <h4 class="modal-title w-100" id="myModalLabel">{{cancelCheckinHeading}}</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="CancelAppointment.hide()">
+                    <span aria-hidden="true">
+                        <i class="icon-close" aria-hidden="true"></i>
+                    </span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>{{cancelCheckinMsg}}</p>
+                <button class="btn btn-danger  waves-light float-right " (click)="CancelAppointment.hide()">No</button>
+                <button class="btn  btn-primary waves-light float-right" data-dismiss="modal" *ngIf="cancelCheckinHeading == 'Checkin'" (click)="checkin()">Yes</button>
+                <button class="btn  btn-primary  waves-light float-right" data-dismiss="modal" *ngIf="cancelCheckinHeading == 'Cancel'" (click)="cancelappointment()">Yes</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+<!-- cancel modal end-->
+<div class="w-100 page-titel float-left">
+    <h4 class="float-left titel">Appointment Calendar</h4>
+    <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 float-right">
+        <div class="input-group  no_padding search float-left">
+            <span class="icon-search"></span>
+            <input type="text" class="form-control no_margin" placeholder="Enter Email/PhoneNo/Name " id='listofappoinmentfilter' [(ngModel)]="query1" value="{{email1}}" (keyup)="filter1()">
+            <ng-scrollbar class="inner-suggestions" *ngIf="filteredList1.length > 0">
+                <ul class="w-100 float-left">
+                    <li (click)="select1(item)" *ngFor="let item of filteredList1">
+                        <a class="float-left">
+                            <img class="col-lg-2 no_padding float-left" src="https://image.flaticon.com/icons/svg/236/236832.svg">
+                            <span class="col-lg-8 no_padding float-left">{{item.FirstName}} {{item.LastName}}</span>
+                            <span class="col-lg-8 no_padding float-left">{{item.Email}}</span>
+                            <span class="col-lg-8 no_padding float-left">{{item.PhoneNo}}</span>
+                        </a>
+                    </li>
+                </ul>
+                <!-- <div *ngFor="let item of selected1">
+                    <div class="selected">
+                        <span>{{item.Email}}{{item.LastName}}</span>
+                        <a (click)="remove1(item)">x</a>
+                    </div>
+                </div> -->
+            </ng-scrollbar>
+        </div>
+    </div>
+</div>
+<div class="w-100 float-left page-container">
+    <div class="col-lg-2 list-filter no_padding float-left">
+        <div class="w-100 float-left">
+            <h6 class="w-100 float-left filter-title">Today's</h6>
+            <div class="w-100 float-left pcustome-check" *ngIf="stscount.length>0">
+                <ul class="w-100 float-left today_list">
+                    <li class="w-100 float-left" *ngFor="let stsinfoinfo of stscount">
+                        <div class="input-group width_auto float-left">
+                            <label class="container">
+                                <input type="checkbox" name="check" [checked]="stsinfoinfo.IsSelected" (click)="updateStatus(stsinfoinfo,$event)">
+                                <span class="icon-check"></span>
+                                <span class="label-text">{{stsinfoinfo.Status}}</span>
+                            </label>
+                        </div>
+                        <p class="float-right">{{stsinfoinfo.Nos}}</p>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="w-100 pcustome-check float-left">
+            <h6 class="w-100 float-left filter-title">
+                <!-- <input type="checkbox" name="check" checked="true"> -->
+                <div class="input-group width_auto float-left">
+                    <label class="container">
+                        <input type="checkbox" checked (click)="selectAll($event)">
+                        <span class="icon-check"></span>
+                    </label>
+                </div>Filter Doctor
+            </h6>
+            <ng-scrollbar class="w-100 float-left doct_list">
+                <ul class="w-100 float-left">
+                    <li class="w-100 float-left" *ngFor="let providerinfo of providerstscount">
+                        <div class="input-group width_auto float-left">
+                            <label class="container" data-toggle="tooltip" title="{{providerinfo.ProviderName}}">
+                                <input type="checkbox" name="check" [checked]="providerinfo.IsSelected" (click)="checkprovidersList(providerinfo,$event)">
+                                <span class="icon-check"></span>
+                                <span class="label-text">{{providerinfo.ProviderName}}</span>
+                            </label>
+                        </div>
+                        <p class="float-right width_auto">{{providerinfo.Nos}}</p>
+                    </li>
+                </ul>
+            </ng-scrollbar>
+        </div>
+    </div>
+    <div class="col-lg-10 col-md-10 col-sm-10 col-xs-12 float-left">
+        <angular2-fullcalendar [options]="calendarOptions" (initialized)="onCalendarInit($event)"></angular2-fullcalendar>
+    </div>
+</div>

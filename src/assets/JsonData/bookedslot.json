@@ -1,0 +1,10 @@
+{
+    "Success": true,
+    "data": [{
+            "Locationtype": "Newyork"
+        }, { "Locationtype": "USA" }, { "Locationtype": "Paris" }
+ 
+    ]
+ 
+ 
+ }

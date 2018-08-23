@@ -1,0 +1,38 @@
+    [
+        {
+            "payername": "Cigna",
+            "payerid": "MCCBV"
+        },
+        {
+            "payername": "Anthem Blue Cross",
+            "payerid": "BC001"
+        },
+        {
+            "payername": "Health Net",
+            "payerid": "95567"
+        },
+        {
+            "payername": "Medicare",
+            "payerid": "CSMCR"
+        },
+        {
+            "payername": "Blue Shield",
+            "payerid": "040"
+        },
+        {
+            "payername": "Blue Shield of CA",
+            "payerid": "BS001"
+        },
+        {
+            "payername": "Aetna",
+            "payerid": "60054"
+        },
+        {
+            "payername": "United Health/Optum",
+            "payerid": "04271"
+        },
+        {
+            "payername": "Humana",
+            "payerid": "61101"
+        }
+    ]

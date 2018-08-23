@@ -1,0 +1,160 @@
+<div class="w-100 page-titel float-left">
+  <h4 class="float-left titel">My Appointments</h4>
+  <button type="button" class="btn btn-primary no_margin width_auto float-right waves-light text-center" (click)="scheduleAppointment()"
+    mdbWavesEffect>
+    Add Appointments
+  </button>
+</div>
+<div class="w-100 float-left page-container">
+  <table class="theme-table table">
+    <thead>
+      <tr>
+        <th></th>
+        <th>Doctor</th>
+        <th>Time</th>
+        <th>Date</th>
+        <th>Status</th>
+        <th>Reason</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of appointmentData">
+        <td data-column="User" [ngClass]="{'cancelbg':data.BookingStatus == 'Cancelled'}">
+          <span class="icon-user-avth"></span>
+        </td>
+        <td data-column="Doctor" [ngClass]="{'cancelbg':data.BookingStatus == 'Cancelled'}">
+          <span class="w-100 float-left">{{data.ProviderName}}</span>
+          <span class="w-100 float-left"> Institute: Wang Institute</span>
+          <span class="w-100 float-left">{{data.ServiceType}}</span>
+        </td>
+        <td data-column="Appointment Time" [ngClass]="{'cancelbg':data.BookingStatus == 'Cancelled'}">{{data.FromTime}}</td>
+        <td data-column="Appointment Date" [ngClass]="{'cancelbg':data.BookingStatus == 'Cancelled'}">{{data.Date}}</td>
+        <td data-column="Status" [ngClass]="{'cancelbg':data.BookingStatus == 'Cancelled'}">
+          <span *ngIf="(data.Expired)&&(data.BookingStatus=='Booked')">Expired</span>
+          <span *ngIf="data.BookingStatus == 'Cancelled'">Cancelled</span>
+        </td>
+        <td data-column="Reason" [ngClass]="{'cancelbg':data.BookingStatus == 'Cancelled'}">
+          <p *ngIf="(data.Expired)&&(data.BookingStatus=='Booked')">Your Appointment date has been Expired.</p>
+          <p *ngIf="data.BookingStatus == 'Cancelled'">{{data.Reason}}</p>
+        </td>
+        <td data-column="Action" [ngClass]="{'cancelbg':data.BookingStatus == 'Cancelled'}">
+          <span *ngIf="!data.Expired">
+            <a href="javascript:;;" class="edit float-left" data-toggle="modal" data-target="#basicExample" *ngIf="data.BookingStatus == 'Booked'"
+              (click)="change.show(); ScheduleRouting(data)" [hidden]="data.BookingStatus == 'Cancelled'" [disabled]="data.Expired">
+              <i class="icon-change float-left" aria-hidden="true"></i>
+              <span>Change</span>
+            </a>
+
+            <a href="javascript:;;" class="remove float-left" data-toggle="modal" *ngIf="data.BookingStatus == 'Booked'" [disabled]="data.Expired"
+              data-target="#cancelappointment" (click)="cancel.show();cancelData(data)">
+              <i class="icon-cancel float-left" aria-hidden="true"></i>
+              <span>Cancel</span>
+            </a>
+          </span>
+          <a href="javascript:;;" class="cancelled float-left" type="submit" data-toggle="modal" *ngIf="data.BookingStatus == 'Cancelled'"
+            disabled>
+           <span class="cancel_lable">Cancelled</span> </a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="page-container add-record w-100 text-center mt-5 float-left" *ngIf="appointmentData.length<=0">
+    <i class="w-100 icon-add-file icon float-left" aria-hidden="true"></i>
+    <div *ngIf="appointmentData.length>0">
+      <p class="w-100 float-left">Add New Record</p>
+    </div>
+  </div>
+</div>
+
+<div mdbModal #cancel="mdb-modal" class="modal fade" id="cancelappointment" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content rounded">
+      <div class="modal-header">
+        <h4 class="modal-title w-100" id="myModalLabel">Cancel Appointment</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="cancel.hide();toclear()">
+          <span aria-hidden="true">
+            <i class="icon-close" aria-hidden="true"></i>
+          </span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="w-100 float-left cancel-border">
+          <div class=" width_auto float-left pr-3">
+            <span class="icon-user-avth"></span>
+          </div>
+          <div class="width_auto float-left pr-3 bold">{{model.providername}}</div>
+          <div class="width_auto float-left pr-3">Institute: Wang Institute</div>
+          <!-- <div class="width_auto float-left pr-3">{{model.ServiceType}}</div> -->
+          <div class=" width_auto float-left pr-3">{{model.slotfromtime}}</div>
+          <div class="width_auto float-left pr-3">{{model.slotdate}}</div>
+        </div>
+        <div class="width_auto">
+            <span>Reason</span>
+            <textarea class=" mt-2 form-control" rows="3" placeholder="Please write your reason here..." [(ngModel)]="model.Reason"></textarea>
+        </div>
+        <p class=" mt-3 text-center popup-text">Do you want to cancel this appointment ?</p>
+        <button type="button" class="btn btn-danger btn-sm waves-light float-right" data-dismiss="modal" (click)="cancel.hide();toclear()" mdbWavesEffect>No</button>
+        <button type="button" class="btn btn-primary btn-sm waves-light float-right" data-dismiss="modal" (click)="cancelappointment(); cancel.hide()"
+          mdbWavesEffect>Yes</button>
+
+      </div>
+      <div class="modal-footer">
+        <!-- <button type="button" class="btn btn-secondary btn-sm waves-light" data-dismiss="modal" (click)="demoBasic.hide()" mdbWavesEffect>Close</button>
+              <button type="button" class="btn btn-primary btn-sm waves-light" mdbWavesEffect>Save changes</button> -->
+      </div>
+    </div>
+  </div>
+</div>
+<div mdbModal #change="mdb-modal" class="modal fade" id="basicExample" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content rounded">
+      <div class="modal-header">
+        <h4 class="modal-title w-100" id="myModalLabel">Change Appointment</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="change.hide()">
+          <span aria-hidden="true">
+            <i class="icon-close" aria-hidden="true"></i>
+          </span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="w-100 float-left cancel-border">
+          <div class=" width_auto float-left pr-3">
+            <span class="icon-user-avth"></span>
+          </div>
+          <div class="width_auto float-left pr-3 bold">Dr. Amy</div>
+          <div class="width_auto float-left pr-3">Institute: Wang Institute</div>
+          <div class="width_auto float-left pr-3">Service: Opthamologist</div>
+          <div class=" width_auto float-left pr-3">
+            <s>8:15 AM</s>
+          </div>
+          <div class="width_auto float-left pr-3">
+            <s>20 April 2018</s>
+          </div>
+        </div>
+        <div class="w-100 float-left cancel-border">
+          <div class=" width_auto float-left pr-3">
+            <span class="icon-user-avth"></span>
+          </div>
+          <div class="width_auto float-left pr-3 bold">Dr. Amy</div>
+          <div class="width_auto float-left pr-3">Institute: Wang Institute</div>
+          <div class="width_auto float-left pr-3">Service: Opthamologist</div>
+          <div class=" width_auto float-left pr-3">
+            <s>8:15 AM</s>
+          </div>
+          <div class="width_auto float-left pr-3">
+            <s>20 April 2018</s>
+          </div>
+        </div>
+
+        <button type="button" class="btn btn-primary btn-sm waves-light ml-6" (click)="conform()" mdbWavesEffect>Conform</button>
+      </div>
+      <!-- <div class="modal-footer">
+              <button type="button" class="btn btn-secondary btn-sm waves-light" data-dismiss="modal" (click)="demoBasic.hide()" mdbWavesEffect>Close</button>
+              <button type="button" class="btn btn-primary btn-sm waves-light" mdbWavesEffect>Save changes</button>
+          </div> -->
+    </div>
+  </div>
+</div>

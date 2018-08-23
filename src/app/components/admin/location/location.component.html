@@ -1,0 +1,135 @@
+<div class="w-100 page-titel no_padding float-left">
+  <h4 class="float-left titel">Location Information</h4>
+  <button type="button" class="btn btn-primary no_margin width_auto float-right waves-light text-center" data-toggle="modal"
+    data-target="#addLocation" (click)="addLocation.show();toClear()" mdbWavesEffect>
+    Add Location
+  </button>
+  <div class="input-group col-lg-4 no_padding mr-3  search float-right">
+      <span class="icon-search"></span>
+  <input type="text" placeholder="Search By Name" name="barcode" [(ngModel)]="userFilter" class="form-control w-100 float-left no_margin">
+</div>
+</div>
+<div class="page-container add-record w-100 text-center mt-5 float-left" *ngIf="LocationData.length<=0">
+  <i class="w-100 icon-add-file icon float-left" aria-hidden="true"></i>
+  <p class="w-100 float-left">Add New Location</p>
+</div>
+<div class="w-100 float-left no_padding page-container" *ngIf="LocationData.length>0">
+  <table class="theme-table table">
+    <thead>
+      <tr>
+        <th (click)="setOrder('LocationName')" class="curor-pointer">Location Name
+            <i class="fa" [ngClass]="{'fa-caret-down' : !reverse,'fa-caret-up' : reverse }" *ngIf="order=='LocationName'" aria-hidden="true"></i>
+          </th>
+        <th (click)="setOrder('StateCode')" class="curor-pointer">State Code
+            <i class="fa" [ngClass]="{'fa-caret-down' : !reverse,'fa-caret-up' : reverse }" *ngIf="order=='StateCode'" aria-hidden="true"></i>
+          </th>
+        <!-- <th>Edit</th> -->
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let locationInfo of LocationData  | LocationPipe : userFilter | orderBy: order:reverse:'case-insensitive' | paginate: {itemsPerPage: 10, currentPage: page, id: 'locationpage'};">
+        <td data-column="Location Name">{{locationInfo.LocationName}}</td>
+        <td data-column="State Code">{{locationInfo.StateCode}}</td>
+        <td data-column="Action">
+          <a href="javascript:;;" class="edit float-left" data-toggle="modal" data-target="#editLocation" (click)="edit(locationInfo);editLocation.show();">
+            <i class="icon-edit float-left" aria-hidden="true" title="Edit"></i>
+            <span>Edit</span>
+          </a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <pagination-controls (pageChange)="page = $event" id="locationpage">
+  </pagination-controls>
+</div>
+
+<div mdbModal #addLocation="mdb-modal" class="modal fade" id="addLocation" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content rounded">
+      <div class="modal-header">
+        <h4 class="modal-title w-100" id="myModalLabel">New Location</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="addLocation.hide()">
+          <span aria-hidden="true">
+            <i class="icon-close" aria-hidden="true"></i>
+          </span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="LocationForm">
+          <div class="row w-100 float-left">
+          <div class="input-group col-lg-6 float-left">
+            <span class="input-title w-100 float-left">Location
+              <span class="color-red">*</span>
+            </span>
+            <input type="text" placeholder="Location" class="form-control" formControlName="LocationName" [(ngModel)]="model.LocationName"
+              maxlength="50">
+            <app-validation [control]="LocationForm.controls.LocationName">
+            </app-validation>
+          </div>
+          <div class="input-group col-lg-6 float-left">
+            <span class="input-title w-100 float-left">State Code
+              <span class="color-red">*</span>
+            </span>
+            <select class="form-control" [(ngModel)]="model.StateCode" formControlName="StateCode">
+              <option value="" selected  [ngValue]="undefined">-- Please Select--</option>
+              <option *ngFor="let option of stateNames" [ngValue]="option">{{option.Name}}</option>
+            </select>
+            <app-validation [control]="LocationForm.controls.StateCode">
+            </app-validation>
+          </div>
+        </div>
+          <!-- <button class="btn btn-primary btn-sm waves-light float-right" (click)="cancel()" mdbWavesEffect>Cancel</button> -->
+          <button class="btn btn-primary btn-sm waves-light float-right" (click)="PostLocation()" [disabled]="!LocationForm.valid ||  disableButton"
+            mdbWavesEffect>Save</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div mdbModal #editLocation="mdb-modal" class="modal fade" id="editLocation" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content rounded">
+      <div class="modal-header">
+        <h4 class="modal-title w-100" id="myModalLabel">Edit Location</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="editLocation.hide()">
+          <span aria-hidden="true">
+            <i class="icon-close" aria-hidden="true"></i>
+          </span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="LocationForm1">
+          <div class="row w-100 float-left">
+            <div class="input-group col-lg-6 float-left">
+              <span class="input-title w-100 float-left">Location
+                <span class="color-red">*</span>
+              </span>
+              <input type="text" placeholder="Location" formControlName="LocationName" class="form-control" maxlength="50" [(ngModel)]="editItems.LocationName">
+              <app-validation [control]="LocationForm1.controls.LocationName">
+              </app-validation>
+            </div>
+            <div class="input-group col-lg-6 float-left">
+              <span class="input-title w-100 float-left">State Code
+                <span class="color-red">*</span>
+              </span>
+              <select class="form-control" [(ngModel)]="editItems.StateCode" formControlName="StateCode">
+                <option value="" selected [ngValue]="undefined">-- Please Select--</option>
+                <option *ngFor="let option of stateNames" [ngValue]="option" [selected]="option.StateCode==editItems.StateCode">{{option.Name}}</option>
+              </select>
+              <app-validation [control]="LocationForm1.controls.StateCode">
+              </app-validation>
+            </div>
+          </div>
+          <!-- <button class="btn btn-primary btn-sm waves-light float-right" (click)="cancel()" mdbWavesEffect>Cancel</button> -->
+          <button class="btn btn-primary btn-sm waves-light float-right" (click)="editpost()" [disabled]="!LocationForm1.valid ||  disableButton"
+            mdbWavesEffect>Save</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

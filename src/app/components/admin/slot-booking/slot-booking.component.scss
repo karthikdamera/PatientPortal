@@ -1,0 +1,98 @@
+@import "../../../../app/shared/styles/variables";
+#pharmaaddModal {
+    .modal-header {
+        justify-content: flex-start;
+    }
+}
+
+.scheduler-popup {
+    .profile_pic {
+        width: 80px;
+        height: 80px;
+        display: block;
+        position: relative;
+        overflow: hidden;
+        margin-top: 3px;
+        margin: 0 auto;
+    }
+}
+
+.new-patient {
+    // border-top: 1px solid $theme-color;
+    margin: 0 -15px;
+    padding: 10px 0;
+}
+
+.badge {
+    background: $theme-green;
+    padding: 10px;
+    margin: 5px;
+    font-size: 14px;
+}
+.badge.active{background: $color-white; color: $text-color !important; border: 1px solid $theme-green; border-radius: 4px;}
+.popup-input {
+    .user-name {
+        font-size: 20px;
+        margin: 10px 0;
+        text-transform: capitalize;
+    }
+    .input-group:nth-child(odd) {
+        padding-right: 10px;
+    }
+    .input-group:nth-child(even) {
+        padding-left: 10px;
+    }
+    .input-group {
+        position: relative;
+        margin-bottom: 10px;
+        .input-title {
+            font-size: 14px;
+            font-weight: 600;
+        }
+        i {
+            position: absolute;
+            top: 20px;
+            left: 0;
+            font-size: 19px;
+            padding: 5px;
+            color: $theme-light-grey;
+            z-index: 1;
+            border-right: 1px solid $border-color;
+        }
+        .form-control,
+        select.form-control {
+            margin-top: 5px;
+            height: 30px !important; // padding: 0 10px;
+            border-radius: 0;
+            border: 1px solid $input-border-color;
+        }
+        .form-control:focus {
+            z-index: 0;
+            border-color: $border-color;
+            box-shadow: none;
+        }
+        .form-control::placeholder {
+            color: $color-overlay;
+        }
+        .container {
+            display: block;
+            position: relative;
+            padding-left: 30px;
+            cursor: pointer;
+            font-size: 16px;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        } // textarea{
+        //     height: 60px !important;
+        // }
+        .form-control.datewidth {
+            padding-left: 36px;
+        }
+    }
+}
+
+.modal .modal-full-height {
+    width: 500px;
+}

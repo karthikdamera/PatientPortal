@@ -1,0 +1,56 @@
+// component css goes here
+h1 {
+  font-weight: 400;
+  font-family: 'Open Sans', sans-serif;
+  color: #fff;
+  font-size: 60px;
+  font-style: Normal;
+  text-transform: none;
+  text-decoration: none;
+  text-align: center;
+  direction: ltr;
+}
+
+// .form-control {
+//   border: none;
+//   border-bottom: 2px solid grey;
+//   background-color: #57C8CD;
+// }
+
+// .form-control :focus {
+//   background-color: #57C8CD;
+// }
+.blue-btn {
+
+
+
+}
+
+.btn-default{
+  width: 45px;
+
+}
+.input-group .form-control{
+      margin-bottom: 10px;
+
+}
+
+label, h6 {
+  color: #000;
+} 
+.kiosk-form{
+padding: 5em 5em 0;
+}
+  .kiosk-form 
+  .form-control{
+        border: 1px solid #d3d3d3;
+        background: #f5f8f9;
+        border-radius: 0.2em !important;
+
+  }
+.btn-default i {
+  color: #fff;
+  font-size: 1em;
+}
+
+

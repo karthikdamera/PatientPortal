@@ -1,0 +1,200 @@
+<div class="entry">
+  <div class="entry-header">
+    <div class="col-lg-12 float-left header-title headding-banner">
+      <div class="col-lg-6 search float-left">
+
+        <span class="icon-search"></span>
+        <input class="form-control no_margin" type="text" placeholder="Quick search" [(ngModel)]="userFilter.Medication">
+        <!--<input class="form-control" type="search" placeholder="quick search" >-->
+        <!-- <div class="input-group-addon"></div> -->
+
+      </div>
+
+      <!-- <a href="javascript:void(0);" routerLink="./../medicationview" routerLinkActive="Active" class="btn btn-primary link-add">Medications/Transactions</a> -->
+
+      <button class="btn btn-primary float-right waves-light text-center" (click)="addmedications()">
+        <i class="menu-icon fa fa-plus"></i> Add New
+      </button>
+      <!-- <button class="btn btn-primary float-right waves-light text-center" (click)="medicationview()">Medications/Transactions</button> -->
+
+    </div>
+  </div>
+  <!-- entry-header -->
+  <!-- <div class="filter-bar">
+      <div class="filter-options">
+        <div class="option">
+        </div>
+      </div>
+    </div> -->
+  <!-- filter-bar -->
+  <ng-scrollbar class="accordion-body-scroll w-100 float-left">
+    <div class="entry-section" *ngFor="let medication of medicationItems |  filterBy: userFilter">
+      <!--<div class="entry-section" *ngFor="let intervention of interventions">-->
+      <div class="row no-gutters headding-banner">
+        <!-- col-2 -->
+        <div class="col-lg-2 float-left entry-status">
+          <!--<span class="status-complete" ></span>-->
+          <span aria-hidden="true" class="fa fa-check" *ngIf="medication.Status=='Complete'"></span>
+          <span aria-hidden="true" class="fa fa-unlock" *ngIf="medication.Status=='Active'"></span>
+          <span aria-hidden="true" class="fa fa-lock" *ngIf="medication.Status=='Inactive'"></span>
+        </div>
+        <!-- col-3 -->
+        <div class="col-lg-7 float-left">
+          <div class="entry-available">{{medication.Medication}}({{medication.Dosage}})</div>
+          <div class="entry-meta">{{medication.OtherName}} by client on {{medication.Date |date:'short'}}</div>
+        </div>
+        <!-- col-8 -->
+        <div class="col-lg-3 float-left">
+          <a href="javascript:void(0);" ata-toggle="modal" data-target="#view" (click)="view.show();updateMedication(medication)" class="btn btn-primary width_auto float-right waves-light text-center">Update</a>
+        </div>
+
+      </div>
+      <!-- entry-content -->
+
+    </div>
+  </ng-scrollbar>
+  <div mdbModal #view="mdb-modal" class="modal fade" id="view" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content rounded">
+        <div class="modal-header">
+          <h4 class="modal-title w-100 float-left">Edit Medication</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="view.hide()">
+            <span aria-hidden="true">
+              <i class="icon-close" aria-hidden="true"></i>
+            </span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form class="form-horizontal" novalidate #AddCustomForm="ngForm" name="form">
+            <div class="col-lg-12">
+              <div class="form-group">
+                <div class="form-label">
+                  <label class="label-title">Medication</label>
+                </div>
+                <div class="form-content">
+                  <select class="form-control" name="medication" [(ngModel)]="postStatus.Medication" required>
+                    <option disabled="" selected="">Please select</option>
+                    <option [ngValue]="items.Name" *ngFor="let items of medicationDropdownItems let i=index" [selected]="items.Name===postStatus.Medication">{{items.Name}}</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <!-- col-12 -->
+            <div class="col-lg-12">
+              <div class="form-group">
+                <div class="form-label">
+                  <label class="label-title required">Description</label>
+                </div>
+                <!-- form-label -->
+                <div class="form-content">
+                  <input class="form-control" type="text" name="Description" [(ngModel)]="postStatus.Description" #Description="ngModel" placeholder=""
+                    required>
+                  <div *ngIf="Description.errors && (Description.dirty || Description.touched)" class="has-danger">
+                    <div [hidden]="!Description.errors.required">
+                      <span class="error-text-msg">Please enter Description </span>
+                    </div>
+                  </div>
+                </div>
+                <!-- form-content -->
+              </div>
+              <!-- form-group -->
+            </div>
+            <!-- col-12 -->
+            <div class="col-lg-12">
+              <div class="form-group">
+                <div class="form-label">
+                  <label class="label-title required">Dosage</label>
+                </div>
+                <!-- form-label -->
+                <div class="form-content">
+                  <input class="form-control" type="text" name="Dosage" [(ngModel)]="postStatus.Dosage" #Dosage="ngModel" placeholder="" required>
+                  <div *ngIf="Dosage.errors && (Dosage.dirty || Dosage.touched)" class="has-danger">
+                    <div [hidden]="!Dosage.errors.required">
+                      <span class="error-text-msg">Please enter Dosage </span>
+                    </div>
+                  </div>
+                </div>
+                <!-- form-content -->
+              </div>
+              <!-- form-group -->
+            </div>
+            <div class="col-lg-12" >
+                <div class="form-group">
+                  <div class="form-label">
+                    <label class="label-title">CareTeam</label>
+                  </div>
+                  <div class="form-content">
+                    <select class="form-control" name="ProviderId" [(ngModel)]="postStatus.ProviderId" #ProviderId="ngModel" [disabled]="careteamstatus==true" required>
+                    <option   [ngValue]="0" disabled selected>Please select</option> 
+                      <option *ngFor="let careteam of patientcarddata.CareTeam" [ngValue]="careteam.Id"  [selected]="careteam.Id===postStatus.ProviderId">{{careteam.Name}}</option>
+                    </select>
+                    <div *ngIf="ProviderId.errors && (ProviderId.dirty || ProviderId.touched) && (postStatus.ProviderId==0)" class="has-danger">
+                      
+                        <span class="error-text-msg">Please select CareTeam </span>
+                     
+                    </div>
+                  </div>
+                </div>
+              </div>
+            <div class="col-lg-12">
+              <div class="form-group">
+                <div class="form-label">
+                  <label class="label-title">Frequency</label>
+                </div>
+                <div class="form-content">
+                  <select class="form-control" name="frequency" [(ngModel)]="postStatus.Frequency" required>
+                    <option disabled="" selected="">Please select</option>
+                    <!-- <option value=""> </option> -->
+                    <!-- <option value="bid">bid</option>
+                                                    <option value="qam">qam</option>
+                                                    <option value="qhs">qhs</option>
+                                                    <option value="qd">qd</option>
+                                                    <option value="tid">tid</option> -->
+                    <option value="As needed">As needed</option>
+                    <option value="1d">1d</option>
+                    <option value="2d">2d</option>
+                    <option value="3d">3d</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-lg-12">
+              <div class="form-label">
+                <label class="label-title">Status</label>
+              </div>
+              <div class="check-btn">
+                <label>
+                  <input type="radio" value="Active" [checked]="postStatus.Status =='Active'" name="CurrentStatus" (click)="updateStatus('Active')"
+                    required>
+                  <span>Active</span>
+                </label>
+              </div>
+              <div class="check-btn">
+                <label>
+                  <input type="radio" value="Inactive" [checked]="postStatus.Status =='Inactive'" name="CurrentStatus" (click)="updateStatus('Inactive')"
+                    required>
+                  <span>Inactive</span>
+                </label>
+              </div>
+              <div class="check-btn">
+                <label>
+                  <input type="radio" value="Complete" [checked]="postStatus.Status =='Complete'" name="CurrentStatus" (click)="updateStatus('Complete')"
+                    required>
+                  <span>Complete</span>
+                </label>
+              </div>
+            </div>
+            <button type="button" class="btn btn-primary width_auto float-right waves-light text-center" data-dismiss="modal" aria-label="Close"
+              (click)="view.hide()">Discard</button>
+            <button type="button" class="btn btn-primary width_auto float-right waves-light text-center" data-dismiss="modal" [disabled]="!AddCustomForm.form.valid || (postStatus.ProviderId==0)"
+              (click)="postUpdatedStatus()">Submit</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- entry-section -->
+
+</div>
+<!-- <span *ngIf="showLoader" class="loading"></span> -->

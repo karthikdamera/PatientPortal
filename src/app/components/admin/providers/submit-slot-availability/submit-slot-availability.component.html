@@ -1,0 +1,70 @@
+<div class="w-100 page-titel float-left">
+    <a [routerLink]="['/admin/providerssettings']" RouterLinkActive="Active" class="fa fa-angle-left mr-3 float-left icon_back">
+    </a>
+    <h4 class="float-left titel">Upload Slots</h4>
+    <div class="page-titel float-right">
+        <button type="button" class="btn btn-primary width_auto float-right waves-light text-center" #csvfile accept=".csv" (click)="downloadtemplate($event)">
+      Download CSV template</button>
+        <label class="btn btn-primary width_auto mr-3 float-right waves-light text-center">
+      <input type="file" style="margin-top: 25px;width: 85%;display: none;" id="uplaodTemplate" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+        (change)="changeListener($event)">
+      <span for="uplaodTemplate"></span> Import Slots
+      <i class="fa fa-angle-double-down" aria-hidden="true"></i>
+    </label>
+    </div>
+</div>
+
+<div class="w-100 float-left page-container">
+    <div class="float-left w-100 detail-content">
+        <!-- <div class="profile_pic float-left">
+  <img *ngIf="storage.ImageUrl =='' && storage.ImageUrl ==null" src="assets/images/doctor.jpg" class="w-100 float-left">
+  <img *ngIf="storage.ImageUrl !='' && storage.ImageUrl !=null" [src]="storage.ImageUrl" class="w-100 float-left">
+</div> -->
+        <label>
+      <span>Provider Name:</span> &nbsp; {{storage.ProviderName}}</label>
+        <label>
+      <span>Provider Type :</span> {{storage.ProviderType}}</label>
+        <label>
+      <span>Service Type :</span> {{storage.ServiceType}}</label>
+        <label *ngIf="csvData.length==0">
+        There is no data to display
+      </label>
+        <label *ngIf="csvData.length>0">
+            <span> File Name :</span> {{filename}}
+    </label>
+        <!-- <label *ngIf="csvData.length==0">
+        There is no data :{{filename}}
+    </label> -->
+    </div>
+    <table class="theme-table table" *ngIf="csvData.length>0">
+        <thead>
+            <tr>
+                <th>Sr No.</th>
+                <th>Date</th>
+                <th>Duration</th>
+                <th>Available Times</th>
+
+                <!--<th>Duration</th> -->
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let slotcount of csvData | paginate: {itemsPerPage: 30, currentPage: page}; let i=index">
+                <td>{{i+1}}</td>
+                <td data-column="Date">{{slotcount.date | slice:0:10}}</td>
+                <td data-column="Duration">{{slotcount.duration}}</td>
+                <td data-column="Available Times">
+                    <div class="float-left w-100 slots-container">
+                        <div class="col-lg-2 float-left slot-date" *ngFor="let sTime of slotcount.AvailableTimes.split(';')">
+                            <a class="w-100 float-left text-center" href="javascript:;;" mdbWavesEffect>{{sTime}}</a>
+                        </div>
+                    </div>
+                    <!-- {{slotcount.AvailableTimes}} -->
+                </td>
+                <!-- <td data-column="To Time">{{slotcount.totime}}</td> -->
+
+            </tr>
+        </tbody>
+    </table>
+    <pagination-controls (pageChange)="page = $event" *ngIf="csvData.length>0">
+    </pagination-controls>
+</div>

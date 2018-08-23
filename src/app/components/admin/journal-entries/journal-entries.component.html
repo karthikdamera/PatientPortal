@@ -1,0 +1,92 @@
+<div class="entry">
+    <div class="entry-header">
+      <div class="col-md-12 float-left header-title headding-banner">
+            <div class="col-md-6 search">
+              
+                    <span class="icon-search"></span>
+                    <input class="form-control" type="search" placeholder="quick search" [(ngModel)]="userFilter.Subject">
+                
+          <!-- <a routerLink="./../addfood" routerLinkActive="Active" class="btn btn-primary link-add" *ngIf="user.RoleId!=7">Add New</a> -->
+        </div>
+      </div>
+    </div>
+
+    <!-- entry-header -->
+    <!-- filter-bar -->
+    <div class="entry-section" *ngFor="let item of journalEntries |  filterBy: userFilter">
+     
+      <!-- <div class="entry-content" *ngIf="item.IsShareWithOther==true"> -->
+        <div class="row no-gutters headding-banner"  *ngIf="item.IsShareWithOther==true">
+          <!-- col-2 -->
+          <div class="col-lg-3 float-left"></div>
+          <!-- col-3 -->
+          <div class="col-lg-6 float-left">
+            <div class="entry-available">{{item.Subject}}</div>
+            <div class="entry-meta">created by client on <b>{{item.CreatedDate | date:'short'}}</b></div>
+          </div>
+          <!-- col-8 -->
+          <div class="col-lg-3 float-left entry-action">
+            <a href="javascript:void(0)"  data-toggle="modal" data-target="#view" (click)="view.show();viewJournal(item)" class="btn btn-primary width_auto float-right waves-light text-center">View</a>
+            
+            </div>
+            
+<div mdbModal #view="mdb-modal" class="modal fade" id="view" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content rounded">
+            <!-- <div class="modal-header"> -->
+                    <div class="modal-body">
+                            <form #Form="ngForm" name="form" novalidate>
+                              <div class="entry-section">
+                                <div class="entry-content" style="margin-top: 25px;">
+                                  <div class="col-lg-12">
+                                    <div class="entry-name"><b>{{onViewJournal.Subject}}</b></div>
+                                  </div>
+                                </div>
+                                <!-- entry-content -->
+                              </div>
+                              <div class="entry-section">
+                                <div class="entry-content">
+                                  <div class="col-lg-12">
+                                    <div class="entry-item">Description: {{onViewJournal.Body}}</div>
+                                  </div>
+                                </div>
+                                <!-- entry-content -->
+                              </div>
+                              <!-- entry-section -->
+                              <!-- <div class="modal-footer"> -->
+                                    <button type="button" class="btn btn-primary width_auto float-right waves-light text-center" data-dismiss="modal" aria-label="Close" (click)="view.hide()">Close</button>
+                              <!-- </div> -->
+                              <!-- modal-footer -->
+                            </form>
+                          </div>
+                <!-- </div> -->
+                </div>
+                </div>
+                </div>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+  
+          <!-- </div> -->
+          <!-- col-3 -->
+  
+        </div>
+        <!-- entry-item -->
+      <!-- </div> -->
+      <!-- entry-content -->
+  
+    </div>
+    <!-- entry-section -->
+  
+  </div>
+  <span *ngIf="showLoader" class="loading"></span>

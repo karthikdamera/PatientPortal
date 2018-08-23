@@ -1,0 +1,152 @@
+<div class="w-100 page-titel float-left">
+    <h4 class="float-left titel">Payment</h4>
+    <!-- <button type="button" class="btn btn-primary no_margin width_auto float-right waves-light text-center" mdbWavesEffect>Add Pharmacy</button> -->
+    <button type="button" class="btn btn-primary no_margin width_auto float-right waves-light text-center" data-toggle="modal"
+        data-target="#basicExample" (click)="demoBasic.show();toClear('open');" mdbWavesEffect>
+        Add card
+    </button>
+</div>
+<div class="w-100 float-left page-container">
+    <div class="row">
+        <div class="float-left payment-cards">
+            <!-- primary-card -->
+            <div class="card float-left" *ngFor="let cardinfo of creditcardData" [ngClass]="{'secondary-card':cardinfo.IsActive==false , 'primary-card':cardinfo.IsActive==true}">
+                <!-- <i class="icon-master-card"></i> -->
+                <!-- {{cardinfo.CardType}} -->
+
+                <i class="icon-master-card" *ngIf="cardinfo.CardType == 'masterCard'"></i>
+                <i class="icon-visa-card" *ngIf="(cardinfo.CardType == 'Visa')||(cardinfo.CardType == 'visa')"></i>
+                <i class="icon-amex-card" *ngIf="cardinfo.CardType == 'AmericanExpress'"></i>
+
+                <h4 class="w-100 float-left">{{cardinfo.CardNumber}}</h4>
+                <h4 class="w-100 float-left">Name: {{cardinfo.NameOnTheCard}}</h4>
+                <h4 class="w-100 float-left"> Expires: {{cardinfo.CardExpirationDate}}</h4>
+                <!-- <input type="checkbox"> -->
+                <label class="custom-check float-right">
+                    <input type="radio" name="card" [checked]="cardinfo.IsActive">
+
+                    <span class="checkmark" (click)="statusChange(cardinfo)"></span>
+
+                </label>
+            </div>
+
+            <!-- <div class="card secondary-card float-left" *ngFor="let cardinfo of creditcardData">
+                <i class="icon-visa-card"></i>
+        <h4 class="w-100 float-left">{{cardinfo.CardNumber}}</h4>
+        <h4 class="w-100 float-left"> Expires: {{cardinfo.CardExpirationDate}}</h4>
+        <label class="custom-check float-right">
+            <input type="checkbox">
+            <span class="checkmark"></span>
+        </label>
+    </div> -->
+
+            <!-- <div class="card secondary-card float-left" *ngFor="let cardinfo of creditcardData">
+            <i class="icon-amex-card"></i>
+    <h4 class="w-100 float-left">{{cardinfo.CardNumber}}</h4>
+    <h4 class="w-100 float-left"> Expires: {{cardinfo.CardExpirationDate}}</h4>
+    <label class="custom-check float-right">
+        <input type="radio">
+        <span class="checkmark"></span>
+    </label>
+</div> -->
+        </div>
+
+
+
+    </div>
+</div>
+<!-- Modal popup for new credit card -->
+<div mdbModal #demoBasic="mdb-modal" class="modal fade" id="basicExample" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+    aria-hidden="true" [config]="{backdrop: false, ignoreBackdropClick: true, keyboard:false}">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content rounded">
+            <div class="modal-header">
+                <h4 class="modal-title w-100" id="myModalLabel">ADD CARD</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="demoBasic.hide();toClear('close');">
+                    <span aria-hidden="true">
+                        <i class="icon-close" aria-hidden="true"></i>
+                    </span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <div class="row">
+                    <div class="col-lg-8 float-left payment-cards">
+                        <form [formGroup]="creditcardForm">
+                            <div class="card primary-card cards-modal no_margin float-left">
+                                <div class="row">
+                                    <div class="input-group col-lg-10 float-left">
+                                        <span class="input-title w-100 float-left">Card Holder Name
+                                        </span>
+                                        <input class="form-control input-md" placeholder="Card Holder's Name" maxlength="50" formControlName="NameOnTheCard" id="NameOnTheCard"
+                                            [(ngModel)]="creditcardModel.NameOnTheCard" />
+                                        <app-validation [control]="creditcardForm.controls.NameOnTheCard">
+                                        </app-validation>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="input-group col-lg-10 float-left">
+                                        <span class="input-title w-100 float-left">Card Number
+                                        </span>
+                                        <input class="form-control input-md" placeholder="____-____-____-____" [textMask]="getNHSNumberMask()" class="form-control btn-section"
+                                            placeholder="Card number" formControlName="CardNumber" id="CardNumber" [(ngModel)]="creditcardModel.CardNumber"
+                                            (ngModelChange)="cardnumber($event)" (blur)="unmasckphone()" [ngClass]="{'error' : (phonests == true)}"
+                                        />
+                                        <app-validation [control]="creditcardForm.controls.CardNumber">
+                                        </app-validation>
+                                        <!-- <div *ngIf="phonests" class="errormsg"> Number Should Be Atleast 15 Digits</div> -->
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="input-group col-lg-4 float-left">
+                                        <span class="input-title w-100 float-left">Expires on
+                                        </span>
+                                        <input class="form-control input-md" placeholder="__-____"   [textMask]="getexpdate()" formControlName="Expdate" [(ngModel)]="creditcardModel.Expdate"
+                                             [ngClass]="{'error':expdatevalid == true}" (blur)="expirymask()"/>
+                                        <app-validation [control]="creditcardForm.controls.Expdate">
+                                        </app-validation>
+                                    </div>
+                                    <div class="input-group col-lg-4 float-left">
+                                        <span class="input-title w-100 float-left">CVV
+                                        </span>
+                                        <input type="password" class="form-control input-md" placeholder="_ _ _" formControlName="Cvv" id="Cvv" [(ngModel)]="creditcardModel.Cvv"
+                                            maxlength="3" />
+                                        <app-validation [control]="creditcardForm.controls.Cvv">
+                                        </app-validation>
+                                    </div>
+                                    <i class="{{cardTypeClass}}"></i>
+
+                                </div>
+
+                                <!-- <h4 class="w-100 float-left">{{cardinfo.CardNumber}}</h4>
+                            <h4 class="w-100 float-left"> Expires: {{cardinfo.CardExpirationDate}}</h4> -->
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="col-lg-4 float-left no_padding cards-modal">
+                        <b>Note :</b>
+                        <p class="no_padding">A valid method of payment on file is required as the last step to confirm your appointment. Your
+                            card will initially be authorized for $1.00. Twenty-four (24) hours prior to your appointment,
+                            your card will be authorized for the amount that is your financial responsibility. For additional
+                            question regarding our payment policy, please refer to the Payment policy.
+                        </p>
+
+                        <button type="button" class="btn btn-primary btn-sm waves-light float-right" mdbWavesEffect (click)="verifysave()">Save</button>
+                    </div>
+
+                </div>
+
+                <!-- <div class="row">
+                    <button type="button" class="btn btn-primary btn-sm waves-light float-right" mdbWavesEffect>Save</button>
+                </div> -->
+                <!-- <div class="col-lg-6 content">
+                    <p>A valid method of payment on file is required as the last step to confirm your appointment. Your card
+                        will initially be authorized for $1.00. Twenty-four (24) hours prior to your appointment, your card
+                        will be authorized for the amount that is your financial responsibility. For additional question
+                        regarding our payment policy, please refer to the Payment policy.
+                    </p>
+                </div> -->
+            </div>
+        </div>
+    </div>

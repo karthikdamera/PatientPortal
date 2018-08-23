@@ -1,0 +1,154 @@
+<div class="col-lg-10 float-left no_padding">
+  <div class="person-header float-left w-100">
+    <!-- <img src="assets/images/Robort.png" /> -->
+    <h2 class="float-left w-100">Care Team</h2>
+    <div class="col-lg-6 no_padding float-left border-right">
+      <div class="profile_pic float-left">
+        <img *ngIf="imageshow" class="img-circle" src="https://image.flaticon.com/icons/svg/236/236832.svg" alt="">
+        <img *ngIf="imageshow==false" src="{{ProviderInfo1.ImageUrl}}" class="profile_pic1 fa fa-user-circle w-100 float-left">
+      </div>
+      <!-- <div class="col-lg-3 no_padding profile1 float-left ">
+        <img *ngIf="imageshow" class="img-circle" src="https://image.flaticon.com/icons/svg/236/236832.svg" alt="">
+        <img *ngIf="imageshow==false" src="{{ProviderInfo1.ImageUrl}}" class="profile_pic1 fa fa-user-circle w-100 float-left">
+      </div> -->
+      <div class="col-lg-8 col-md-9 col-sm-12 col-xs-12 float-left user-info">
+        <h3 class="float-left w-100">{{ProviderInfo1.ProviderName}}</h3>
+        <div class="w-100 float-left">
+          <p class="float-left w-100">
+            <span class="float-left">Phone No. :</span>&nbsp;{{ProviderInfo1.PhoneNo}}
+          </p>
+
+          <p class="float-left w-100">
+            <span class="float-left">Email :</span>&nbsp;{{ProviderInfo1.Email}}
+          </p>
+          <p class="float-left w-100">
+            <span class="float-left">Service :</span>&nbsp;{{ProviderInfo1.ServiceType}}
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-6  float-left">
+      <div class="profile_pic mr-3 float-left">
+<img class="img-circle" src="https://s3.amazonaws.com/elasticbeanstalk-us-east-1-086619959600/PatientPortal/9/Staff/a2a02b34-ed6f-4839-9840-997881598496.jpeg"
+  alt="">
+
+        <!-- <img *ngIf="imageshow==false" src="{{ProviderInfo1.ImageUrl}}" class="profile_pic1 fa fa-user-circle w-100 float-left"> -->
+      </div>
+      <div class="col-lg-8 no_padding col-md-9 col-sm-12 col-xs-12 float-left user-info">
+        <h3 class="float-left w-100">Kane Harrison</h3>
+        <div class="w-100 float-left">
+          <p class="float-left width_auto">
+            <span class="float-left">Phone No. : </span>&nbsp; +1 615 732 6202</p>
+
+          <p class="float-left width_auto">
+            <span class="float-left">Email : </span>&nbsp; kane@harrisonmediaholdings.com</p>
+          <p class="float-left width_auto">
+            <span class="float-left">Service : </span>&nbsp; Care Coordinator</p>
+        </div>
+      </div>
+    </div>
+    <!-- <a href="javascript:;;" class="icon-user-settings float-right"></a> -->
+  </div>
+  <div class="page-container float-left">
+    <div class="w-100 float-left">
+      <p class="tile-headding float-left w-100">APPOINTMENT</p>
+      <div class="tile-group w-100 float-left">
+        <div class="col-lg-3 custome-col col-md-6 float-left">
+          <a href="javascript:;;" class="dashboard-tile float-left" (click)="schedule()">
+            <span class="col-lg-4 icon icon-todat-appointments"></span>
+            <p class="col-lg-8 float-right">Schedule</p>
+          </a>
+        </div>
+        <div class="col-lg-3 custome-col col-md-6 float-left">
+          <a href="javascript:;;" class="dashboard-tile float-left" (click)="myappointment()">
+            <span class="col-lg-4 icon icon-my-appointments"></span>
+            <p class="col-lg-8 float-right">My Appointments</p>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="w-100 float-left">
+      <p class="tile-headding float-left w-100">GENERAL</p>
+      <div class="tile-group w-100 float-left">
+        <div class="col-lg-3 custome-col col-md-6 float-left">
+          <a href="javascript:;;" class="dashboard-tile float-left" (click)="pharmacy()">
+            <span class="col-lg-4 icon icon-pharmacy"></span>
+            <p class="col-lg-8 float-right">Pharmacy</p>
+          </a>
+        </div>
+        <div class="col-lg-3 custome-col col-md-6 float-left">
+          <a href="javascript:;;" class="dashboard-tile float-left" (click)="insurance()">
+            <span class="col-lg-4 icon icon-insurance"></span>
+            <p class="col-lg-8 float-right">Insurance</p>
+          </a>
+        </div>
+        <div class="col-lg-3 custome-col col-md-6 float-left">
+          <a href="javascript:;;" class="dashboard-tile float-left" (click)="creditcard()">
+            <span class="col-lg-4 icon icon-payment"></span>
+            <p class="col-lg-8 float-right">Payment</p>
+          </a>
+        </div>
+        <div class="col-lg-3 custome-col col-md-6 float-left">
+          <a href="javascript:;;" class="dashboard-tile float-left" (click)="questionnaire()">
+            <span class="col-lg-4 icon icon-questionnaire"></span>
+            <p class="col-lg-8 float-right">Questionnaire</p>
+          </a>
+        </div>
+        <div class="col-lg-3 custome-col col-md-6 float-left" (click)="profile()">
+          <a href="javascript:;;" class="dashboard-tile float-left">
+            <span class="col-lg-4 icon icon-user-avth"></span>
+
+            <p class="col-lg-8 float-right">Profile</p>
+          </a>
+        </div>
+
+      </div>
+    </div>
+    <div class="w-100 float-left">
+      <p class="tile-headding float-left w-100">REQUESTS</p>
+      <div class="tile-group w-100 float-left">
+        <div class="col-lg-3 custome-col col-md-6 float-left">
+          <a href="javascript:;;" class="dashboard-tile float-left" (click)="requestsRefills()">
+            <span class="col-lg-4 icon icon-refill-request "></span>
+            <p class="col-lg-8 float-right">Refill</p>
+          </a>
+        </div>
+        <div class="col-lg-3 custome-col col-md-6 float-left">
+          <a href="javascript:;;" class="dashboard-tile float-left" (click)="requestsTestResults()">
+            <span class="col-lg-4 icon icon-test-results"></span>
+            <p class="col-lg-8 float-right">Test Results</p>
+          </a>
+        </div>
+        <div class="col-lg-3 custome-col col-md-6 float-left">
+          <a href="javascript:;;" class="dashboard-tile float-left" (click)="requestsBilling()">
+            <span class="col-lg-4 icon icon-billing-questions"></span>
+            <p class="col-lg-8 float-right">Billing Questions</p>
+          </a>
+        </div>
+        <div class="col-lg-3 custome-col col-md-6 float-left">
+          <a href="javascript:;;" class="dashboard-tile float-left" (click)="requestsInfo()">
+            <span class="col-lg-4 icon icon-request-information"></span>
+            <p class="col-lg-8 float-right">Information</p>
+          </a>
+        </div>
+        <div class="col-lg-3 custome-col col-md-6 float-left">
+          <a href="javascript:;;" class="dashboard-tile float-left" (click)="requestsRecords()">
+            <span class="col-lg-4 icon icon-request-records"></span>
+            <p class="col-lg-8 float-right">Records</p>
+          </a>
+        </div>
+        <div class="col-lg-3 custome-col col-md-6 float-left">
+          <a href="javascript:;;" class="dashboard-tile float-left" (click)="requestsAskQuestion()">
+            <span class="col-lg-4 icon icon-ask-questions"></span>
+            <p class="col-lg-8 float-right">Ask Questions</p>
+          </a>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+<div class="col-lg-2 float-left dashboard_right">
+  <app-slider-component></app-slider-component>
+  <app-bmi-component></app-bmi-component>
+</div>

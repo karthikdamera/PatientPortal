@@ -1,0 +1,61 @@
+<div class="w-100 float-left page-titel no_padding">
+  <a (click)="back()" class="fa fa-angle-left  float-left icon_back">
+    <h4 class="float-right titel ml-3">
+      Back</h4>
+  </a>
+  <div class="w-100 no_padding  mt-2 float-left">
+    <form [formGroup]="intigrationamdForm" class="w-100 float-left">
+
+      <div class="input-group col-lg-3  float-left">
+        <span class="input-title w-100 float-left">IntegrationType
+          <!-- <span class="color-red">*</span> -->
+        </span>
+        <input type="text" class="form-control input_textbox" formControlName="EhrType" value={{ehrtypeamd}} disabled>
+      </div>
+      <div class="input-group col-lg-3 float-left ">
+        <span class="input-title w-100 float-left">User Name
+          <span class="color-red">*</span>
+        </span>
+        <input type="text" class="form-control input_textbox" formControlName="LoginUrl" [(ngModel)]="intigrationamdmodel.LoginUrl">
+        <app-validation [control]="intigrationamdForm.controls.LoginUrl"></app-validation>
+      </div>
+
+      <div class="input-group col-lg-3 float-left ">
+        <span class="input-title w-100 float-left">Login Url
+          <!-- <span class="color-red">*</span> -->
+        </span>
+
+        <input type="text" class="form-control input_textbox" formControlName="UserName" [(ngModel)]="intigrationamdmodel.UserName">
+        <app-validation [control]="intigrationamdForm.controls.UserName"></app-validation>
+      </div>
+      <div class="input-group col-lg-3 float-left ">
+        <span class="input-title w-100 float-left">Password
+          <!-- <span class="color-red">*</span> -->
+        </span>
+        <input type="password" class="form-control input_textbox" formControlName="Password" [(ngModel)]="intigrationamdmodel.Password">
+        <app-validation [control]="intigrationamdForm.controls.Password"></app-validation>
+      </div>
+
+      <div class="input-group col-lg-3  float-left ">
+        <span class="input-title w-100 float-left">App Name
+          <!-- <span class="color-red">*</span> -->
+        </span>
+
+        <input type="text" class="form-control input_textbox" formControlName="AppName" [(ngModel)]="intigrationamdmodel.AppName">
+        <app-validation [control]="intigrationamdForm.controls.AppName"></app-validation>
+      </div>
+      <div class="input-group col-lg-3 float-left ">
+        <span class="input-title w-100 float-left">Office Key
+          <!-- <span class="color-red">*</span> -->
+        </span>
+
+        <input type="text" class="form-control input_textbox" formControlName="OfficeKey" [(ngModel)]="intigrationamdmodel.OfficeKey">
+        <app-validation [control]="intigrationamdForm.controls.OfficeKey"></app-validation>
+      </div>
+      <div class="w-100 float-left text-center">
+          <button class="btn btn-primary  waves-light" mdbWavesEffect [disabled]="!intigrationamdForm.valid" (click)="updateintigrationamdsettings()">Update</button>
+        </div>
+    </form>
+    
+  </div>
+</div>

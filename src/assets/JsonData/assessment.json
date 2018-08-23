@@ -1,0 +1,1128 @@
+[{
+        "PatientAssessmentId": 1,
+        "UserId": 97,
+        "SurveyId": 256,
+        "Surveycode": "Wang Vision",
+        "SurveyName": "Wang Vision",
+        "SurveyDescription": "Wang Vision",
+        "SectionId": 1,
+        "SectionName": "Integumentary(Skin)",
+        "Questions": [{
+            "QuestionId": 494,
+            "QuestionName": "Skin",
+            "TypeId": 15,
+            "TypeName": "Radio",
+            "IsParent": true,
+            "IsAlert": false,
+            "AlertId": 0,
+            "SelectedID": 0,
+            "SelectedValue": null,
+            "Choices": [{
+                    "ChoiceId": 2111,
+                    "ChoiceName": "Yes",
+                    "Score": 0,
+                    "Checked": false
+                },
+                {
+                    "ChoiceId": 2112,
+                    "ChoiceName": "No",
+                    "Score": 0,
+                    "Checked": false
+                },
+                {
+                    "ChoiceId": 2113,
+                    "ChoiceName": "Unsure",
+                    "Score": 0,
+                    "Checked": false
+                }
+            ],
+            "ChildQuestions": [{
+                "QuestionId": 267,
+                "QuestionName": "Medications",
+                "TypeId": 30,
+                "TypeName": "Textbox",
+                "SelectedID": 0,
+                "SelectedValue": null,
+                "Choices": [{
+                    "ChoiceId": 2114,
+                    "ChoiceName": "Medications",
+                    "Score": 0,
+                    "Checked": false
+                }]
+            }]
+        }]
+    },
+    {
+        "PatientAssessmentId": 1,
+        "UserId": 97,
+        "SurveyId": 256,
+        "Surveycode": "Wang Vision",
+        "SurveyName": "Wang Vision",
+        "SurveyDescription": "Wang Vision",
+        "SectionId": 2,
+        "SectionName": "Eyes",
+        "Questions": [{
+                "QuestionId": 495,
+                "QuestionName": "Loss of side vision\r\n",
+                "TypeId": 15,
+                "TypeName": "Radio",
+                "IsParent": true,
+                "IsAlert": false,
+                "AlertId": 0,
+                "SelectedID": 0,
+                "SelectedValue": null,
+                "Choices": [{
+                        "ChoiceId": 2111,
+                        "ChoiceName": "Yes",
+                        "Score": 0,
+                        "Checked": false
+                    },
+                    {
+                        "ChoiceId": 2112,
+                        "ChoiceName": "No",
+                        "Score": 0,
+                        "Checked": false
+                    },
+                    {
+                        "ChoiceId": 2113,
+                        "ChoiceName": "Unsure",
+                        "Score": 0,
+                        "Checked": false
+                    }
+                ],
+                "ChildQuestions": [{
+                    "QuestionId": 268,
+                    "QuestionName": "Medications",
+                    "TypeId": 30,
+                    "TypeName": "Textbox",
+                    "SelectedID": 0,
+                    "SelectedValue": null,
+                    "Choices": [{
+                        "ChoiceId": 2114,
+                        "ChoiceName": "Medications",
+                        "Score": 0,
+                        "Checked": false
+                    }]
+                }]
+            },
+            {
+                "QuestionId": 496,
+                "QuestionName": "Double Vision\r\n",
+                "TypeId": 15,
+                "TypeName": "Radio",
+                "IsParent": true,
+                "IsAlert": false,
+                "AlertId": 0,
+                "SelectedID": 0,
+                "SelectedValue": null,
+                "Choices": [{
+                        "ChoiceId": 2111,
+                        "ChoiceName": "Yes",
+                        "Score": 0,
+                        "Checked": false
+                    },
+                    {
+                        "ChoiceId": 2112,
+                        "ChoiceName": "No",
+                        "Score": 0,
+                        "Checked": false
+                    },
+                    {
+                        "ChoiceId": 2113,
+                        "ChoiceName": "Unsure",
+                        "Score": 0,
+                        "Checked": false
+                    }
+                ],
+                "ChildQuestions": [{
+                    "QuestionId": 269,
+                    "QuestionName": "Medications",
+                    "TypeId": 30,
+                    "TypeName": "Textbox",
+                    "SelectedID": 0,
+                    "SelectedValue": null,
+                    "Choices": [{
+                        "ChoiceId": 2114,
+                        "ChoiceName": "Medications",
+                        "Score": 0,
+                        "Checked": false
+                    }]
+                }]
+            },
+            {
+                "QuestionId": 497,
+                "QuestionName": "Dryness/Redness\r\n",
+                "TypeId": 15,
+                "TypeName": "Radio",
+                "IsParent": true,
+                "IsAlert": false,
+                "AlertId": 0,
+                "SelectedID": 0,
+                "SelectedValue": null,
+                "Choices": [{
+                        "ChoiceId": 2111,
+                        "ChoiceName": "Yes",
+                        "Score": 0,
+                        "Checked": false
+                    },
+                    {
+                        "ChoiceId": 2112,
+                        "ChoiceName": "No",
+                        "Score": 0,
+                        "Checked": false
+                    },
+                    {
+                        "ChoiceId": 2113,
+                        "ChoiceName": "Unsure",
+                        "Score": 0,
+                        "Checked": false
+                    }
+                ],
+                "ChildQuestions": [{
+                    "QuestionId": 270,
+                    "QuestionName": "Medications",
+                    "TypeId": 30,
+                    "TypeName": "Textbox",
+                    "SelectedID": 0,
+                    "SelectedValue": null,
+                    "Choices": [{
+                        "ChoiceId": 2114,
+                        "ChoiceName": "Medications",
+                        "Score": 0,
+                        "Checked": false
+                    }]
+                }]
+            },
+            {
+                "QuestionId": 498,
+                "QuestionName": "Flashes/Floaters in Vision\r\n",
+                "TypeId": 15,
+                "TypeName": "Radio",
+                "IsParent": true,
+                "IsAlert": false,
+                "AlertId": 0,
+                "SelectedID": 0,
+                "SelectedValue": null,
+                "Choices": [{
+                        "ChoiceId": 2111,
+                        "ChoiceName": "Yes",
+                        "Score": 0,
+                        "Checked": false
+                    },
+                    {
+                        "ChoiceId": 2112,
+                        "ChoiceName": "No",
+                        "Score": 0,
+                        "Checked": false
+                    },
+                    {
+                        "ChoiceId": 2113,
+                        "ChoiceName": "Unsure",
+                        "Score": 0,
+                        "Checked": false
+                    }
+                ],
+                "ChildQuestions": [{
+                    "QuestionId": 271,
+                    "QuestionName": "Medications",
+                    "TypeId": 30,
+                    "TypeName": "Textbox",
+                    "SelectedID": 0,
+                    "SelectedValue": null,
+                    "Choices": [{
+                        "ChoiceId": 2114,
+                        "ChoiceName": "Medications",
+                        "Score": 0,
+                        "Checked": false
+                    }]
+                }]
+            }
+        ]
+    },
+    {
+        "PatientAssessmentId": 1,
+        "UserId": 97,
+        "SurveyId": 256,
+        "Surveycode": "Wang Vision",
+        "SurveyName": "Wang Vision",
+        "SurveyDescription": "Wang Vision",
+        "SectionId": 4,
+        "SectionName": "Vascular",
+        "Questions": [{
+                "QuestionId": 499,
+                "QuestionName": "Chest Pain\r\n",
+                "TypeId": 15,
+                "TypeName": "Radio",
+                "IsParent": true,
+                "IsAlert": false,
+                "AlertId": 0,
+                "SelectedID": 0,
+                "SelectedValue": null,
+                "Choices": [{
+                        "ChoiceId": 2111,
+                        "ChoiceName": "Yes",
+                        "Score": 0,
+                        "Checked": false
+                    },
+                    {
+                        "ChoiceId": 2112,
+                        "ChoiceName": "No",
+                        "Score": 0,
+                        "Checked": false
+                    },
+                    {
+                        "ChoiceId": 2113,
+                        "ChoiceName": "Unsure",
+                        "Score": 0,
+                        "Checked": false
+                    }
+                ],
+                "ChildQuestions": [{
+                    "QuestionId": 272,
+                    "QuestionName": "Medications",
+                    "TypeId": 30,
+                    "TypeName": "Textbox",
+                    "SelectedID": 0,
+                    "SelectedValue": null,
+                    "Choices": [{
+                        "ChoiceId": 2114,
+                        "ChoiceName": "Medications",
+                        "Score": 0,
+                        "Checked": false
+                    }]
+                }]
+            },
+            {
+                "QuestionId": 500,
+                "QuestionName": "High Blood Pressure\r\n",
+                "TypeId": 15,
+                "TypeName": "Radio",
+                "IsParent": true,
+                "IsAlert": false,
+                "AlertId": 0,
+                "SelectedID": 0,
+                "SelectedValue": null,
+                "Choices": [{
+                        "ChoiceId": 2111,
+                        "ChoiceName": "Yes",
+                        "Score": 0,
+                        "Checked": false
+                    },
+                    {
+                        "ChoiceId": 2112,
+                        "ChoiceName": "No",
+                        "Score": 0,
+                        "Checked": false
+                    },
+                    {
+                        "ChoiceId": 2113,
+                        "ChoiceName": "Unsure",
+                        "Score": 0,
+                        "Checked": false
+                    }
+                ],
+                "ChildQuestions": [{
+                    "QuestionId": 273,
+                    "QuestionName": "Medications",
+                    "TypeId": 30,
+                    "TypeName": "Textbox",
+                    "SelectedID": 0,
+                    "SelectedValue": null,
+                    "Choices": [{
+                        "ChoiceId": 2114,
+                        "ChoiceName": "Medications",
+                        "Score": 0,
+                        "Checked": false
+                    }]
+                }]
+            },
+            {
+                "QuestionId": 501,
+                "QuestionName": "Vascular Disease\r\n",
+                "TypeId": 15,
+                "TypeName": "Radio",
+                "IsParent": true,
+                "IsAlert": false,
+                "AlertId": 0,
+                "SelectedID": 0,
+                "SelectedValue": null,
+                "Choices": [{
+                        "ChoiceId": 2111,
+                        "ChoiceName": "Yes",
+                        "Score": 0,
+                        "Checked": false
+                    },
+                    {
+                        "ChoiceId": 2112,
+                        "ChoiceName": "No",
+                        "Score": 0,
+                        "Checked": false
+                    },
+                    {
+                        "ChoiceId": 2113,
+                        "ChoiceName": "Unsure",
+                        "Score": 0,
+                        "Checked": false
+                    }
+                ],
+                "ChildQuestions": [{
+                    "QuestionId": 274,
+                    "QuestionName": "Medications",
+                    "TypeId": 30,
+                    "TypeName": "Textbox",
+                    "SelectedID": 0,
+                    "SelectedValue": null,
+                    "Choices": [{
+                        "ChoiceId": 2114,
+                        "ChoiceName": "Medications",
+                        "Score": 0,
+                        "Checked": false
+                    }]
+                }]
+            },
+            {
+                "QuestionId": 502,
+                "QuestionName": "Cholesterol\r\n",
+                "TypeId": 15,
+                "TypeName": "Radio",
+                "IsParent": true,
+                "IsAlert": false,
+                "AlertId": 0,
+                "SelectedID": 0,
+                "SelectedValue": null,
+                "Choices": [{
+                        "ChoiceId": 2111,
+                        "ChoiceName": "Yes",
+                        "Score": 0,
+                        "Checked": false
+                    },
+                    {
+                        "ChoiceId": 2112,
+                        "ChoiceName": "No",
+                        "Score": 0,
+                        "Checked": false
+                    },
+                    {
+                        "ChoiceId": 2113,
+                        "ChoiceName": "Unsure",
+                        "Score": 0,
+                        "Checked": false
+                    }
+                ],
+                "ChildQuestions": [{
+                    "QuestionId": 275,
+                    "QuestionName": "Medications",
+                    "TypeId": 30,
+                    "TypeName": "Textbox",
+                    "SelectedID": 0,
+                    "SelectedValue": null,
+                    "Choices": [{
+                        "ChoiceId": 2114,
+                        "ChoiceName": "Medications",
+                        "Score": 0,
+                        "Checked": false
+                    }]
+                }]
+            },
+            {
+                "QuestionId": 503,
+                "QuestionName": "Heart stents/ Catheters\r\n",
+                "TypeId": 15,
+                "TypeName": "Radio",
+                "IsParent": true,
+                "IsAlert": false,
+                "AlertId": 0,
+                "SelectedID": 0,
+                "SelectedValue": null,
+                "Choices": [{
+                        "ChoiceId": 2111,
+                        "ChoiceName": "Yes",
+                        "Score": 0,
+                        "Checked": false
+                    },
+                    {
+                        "ChoiceId": 2112,
+                        "ChoiceName": "No",
+                        "Score": 0,
+                        "Checked": false
+                    },
+                    {
+                        "ChoiceId": 2113,
+                        "ChoiceName": "Unsure",
+                        "Score": 0,
+                        "Checked": false
+                    }
+                ],
+                "ChildQuestions": [{
+                    "QuestionId": 276,
+                    "QuestionName": "Medications",
+                    "TypeId": 30,
+                    "TypeName": "Textbox",
+                    "SelectedID": 0,
+                    "SelectedValue": null,
+                    "Choices": [{
+                        "ChoiceId": 2114,
+                        "ChoiceName": "Medications",
+                        "Score": 0,
+                        "Checked": false
+                    }]
+                }]
+            }
+        ]
+    },
+    {
+        "PatientAssessmentId": 1,
+        "UserId": 97,
+        "SurveyId": 256,
+        "Surveycode": "Wang Vision",
+        "SurveyName": "Wang Vision",
+        "SurveyDescription": "Wang Vision",
+        "SectionId": 5,
+        "SectionName": "Respiratory",
+        "Questions": [{
+                "QuestionId": 504,
+                "QuestionName": "Asthama/Bronchitis\r\n",
+                "TypeId": 15,
+                "TypeName": "Radio",
+                "IsParent": true,
+                "IsAlert": false,
+                "AlertId": 0,
+                "SelectedID": 0,
+                "SelectedValue": null,
+                "Choices": [{
+                        "ChoiceId": 2111,
+                        "ChoiceName": "Yes",
+                        "Score": 0,
+                        "Checked": false
+                    },
+                    {
+                        "ChoiceId": 2112,
+                        "ChoiceName": "No",
+                        "Score": 0,
+                        "Checked": false
+                    },
+                    {
+                        "ChoiceId": 2113,
+                        "ChoiceName": "Unsure",
+                        "Score": 0,
+                        "Checked": false
+                    }
+                ],
+                "ChildQuestions": [{
+                    "QuestionId": 277,
+                    "QuestionName": "Medications",
+                    "TypeId": 30,
+                    "TypeName": "Textbox",
+                    "SelectedID": 0,
+                    "SelectedValue": null,
+                    "Choices": [{
+                        "ChoiceId": 2114,
+                        "ChoiceName": "Medications",
+                        "Score": 0,
+                        "Checked": false
+                    }]
+                }]
+            },
+            {
+                "QuestionId": 505,
+                "QuestionName": "Emphysema\r\n",
+                "TypeId": 15,
+                "TypeName": "Radio",
+                "IsParent": true,
+                "IsAlert": false,
+                "AlertId": 0,
+                "SelectedID": 0,
+                "SelectedValue": null,
+                "Choices": [{
+                        "ChoiceId": 2111,
+                        "ChoiceName": "Yes",
+                        "Score": 0,
+                        "Checked": false
+                    },
+                    {
+                        "ChoiceId": 2112,
+                        "ChoiceName": "No",
+                        "Score": 0,
+                        "Checked": false
+                    },
+                    {
+                        "ChoiceId": 2113,
+                        "ChoiceName": "Unsure",
+                        "Score": 0,
+                        "Checked": false
+                    }
+                ],
+                "ChildQuestions": [{
+                    "QuestionId": 278,
+                    "QuestionName": "Medications",
+                    "TypeId": 30,
+                    "TypeName": "Textbox",
+                    "SelectedID": 0,
+                    "SelectedValue": null,
+                    "Choices": [{
+                        "ChoiceId": 2114,
+                        "ChoiceName": "Medications",
+                        "Score": 0,
+                        "Checked": false
+                    }]
+                }]
+            },
+            {
+                "QuestionId": 506,
+                "QuestionName": "COPD\r\n",
+                "TypeId": 15,
+                "TypeName": "Radio",
+                "IsParent": true,
+                "IsAlert": false,
+                "AlertId": 0,
+                "SelectedID": 0,
+                "SelectedValue": null,
+                "Choices": [{
+                        "ChoiceId": 2111,
+                        "ChoiceName": "Yes",
+                        "Score": 0,
+                        "Checked": false
+                    },
+                    {
+                        "ChoiceId": 2112,
+                        "ChoiceName": "No",
+                        "Score": 0,
+                        "Checked": false
+                    },
+                    {
+                        "ChoiceId": 2113,
+                        "ChoiceName": "Unsure",
+                        "Score": 0,
+                        "Checked": false
+                    }
+                ],
+                "ChildQuestions": [{
+                    "QuestionId": 279,
+                    "QuestionName": "Medications",
+                    "TypeId": 30,
+                    "TypeName": "Textbox",
+                    "SelectedID": 0,
+                    "SelectedValue": null,
+                    "Choices": [{
+                        "ChoiceId": 2114,
+                        "ChoiceName": "Medications",
+                        "Score": 0,
+                        "Checked": false
+                    }]
+                }]
+            },
+            {
+                "QuestionId": 507,
+                "QuestionName": "Sleep apnea\r\n",
+                "TypeId": 15,
+                "TypeName": "Radio",
+                "IsParent": true,
+                "IsAlert": false,
+                "AlertId": 0,
+                "SelectedID": 0,
+                "SelectedValue": null,
+                "Choices": [{
+                        "ChoiceId": 2111,
+                        "ChoiceName": "Yes",
+                        "Score": 0,
+                        "Checked": false
+                    },
+                    {
+                        "ChoiceId": 2112,
+                        "ChoiceName": "No",
+                        "Score": 0,
+                        "Checked": false
+                    },
+                    {
+                        "ChoiceId": 2113,
+                        "ChoiceName": "Unsure",
+                        "Score": 0,
+                        "Checked": false
+                    }
+                ],
+                "ChildQuestions": [{
+                    "QuestionId": 280,
+                    "QuestionName": "Medications",
+                    "TypeId": 30,
+                    "TypeName": "Textbox",
+                    "SelectedID": 0,
+                    "SelectedValue": null,
+                    "Choices": [{
+                        "ChoiceId": 2114,
+                        "ChoiceName": "Medications",
+                        "Score": 0,
+                        "Checked": false
+                    }]
+                }]
+            }
+        ]
+    },
+    {
+        "PatientAssessmentId": 1,
+        "UserId": 97,
+        "SurveyId": 256,
+        "Surveycode": "Wang Vision",
+        "SurveyName": "Wang Vision",
+        "SurveyDescription": "Wang Vision",
+        "SectionId": 7,
+        "SectionName": "Genitourinary",
+        "Questions": [{
+            "QuestionId": 508,
+            "QuestionName": "Gentinal/Kidney/Bladder\r\n",
+            "TypeId": 15,
+            "TypeName": "Radio",
+            "IsParent": true,
+            "IsAlert": false,
+            "AlertId": 0,
+            "SelectedID": 0,
+            "SelectedValue": null,
+            "Choices": [{
+                    "ChoiceId": 2111,
+                    "ChoiceName": "Yes",
+                    "Score": 0,
+                    "Checked": false
+                },
+                {
+                    "ChoiceId": 2112,
+                    "ChoiceName": "No",
+                    "Score": 0,
+                    "Checked": false
+                },
+                {
+                    "ChoiceId": 2113,
+                    "ChoiceName": "Unsure",
+                    "Score": 0,
+                    "Checked": false
+                }
+            ],
+            "ChildQuestions": [{
+                "QuestionId": 281,
+                "QuestionName": "Medications",
+                "TypeId": 30,
+                "TypeName": "Textbox",
+                "SelectedID": 0,
+                "SelectedValue": null,
+                "Choices": [{
+                    "ChoiceId": 2114,
+                    "ChoiceName": "Medications",
+                    "Score": 0,
+                    "Checked": false
+                }]
+            }]
+        }]
+    },
+    {
+        "PatientAssessmentId": 1,
+        "UserId": 97,
+        "SurveyId": 256,
+        "Surveycode": "Wang Vision",
+        "SurveyName": "Wang Vision",
+        "SurveyDescription": "Wang Vision",
+        "SectionId": 8,
+        "SectionName": "Bones/Joint/Muscles",
+        "Questions": [{
+            "QuestionId": 509,
+            "QuestionName": "Arthritis/Joint Pain\r\n",
+            "TypeId": 15,
+            "TypeName": "Radio",
+            "IsParent": true,
+            "IsAlert": false,
+            "AlertId": 0,
+            "SelectedID": 0,
+            "SelectedValue": null,
+            "Choices": [{
+                    "ChoiceId": 2111,
+                    "ChoiceName": "Yes",
+                    "Score": 0,
+                    "Checked": false
+                },
+                {
+                    "ChoiceId": 2112,
+                    "ChoiceName": "No",
+                    "Score": 0,
+                    "Checked": false
+                },
+                {
+                    "ChoiceId": 2113,
+                    "ChoiceName": "Unsure",
+                    "Score": 0,
+                    "Checked": false
+                }
+            ],
+            "ChildQuestions": [{
+                "QuestionId": 282,
+                "QuestionName": "Medications",
+                "TypeId": 30,
+                "TypeName": "Textbox",
+                "SelectedID": 0,
+                "SelectedValue": null,
+                "Choices": [{
+                    "ChoiceId": 2114,
+                    "ChoiceName": "Medications",
+                    "Score": 0,
+                    "Checked": false
+                }]
+            }]
+        }]
+    },
+    {
+        "PatientAssessmentId": 1,
+        "UserId": 97,
+        "SurveyId": 256,
+        "Surveycode": "Wang Vision",
+        "SurveyName": "Wang Vision",
+        "SurveyDescription": "Wang Vision",
+        "SectionId": 9,
+        "SectionName": "Neurologic",
+        "Questions": [{
+            "QuestionId": 510,
+            "QuestionName": "Headaches/Migraines\r\n",
+            "TypeId": 15,
+            "TypeName": "Radio",
+            "IsParent": true,
+            "IsAlert": false,
+            "AlertId": 0,
+            "SelectedID": 0,
+            "SelectedValue": null,
+            "Choices": [{
+                    "ChoiceId": 2111,
+                    "ChoiceName": "Yes",
+                    "Score": 0,
+                    "Checked": false
+                },
+                {
+                    "ChoiceId": 2112,
+                    "ChoiceName": "No",
+                    "Score": 0,
+                    "Checked": false
+                },
+                {
+                    "ChoiceId": 2113,
+                    "ChoiceName": "Unsure",
+                    "Score": 0,
+                    "Checked": false
+                }
+            ],
+            "ChildQuestions": [{
+                "QuestionId": 283,
+                "QuestionName": "Medications",
+                "TypeId": 30,
+                "TypeName": "Textbox",
+                "SelectedID": 0,
+                "SelectedValue": null,
+                "Choices": [{
+                    "ChoiceId": 2114,
+                    "ChoiceName": "Medications",
+                    "Score": 0,
+                    "Checked": false
+                }]
+            }]
+        }]
+    },
+    {
+        "PatientAssessmentId": 1,
+        "UserId": 97,
+        "SurveyId": 256,
+        "Surveycode": "Wang Vision",
+        "SurveyName": "Wang Vision",
+        "SurveyDescription": "Wang Vision",
+        "SectionId": 10,
+        "SectionName": "Lymphatic/Hematologic",
+        "Questions": [{
+                "QuestionId": 511,
+                "QuestionName": "Anemia\r\n",
+                "TypeId": 15,
+                "TypeName": "Radio",
+                "IsParent": true,
+                "IsAlert": false,
+                "AlertId": 0,
+                "SelectedID": 0,
+                "SelectedValue": null,
+                "Choices": [{
+                        "ChoiceId": 2111,
+                        "ChoiceName": "Yes",
+                        "Score": 0,
+                        "Checked": false
+                    },
+                    {
+                        "ChoiceId": 2112,
+                        "ChoiceName": "No",
+                        "Score": 0,
+                        "Checked": false
+                    },
+                    {
+                        "ChoiceId": 2113,
+                        "ChoiceName": "Unsure",
+                        "Score": 0,
+                        "Checked": false
+                    }
+                ],
+                "ChildQuestions": [{
+                    "QuestionId": 284,
+                    "QuestionName": "Medications",
+                    "TypeId": 30,
+                    "TypeName": "Textbox",
+                    "SelectedID": 0,
+                    "SelectedValue": null,
+                    "Choices": [{
+                        "ChoiceId": 2114,
+                        "ChoiceName": "Medications",
+                        "Score": 0,
+                        "Checked": false
+                    }]
+                }]
+            },
+            {
+                "QuestionId": 512,
+                "QuestionName": "Bleeding Problem\r\n",
+                "TypeId": 15,
+                "TypeName": "Radio",
+                "IsParent": true,
+                "IsAlert": false,
+                "AlertId": 0,
+                "SelectedID": 0,
+                "SelectedValue": null,
+                "Choices": [{
+                        "ChoiceId": 2111,
+                        "ChoiceName": "Yes",
+                        "Score": 0,
+                        "Checked": false
+                    },
+                    {
+                        "ChoiceId": 2112,
+                        "ChoiceName": "No",
+                        "Score": 0,
+                        "Checked": false
+                    },
+                    {
+                        "ChoiceId": 2113,
+                        "ChoiceName": "Unsure",
+                        "Score": 0,
+                        "Checked": false
+                    }
+                ],
+                "ChildQuestions": [{
+                    "QuestionId": 285,
+                    "QuestionName": "Medications",
+                    "TypeId": 30,
+                    "TypeName": "Textbox",
+                    "SelectedID": 0,
+                    "SelectedValue": null,
+                    "Choices": [{
+                        "ChoiceId": 2114,
+                        "ChoiceName": "Medications",
+                        "Score": 0,
+                        "Checked": false
+                    }]
+                }]
+            }
+        ]
+    },
+    {
+        "PatientAssessmentId": 1,
+        "UserId": 97,
+        "SurveyId": 256,
+        "Surveycode": "Wang Vision",
+        "SurveyName": "Wang Vision",
+        "SurveyDescription": "Wang Vision",
+        "SectionId": 11,
+        "SectionName": "Endocrine",
+        "Questions": [{
+                "QuestionId": 513,
+                "QuestionName": "Diabetes\r\n",
+                "TypeId": 15,
+                "TypeName": "Radio",
+                "IsParent": true,
+                "IsAlert": false,
+                "AlertId": 0,
+                "SelectedID": 0,
+                "SelectedValue": null,
+                "Choices": [{
+                        "ChoiceId": 2111,
+                        "ChoiceName": "Yes",
+                        "Score": 0,
+                        "Checked": false
+                    },
+                    {
+                        "ChoiceId": 2112,
+                        "ChoiceName": "No",
+                        "Score": 0,
+                        "Checked": false
+                    },
+                    {
+                        "ChoiceId": 2113,
+                        "ChoiceName": "Unsure",
+                        "Score": 0,
+                        "Checked": false
+                    }
+                ],
+                "ChildQuestions": [{
+                    "QuestionId": 286,
+                    "QuestionName": "Medications",
+                    "TypeId": 30,
+                    "TypeName": "Textbox",
+                    "SelectedID": 0,
+                    "SelectedValue": null,
+                    "Choices": [{
+                        "ChoiceId": 2114,
+                        "ChoiceName": "Medications",
+                        "Score": 0,
+                        "Checked": false
+                    }]
+                }]
+            },
+            {
+                "QuestionId": 514,
+                "QuestionName": "Thyroid/Other Glands\r\n",
+                "TypeId": 15,
+                "TypeName": "Radio",
+                "IsParent": true,
+                "IsAlert": false,
+                "AlertId": 0,
+                "SelectedID": 0,
+                "SelectedValue": null,
+                "Choices": [{
+                        "ChoiceId": 2111,
+                        "ChoiceName": "Yes",
+                        "Score": 0,
+                        "Checked": false
+                    },
+                    {
+                        "ChoiceId": 2112,
+                        "ChoiceName": "No",
+                        "Score": 0,
+                        "Checked": false
+                    },
+                    {
+                        "ChoiceId": 2113,
+                        "ChoiceName": "Unsure",
+                        "Score": 0,
+                        "Checked": false
+                    }
+                ],
+                "ChildQuestions": [{
+                    "QuestionId": 287,
+                    "QuestionName": "Medications",
+                    "TypeId": 30,
+                    "TypeName": "Textbox",
+                    "SelectedID": 0,
+                    "SelectedValue": null,
+                    "Choices": [{
+                        "ChoiceId": 2114,
+                        "ChoiceName": "Medications",
+                        "Score": 0,
+                        "Checked": false
+                    }]
+                }]
+            }
+        ]
+    },
+    {
+        "PatientAssessmentId": 1,
+        "UserId": 97,
+        "SurveyId": 256,
+        "Surveycode": "Wang Vision",
+        "SurveyName": "Wang Vision",
+        "SurveyDescription": "Wang Vision",
+        "SectionId": 12,
+        "SectionName": "Psychiatric",
+        "Questions": [{
+            "QuestionId": 515,
+            "QuestionName": "Other\r\n",
+            "TypeId": 15,
+            "TypeName": "Radio",
+            "IsParent": true,
+            "IsAlert": false,
+            "AlertId": 0,
+            "SelectedID": 0,
+            "SelectedValue": null,
+            "Choices": [{
+                    "ChoiceId": 2111,
+                    "ChoiceName": "Yes",
+                    "Score": 0,
+                    "Checked": false
+                },
+                {
+                    "ChoiceId": 2112,
+                    "ChoiceName": "No",
+                    "Score": 0,
+                    "Checked": false
+                },
+                {
+                    "ChoiceId": 2113,
+                    "ChoiceName": "Unsure",
+                    "Score": 0,
+                    "Checked": false
+                }
+            ],
+            "ChildQuestions": [{
+                "QuestionId": 288,
+                "QuestionName": "Medications",
+                "TypeId": 30,
+                "TypeName": "Textbox",
+                "SelectedID": 0,
+                "SelectedValue": null,
+                "Choices": [{
+                    "ChoiceId": 2114,
+                    "ChoiceName": "Medications",
+                    "Score": 0,
+                    "Checked": false
+                }]
+            }]
+        }]
+    },
+    {
+        "PatientAssessmentId": 1,
+        "UserId": 97,
+        "SurveyId": 256,
+        "Surveycode": "Wang Vision",
+        "SurveyName": "Wang Vision",
+        "SurveyDescription": "Wang Vision",
+        "SectionId": 13,
+        "SectionName": "Are you pregnant and/or nursing",
+        "Questions": [{
+            "QuestionId": 516,
+            "QuestionName": "Are you pregnant and/or nursing\r\n",
+            "TypeId": 15,
+            "TypeName": "Radio",
+            "IsParent": true,
+            "IsAlert": false,
+            "AlertId": 0,
+            "SelectedID": 0,
+            "SelectedValue": null,
+            "Choices": [{
+                    "ChoiceId": 2111,
+                    "ChoiceName": "Yes",
+                    "Score": 0,
+                    "Checked": false
+                },
+                {
+                    "ChoiceId": 2112,
+                    "ChoiceName": "No",
+                    "Score": 0,
+                    "Checked": false
+                },
+                {
+                    "ChoiceId": 2113,
+                    "ChoiceName": "Unsure",
+                    "Score": 0,
+                    "Checked": false
+                }
+            ],
+            "ChildQuestions": [{
+                "QuestionId": 289,
+                "QuestionName": "Medications",
+                "TypeId": 30,
+                "TypeName": "Textbox",
+                "SelectedID": 0,
+                "SelectedValue": null,
+                "Choices": [{
+                    "ChoiceId": 2114,
+                    "ChoiceName": "Medications",
+                    "Score": 0,
+                    "Checked": false
+                }]
+            }]
+        }]
+    }
+]

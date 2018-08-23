@@ -1,0 +1,317 @@
+<div class="entry">
+  <div class="entry-header">
+      <div class="col-lg-12 float-left header-title headding-banner">
+    <!-- <div class="col-12 header-title">
+          <div class="entry-breadcrumbs pull-left">
+              <i class="fa fa-arrow-left" aria-hidden="true"></i><span  class="link-previous" (click)="back()">Breathe</span>
+          </div> -->
+    <div class="col-lg-9 float-left header-title">
+      <div class="entry-breadcrumbs">
+        <a href="javascript:void(0);" class="link-previous" (click)="back()">
+          <i class="fa fa-angle-left" aria-hidden="true"></i> Breathe</a>
+      </div>
+    </div>
+    <div class="col-lg-3 float-right header-action">
+      <a href="javascript:void(0);" ata-toggle="modal" data-target="#view" (click)="view.show();removeSelection()" class="btn btn-primary width_auto float-right waves-light text-center">  
+        <i class="menu-icon fa fa-plus"></i> Add New</a>
+    </div>
+    </div>
+    <!-- <a href="javascript:void(0);" (click)="templatePopup(content);removeSelection()" class="btn btn-primary width_auto float-right waves-light text-center">Add New</a> -->
+
+    <div mdbModal #view="mdb-modal" class="modal fade" id="view" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content rounded">
+          <div class="modal-header">
+              <h4 class="modal-title w-100 float-left" >New Breathe</h4>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="view.hide()">
+                    <span aria-hidden="true">
+                      <i class="icon-close" aria-hidden="true"></i>
+                    </span>
+                  </button>
+          </div>
+          <div class="modal-body">
+              <form class="form-horizontal" novalidate #AddCustomForm="ngForm" name="form">
+                      <div class="entry-item">
+                        <div class="col-lg-12">
+                          <div class="form-group">
+                            <div class="form-label">
+                              <label class="label-title required">Breathe</label>
+                            </div>
+                            <div class="form-content">
+                              <select class="form-control" name="breath" [(ngModel)]="model.Breath" #breath="ngModel" required>
+                                <option value="" selected disabled>Please select</option>
+                                <option [ngValue]="items.Breath" *ngFor="let items of breathItems let i=index">{{items.Breath}}</option>
+                              </select>
+                              <div *ngIf="breath.errors && (breath.dirty ||breath.touched)"  class="alert alert-danger">
+                                <div [hidden]="!breath.errors.required">
+                                  <span class="error-text-msg">Choose one</span>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <!-- col-12 -->
+                        <div class="col-lg-12">
+                          <div class="form-group">
+                            <div class="form-label">
+                              <label class="label-title required">Description</label>
+                            </div>
+                            <!-- form-label -->
+                            <div class="form-content">
+                              <input class="form-control" type="text" name="Description" [(ngModel)]="model.Description" #Description="ngModel" placeholder=""
+                                required>
+                              <div *ngIf="Description.errors && (Description.dirty || Description.touched)" class="has-danger">
+                                <div [hidden]="!Description.errors.required">
+                                  <span class="error-text-msg">Please enter description </span>
+                                </div>
+                              </div>
+                            </div>
+                            <!-- form-content -->
+                          </div>
+                          <!-- form-group -->
+                        </div>
+                        <div class="col-lg-12">
+                          <div class="form-group">
+                            <div class="form-label">
+                              <label class="label-title required">Time (in secs)</label>
+                            </div>
+                            <!-- form-label -->
+                            <div class="form-content">
+                              <!-- <input class="form-control" type="text" name="Time" [(ngModel)]="model.TimeConsume" #Time="ngModel" placeholder="" required> -->
+                              <select class="form-control" name="Time" [(ngModel)]="model.TimeConsume" #Time="ngModel" required>
+                                <option value="" selected disabled>Please select</option>
+                                <option value="1 sec">1</option>
+                                <option value="2 secs">2</option>
+                                <option value="3 secs">3</option>
+                                <option value="4 secs">4</option>
+                                <!-- <option value="5 secs">5</option> -->
+                                <!-- <option value="10 secs">10</option> -->
+                                <!--<option value="15 secs">15</option>
+                                      <option value="20 secs">20</option>
+                                      <option value="25 secs">25</option>
+                                      <option value="30 secs">30</option> -->
+                              </select>
+                              <div *ngIf="Time.errors && (Time.dirty || Time.touched)" class="has-danger">
+                                <div [hidden]="!Time.errors.required">
+                                  <span class="error-text-msg">Please choose time </span>
+                                </div>
+                              </div>
+                            </div>
+                            <!-- form-content -->
+                          </div>
+                          <!-- form-group -->
+                        </div>
+                      </div>
+                        <div class="col-lg-12">
+                          <div class="form-group">
+                            <div class="form-label">
+                              <label class="label-title required">Status</label>
+                            </div>
+                            <div class="form-content">
+                              <div class="check-btn">
+                                <label>
+                                  <input type="radio" [(ngModel)]="isCheckboxChecked" name="CurrentStatus" (click)="updateStatus('Active')" value="Active" required>
+                                  <span>Active</span>
+                                </label>
+                              </div>
+                              <div class="check-btn">
+                                <label>
+                                  <input type="radio" name="CurrentStatus" [(ngModel)]="isCheckboxChecked"  (click)="updateStatus('Inactive')" value="Inactive" required>
+                                  <span>Inactive</span>
+                                </label>
+                              </div>
+                              <div class="check-btn">
+                                <label>
+                                  <input type="radio" name="CurrentStatus" [(ngModel)]="isCheckboxChecked"  (click)="updateStatus('Complete')" value="Complete" required>
+                                  <span>Complete</span>
+                                </label>
+                              </div>
+                            </div>
+                            <!-- form-content -->
+                          </div>
+                          <!-- form-group -->
+                        </div>
+                        <!-- col-12 -->
+              </form>
+                  <button type="button" class="btn btn-primary width_auto float-right waves-light text-center" data-dismiss="modal" aria-label="Close" (click)="view.hide()">Discard</button>
+                  <button class="btn btn-primary width_auto float-right waves-light text-center" data-dismiss="modal" [disabled]="!AddCustomForm.form.valid ||!isCheckboxChecked" (click)="addBreath(model)">Submit</button>
+            </div>
+        </div>
+      </div>
+    </div>
+    <!-- </div> -->
+  </div>
+  <div class="" *ngIf="totalBreathItems.length>0">
+    <div class="col-lg-12 float-left header-title headding-banner">
+      <div class="col-md-8 float-left">
+        <h5 class="headding-detail">Breathe</h5>
+      </div>
+    </div>
+    <div mdbModal #edit="mdb-modal" class="modal fade" id="editCustom" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content rounded">
+          <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="edit.hide()">
+                  <span aria-hidden="true">
+                    <i class="icon-close" aria-hidden="true"></i>
+                  </span>
+                </button>
+                <h4 class="modal-title w-100 float-left" >Edit Breathe</h4>
+                </div>
+            <div class="modal-body">
+              <form class="form-horizontal" novalidate #EditCustomForm="ngForm" name="form">
+                        <div class="col-lg-12">
+                          <div class="form-group">
+                            <div class="form-label">
+                              <label class="label-title">Breathe</label>
+                            </div>
+                            <div class="form-content">
+                              <select class="form-control" name="breath" [(ngModel)]="EditBreath.Breath">
+                                <!-- <option disabled="" >Please select</option> -->
+                                <option [ngValue]="items.Breath" [selected]="items.Breath==EditBreath.Breath" *ngFor="let items of breathItems let i=index">{{items.Breath}}</option>
+                              </select>
+                            </div>
+                          </div>
+                        </div>
+                        <!-- col-12 -->
+                        <div class="col-lg-12">
+                          <div class="form-group">
+                            <div class="form-label">
+                              <label class="label-title required">Description</label>
+                            </div>
+                            <!-- form-label -->
+                            <div class="form-content">
+                              <input class="form-control" type="text" name="Description" [(ngModel)]="EditBreath.Description" #Description="ngModel" placeholder=""
+                                required>
+                              <div *ngIf="Description.errors && (Description.dirty || Description.touched)" class="has-danger">
+                                <div [hidden]="!Description.errors.required">
+                                  <span class="error-text-msg">Please enter Description </span>
+                                </div>
+                              </div>
+                            </div>
+                            <!-- form-content -->
+                          </div>
+                          <!-- form-group -->
+                        </div>
+                      <div class="col-lg-12">
+                        <div class="form-group">
+                          <div class="form-label">
+                            <label class="label-title required">Time (in secs)</label>
+                          </div>
+                          <!-- form-label -->
+                          <div class="form-content">
+                            <!-- <input class="form-control" type="text" name="Time" [(ngModel)]="EditBreath.TimeConsume" #Time="ngModel" placeholder="" required> -->
+                            <select class="form-control" name="Time" [(ngModel)]="EditBreath.TimeConsume" #Time="ngModel" required>
+                              <option value="" selected disabled>Choose</option>
+                              <option value="1 sec">1</option>
+                              <option value="2 secs">2</option>
+                              <option value="3 secs">3</option>
+                              <option value="4 secs">4</option>
+                              <!-- <option value="5 secs">5</option> -->
+                              <!-- <option value="10 secs">10</option> -->
+                              <!-- <option value="15 secs">15</option>
+                                                          <option value="20 secs">20</option>
+                                                          <option value="25 secs">25</option>
+                                                          <option value="30 secs">30</option> -->
+                            </select>
+                            <div *ngIf="Time.errors && (Time.dirty || Time.touched)" class="has-danger">
+                              <div [hidden]="!Time.errors.required">
+                                <span class="error-text-msg">Please choose time </span>
+                              </div>
+                            </div>
+                          </div>
+                          <!-- form-content -->
+                        </div>
+                        <!-- form-group -->
+                      </div>
+                      <div class="col-lg-12">
+                        <div class="form-group">
+                          <div class="form-label">
+                            <label class="label-title required">Status</label>
+                          </div>
+                          <!-- collpse -->
+                        </div>
+                        <!-- form-group -->
+                      </div>
+                        <div class="col-lg-12">
+                          <div class="form-content">
+                            <div class="check-btn">
+                              <label>
+                                <input type="radio" value="Active" [checked]="EditBreath.Status=='Active'" name="editCurrentStatus" (click)="updateStatus('Active')"
+                                  required>
+                                <span>Active</span>
+                              </label>
+                            </div>
+                            <div class="check-btn">
+                              <label>
+                                <input type="radio" value="Inactive" [checked]="EditBreath.Status ==='Inactive'" name="editCurrentStatus" (click)="updateStatus('Inactive')"
+                                  required>
+                                <span>Inactive</span>
+                              </label>
+                            </div>
+                            <div class="check-btn">
+                              <label>
+                                <input type="radio" value="Complete" [checked]="EditBreath.Status ==='Complete'" name="editCurrentStatus" (click)="updateStatus('Complete')"
+                                  required>
+                                <span>Complete</span>
+                              </label>
+                            </div>
+                          </div>
+                        </div>
+                    <button type="button" class="btn btn-primary width_auto float-right waves-light text-center" data-dismiss="modal" aria-label="Close" (click)="edit.hide()">Discard</button>
+                    <button class="btn btn-primary width_auto float-right waves-light text-center" data-dismiss="modal" [disabled]="!EditCustomForm.form.valid" (click)="EditSave(EditBreath);">Submit</button>
+                 
+              </form>
+            </div>
+          <!-- </div> -->
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-12 float-left header-title headding-banner">
+      <div class="col-md-8">
+          <table class="theme-table table">
+          <thead>
+          </thead>
+          <tbody>
+            <tr *ngFor="let breath of totalBreathItems let i=index">
+              <td>{{breath.Breath}}</td>
+              <td>
+                <!-- <button class="btn btn-nobtn pull-right" (click)="removeBreath(i)" type="button">
+                  <i class="fa fa-trash" data-toggle="tooltip" style="cursor:pointer;color:#b23a3a;" title="delete"></i>
+                </button> -->
+                <a href="javascript:;;" class="remove float-right" data-toggle="modal" (click)="removeBreath(i)">
+                    <i class="icon-cancel float-left" aria-hidden="true"></i>
+                    <span>delete</span>
+                    </a>
+                <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="onClickEdit(breath,i);edit.show()" data-target="#editCustom"
+                  data-toggle="modal">
+
+                  <i class="fa fa-pencil-square-o" data-toggle="tooltip" style="cursor:pointer;color: #72cf72;" title="Edit"></i>
+                </button> -->
+                <a class="edit float-right" (click)="onClickEdit(breath,i);edit.show()" data-toggle="modal">
+                    <i aria-hidden="true" class="icon-edit float-left"></i>
+                    <span>Edit</span>
+                  </a>
+                <!-- </td>
+                    <td> -->
+
+              </td>
+            </tr>
+          </tbody>
+          
+        </table>
+        <div class="entry-action" style="margin-left: 45%;float: left;">
+          <button class="btn btn-primary addbtn link-more" href="javascript:void(0)" (click)="allBreathPost();back()" [disabled]="isSubmitted">Submit</button>
+        </div>
+        <!-- <div class="entry-content">
+            <div class="entry-action">
+          
+            </div>
+           
+          </div> -->
+      </div>
+    </div>
+  </div>
+  <!-- </div>
+  </div> -->

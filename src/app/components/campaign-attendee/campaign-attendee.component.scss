@@ -1,0 +1,67 @@
+// component css goes here
+.panel-heading {
+    margin-top: 7%;
+}
+
+.card {
+    border-radius: 5px 5px 0 0;
+    margin: 3em 10px;
+    padding: 0em 0 2em 0;
+    width: 100%;
+    margin-left: 56%;
+}
+
+.kiosk-form .form-control {
+    border: 1px solid #d3d3d3;
+    background: #f5f8f9;
+    border-radius: 0.2em !important;
+}
+
+.form-group label {
+    font-size: 0.9em;
+    display: block;
+    text-align: left;
+    font-weight: 600;
+}
+
+.capitalize {
+    text-transform: capitalize
+}
+
+.succes {
+    font-size: 18px;
+    color: #3c763d;
+    float: left;
+    margin-top: 40px;
+    width: 100%;
+}
+
+.attendees {
+    -webkit-box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.5);
+    -moz-box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.5);
+    box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.5);
+    padding: 10px;
+    width: 350px;
+    font-size: 18px;
+    margin: 20px auto;
+    display: block;
+    // margin: 0 auto;
+    display: inline-table;
+}
+
+.attendees button {
+    width: 25%;
+    text-align: center;
+    margin: 10px;
+}
+// .modal-body {
+//     p {
+//         text-align: center;
+//         font-size: 25px;
+//         font-weight: 600;
+//     }
+// }
+.link-text {
+    color: #03a9f3;
+    font-size: 16px;
+}

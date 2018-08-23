@@ -1,0 +1,10 @@
+{
+    "Success": true,
+    "data": [{
+            "appintmenttype": "firsttime"
+        }, { "appintmenttype": "followup" }, { "appintmenttype": "opthomology" }
+ 
+    ]
+ 
+ 
+ }

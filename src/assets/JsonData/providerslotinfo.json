@@ -1,0 +1,48 @@
+[{
+        "profile": {
+            "Id": 121,
+            "Email": "charan1@genems.com",
+            "Name": "Venkat D",
+            "Gender": null,
+            "ServiceType": "Opthamologist",
+            "Description": "\"The receptionists, nurses, and doctor were all well organized and made a great a... \"\n\nMing Wang Clinic\n1801 West End Ave, Suite 1150 Nashville, TN 37203",
+            "ImageUrl": "",
+            "LocationUrl": "",
+            "Settings": {
+                "MorningFrom": "09:00",
+                "MorningTo": "12:20",
+                "AfternoonFrom": "13:00",
+                "AfternoonTo": "15:00",
+                "EveningFrom": "",
+                "EveningTo": "",
+                "interval": 30
+            }
+        },
+
+        "emptySlots": []
+    },
+    {
+
+        "profile": {
+            "Id": 259,
+            "Email": "charan.org@yopmail.com",
+            "Name": "Charan",
+            "Gender": null,
+            "ServiceType": "phychologist",
+            "Description": "",
+            "ImageUrl": "",
+            "LocationUrl": "",
+            "Settings": {
+                "MorningFrom": "09:00",
+                "MorningTo": "12:20",
+                "AfternoonFrom": "13:00",
+                "AfternoonTo": "14:00",
+                "EveningFrom": "16:00",
+                "EveningTo": "18:00",
+                "interval": 15
+            }
+        },
+        "emptySlots": []
+
+    }
+]

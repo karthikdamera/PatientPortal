@@ -1,0 +1,53 @@
+<div class="w-100 page-titel float-left">
+    <h4 class="float-left titel">
+        <a [routerLink]="['/admin/campaign']" RouterLinkActive="Active" class="fa fa-angle-left mr-3 float-left icon_back"></a>Attendees List</h4>
+    <button type="button" class="btn btn-primary no_margin width_auto float-right waves-light text-center" (click)="addAttendee()" mdbWavesEffect>
+        Add Attendee
+    </button>
+    <div class="input-group col-lg-4 no_padding mr-3  search float-right">
+        <span class="icon-search"></span>
+        <input type="text" placeholder="Search By Name/Phone/Email" name="barcode" [(ngModel)]="userFilter" class="form-control no_margin w-100 float-left no_margin">
+    </div>
+</div>
+
+<div class="w-100 float-left page-container attendees">
+    <p>Number Of Attendees : {{attendieData.length}}</p>
+    <div class="w-100 float-left custome-table" *ngIf="attendieData.length>0">
+        <table class="theme-table table ">
+            <thead>
+                <tr>
+                        <th (click)="setOrder('FirstName')" class="curor-pointer">First Name
+                                <i class="fa" [ngClass]="{'fa-caret-down' : !reverse,'fa-caret-up' : reverse }" *ngIf="order=='FirstName'" aria-hidden="true" ></i>
+                               </th>
+                               <th (click)="setOrder('LastName')" class="curor-pointer">Last Name
+                                    <i class="fa" [ngClass]="{'fa-caret-down' : !reverse,'fa-caret-up' : reverse }" *ngIf="order=='LastName'" aria-hidden="true" ></i>
+                                </th>
+                                <th (click)="setOrder('Email')" class="curor-pointer">Email
+                                        <i class="fa" [ngClass]="{'fa-caret-down' : !reverse,'fa-caret-up' : reverse }" *ngIf="order=='Email'" aria-hidden="true" ></i>
+                                    </th>
+                    <!-- <th>DOB</th> -->
+                    <th (click)="setOrder('ContactNumber')" class="curor-pointer">Contact Number
+                            <i class="fa" [ngClass]="{'fa-caret-down' : !reverse,'fa-caret-up' : reverse }" *ngIf="order=='ContactNumber'" aria-hidden="true" ></i>
+                        </th>
+                        <th (click)="setOrder('Message')" class="curor-pointer">Message
+                                <i class="fa" [ngClass]="{'fa-caret-down' : !reverse,'fa-caret-up' : reverse }" *ngIf="order=='Message'" aria-hidden="true" ></i>
+                            </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let data of attendieData | orderBy: order:reverse:'case-insensitive' | AttendiesPipe : userFilter | paginate: {itemsPerPage: 10, currentPage: page};">
+                    <!-- <td>{{data.CampaignId}}</td> -->
+                    <td data-column="First Name">{{data.FirstName}}</td>
+                    <td data-column="Last Name">{{data.LastName}}</td>
+                    <td data-column="Email">{{data.Email}}</td>
+                    <!-- <td data-column="DOB">{{data.DOB | slice:0:10}}</td> -->
+                    <td data-column="ContactNumber">{{data.ContactNumber}}</td>
+                    <td data-column="Problem">{{data.Message}}</td>
+                </tr>
+
+            </tbody>
+        </table>
+        <pagination-controls (pageChange)="page = $event">
+        </pagination-controls>
+    </div>
+</div>

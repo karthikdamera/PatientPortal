@@ -1,0 +1,44 @@
+<!--component html goes here -->
+<header>
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark">
+        <a href="javascript:void(0);" style="padding: 0px 10px;width: 195px;" class="navbar-brand">
+            <div class="brand-text hidden-sm-down">
+                <span> </span>
+                <strong class="text-primary">
+                  <img src="/assets/wangy.png" class="img-logo" />
+              </strong>
+            </div>
+        </a>
+        <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+      </button>
+
+        <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+
+            <ul class="nav navbar-nav navbar-right ml-auto">
+                <li class="nav-item nav-link">
+                    <a routerLink="../kiosk/home" class="trigger-btn" data-toggle="modal">Home</a>
+                </li>
+                <li class="nav-item nav-link">
+                    <a routerLink="../kiosk/home" class="trigger-btn" data-toggle="modal">Help</a>
+                </li>
+
+                <!-- <li class="nav-item dropdown" *ngIf="authToken != null">
+                     <ul class="dropdown-menu">
+                      <li>
+                          <a routerLink="../kioskold" class="dropdown-item">
+                              <i class="fa fa-user-o"></i> Home</a>
+                      </li>
+                      <li>
+                          <a routerLink="../kioskold" class="dropdown-item">
+                              <i class="fa fa-calendar-o"></i> Help</a>
+                      </li> 
+                  </ul>
+              </li> -->
+            </ul>
+            <!--  <app-personlogin></app-personlogin>-->
+        </div>
+
+    </nav>
+
+</header>

@@ -1,0 +1,122 @@
+<div class="w-100 float-left">
+  <div class="float-left">
+    <p class="input-title w-100 float-left">Organisation Logo</p>
+    <div class="profile_pic avatharbg mt-1 text-center" *ngIf="file_srcs?.length ==''">
+      <img   *ngIf="orgicon !=''" src="{{orgicon}}" alt="">
+      <img  *ngIf="orgicon ==''" src="" alt="">
+      <div class="overlay placeholder">
+        <a id="upload_button">
+          <label>
+            <i class="fa fa-camera"></i>
+            <input type="file" ngf-select ng-model="new_files" ng-change="fs.uploadFiles(new_files)" value="Upload" (change)="fileChange(input)"
+              class="upload" #input>
+            <strong>Upload</strong>
+          </label>
+        </a>
+      </div>
+    </div>
+    <div class="profile_pic avatharbg" *ngFor="let file_src of file_srcs; let i = index">
+      <img class="person fa fa-user-circle img-circle" height="100" width="100" [attr.src]='file_src' alt="" />
+      <div class="overlay">
+        <a id="upload_button">
+          <label>
+            <i class="fa fa-camera"></i>
+
+            <input type="file" ngf-select ng-model="new_files" ng-change="fs.uploadFiles(new_files)" value="Upload" (change)="fileChange(input)"
+              class="upload" #input>
+            <strong>Upload</strong>
+          </label>
+        </a>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-9 no_padding float-left organization">
+    <div [formGroup]="orgForm">
+      <div class="row">
+
+        <div class="input-group col-lg-4 float-left">
+          <span class="input-title w-100 float-left">Organisation Name
+            <!-- <span class="color-red">*</span> -->
+          </span>
+          <input type="text" class="form-control capitalize " formControlName="OrgName" maxlength="50" [(ngModel)]="orgmodel.OrgName">
+          <app-validation [control]="orgForm.controls.OrgName"></app-validation>
+
+        </div>
+        <div class="input-group col-lg-4 float-left">
+          <span class="input-title w-100 float-left">Phone No
+            <!-- <span class="color-red">*</span> -->
+          </span>
+          <input type="text" class="form-control"  formControlName="OrgPhoneNo" [(ngModel)]="orgmodel.OrgPhoneNo" [textMask]="getNHSNumberMask()" (blur)="unmasckphone($event)">
+          <app-validation [control]="orgForm.controls.OrgPhoneNo"></app-validation>
+        </div>
+
+        <div class="input-group col-lg-4 float-left">
+          <span class="input-title w-100 float-left">Contact Email
+            <span class="color-red">*</span>
+          </span>
+          <input type="text" class="form-control " formControlName="Email" [(ngModel)]="orgmodel.OrgEmail" maxlength="50">
+          <app-validation [control]="orgForm.controls.Email"></app-validation>
+        </div>
+        <div class="input-group col-lg-4 float-left">
+          <span class="input-title w-100 float-left">Fax
+            <!-- <span class="color-red">*</span> -->
+          </span>
+          <input type="text" class="form-control " formControlName="OrgFax" [(ngModel)]="orgmodel.OrgFax" maxlength="10">
+          <app-validation [control]="orgForm.controls.OrgFax"></app-validation>
+        </div>
+
+        <div class="input-group col-lg-4 float-left">
+          <span class="input-title w-100 float-left"> Google Maps Location Url
+            <!-- <span class="color-red">*</span> -->
+          </span>
+          <input type="text" class="form-control " formControlName="OrgLocationurl" [(ngModel)]="orgmodel.OrgLocationurl">
+          <app-validation [control]="orgForm.controls.OrgLocationurl"></app-validation>
+        </div>
+
+        <div class="input-group col-lg-4 float-left">
+          <span class="input-title w-100 float-left"> Default Location
+            <!-- <span class="color-red">*</span> -->
+          </span>
+
+         
+            <select class=" form-control w-100 float-left" formControlName="DefaultLocationId" [(ngModel)]="orgmodel.DefaultLocationId">
+              <option [ngValue]="0" disabled selected>-- Select Location--</option>
+              <option *ngFor="let item of filteredList2" [ngValue]="item.Id" [selected]="item.Id==orgmodel.DefaultLocationId">{{item.LocationName}}</option>
+              <!-- <option>CVS</option>
+                            <option>Express Scripts</option>
+                            <option>Pavilions</option>
+                            <option>Ralphs</option>
+                            <option>Target</option> -->
+
+            </select>
+
+        
+
+
+
+        </div>
+
+        <div class="input-group col-lg-4 float-left">
+          <span class="input-title w-100 float-left">Default Service Type:
+            <!-- <span class="color-red">*</span> -->
+          </span>
+
+
+       
+            <select class=" form-control w-100 float-left" formControlName="DefaultAppointmentTypeId" [(ngModel)]="orgmodel.DefaultAppointmentTypeId">
+              <option [ngValue]="0" disabled selected>-- Select AppoinmnetType--</option>
+              <option *ngFor="let item of filteredList1" [ngValue]="item.Id" [selected]="item.Id==orgmodel.DefaultAppointmentTypeId">{{item.Name}}</option>
+
+            </select>
+
+        
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+<div class="w-100 float-left text-center">
+
+  <button class="btn btn-primary waves-light" mdbWavesEffect (click)="updateorg()">Update</button>
+</div>

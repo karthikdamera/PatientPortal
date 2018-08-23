@@ -1,0 +1,261 @@
+<div class="w-100 page-titel float-left">
+  <h4 class="float-left titel">{{msgtype}}</h4>
+  <button type="button" class="btn btn-primary no_margin width_auto float-right waves-light text-center" data-toggle="modal"
+    data-target="#addRequests" (click)="addRequests.show();toClearModel('open');" mdbWavesEffect>
+    ADD Billing Question
+  </button>
+  <div class="input-group col-lg-4 no_padding mr-3  search float-right">
+      <span class="icon-search"></span>
+  <input type="text" placeholder="Search By Phone/Email" name="barcode" [(ngModel)]="userFilter" class="form-control w-100 float-left no_margin">
+</div>
+</div>
+<div class="w-100 float-left page-container" *ngIf="requestsList.length>0">
+  <table class="theme-table table">
+    <thead>
+      <tr>
+        <th><a (click)="setOrder('Details')">Billing Issue Description
+            <i class="fa" [ngClass]="{'fa-caret-down' : !reverse,'fa-caret-up' : reverse }" *ngIf="order=='Details'" aria-hidden="true"></i>
+          </a></th>
+        
+        <th><a (click)="setOrder('PhoneNo')">Phone Number
+            <i class="fa" [ngClass]="{'fa-caret-down' : !reverse,'fa-caret-up' : reverse }" *ngIf="order=='PhoneNo'" aria-hidden="true"></i>
+          </a></th>
+        <th>
+            <a (click)="setOrder('Email')">Email
+                <i class="fa" [ngClass]="{'fa-caret-down' : !reverse,'fa-caret-up' : reverse }" *ngIf="order=='Email'" aria-hidden="true"></i>
+              </a></th>
+        <th><a (click)="setOrder('BillClaimNo')">Claim Number
+            <i class="fa" [ngClass]="{'fa-caret-down' : !reverse,'fa-caret-up' : reverse }" *ngIf="order=='BillClaimNo'" aria-hidden="true"></i>
+          </a></th>
+        <th><a (click)="setOrder('BillDateOfService')">Date of service
+            <i class="fa" [ngClass]="{'fa-caret-down' : !reverse,'fa-caret-up' : reverse }" *ngIf="order=='BillDateOfService'" aria-hidden="true"></i>
+          </a></th>
+        <th><a (click)="setOrder('CreatedOn')">CreatedOn
+            <i class="fa" [ngClass]="{'fa-caret-down' : !reverse,'fa-caret-up' : reverse }" *ngIf="order=='CreatedOn'" aria-hidden="true"></i>
+          </a></th>
+        <th><a (click)="setOrder('Status')">Status
+            <i class="fa" [ngClass]="{'fa-caret-down' : !reverse,'fa-caret-up' : reverse }" *ngIf="order=='Status'" aria-hidden="true"></i>
+          </a></th>
+        <th>Manage</th>
+
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of requestsList  | RequestFilterPipe : userFilter | orderBy: order:reverse:'case-insensitive'| paginate: {itemsPerPage: 10, currentPage: page,  id: 'billingpage'};let i=index">
+        <td data-column="Billing Issue Description">{{data.Details}}</td>
+        
+        <td data-column="PhoneNo">{{data.PhoneNo}}</td>
+        <td data-column="Email">{{data.Email}}</td>
+        <td data-column="Claim no">{{data.BillClaimNo}}</td>
+        <td data-column="Date of service">{{data.BillDateOfService}}</td>
+        <td data-column="CreatedOn">{{data.CreatedOn}}</td>
+        <td data-column="Status">
+          <span *ngIf="(data.ReadStatus && data.ReplyMessage!= null)">Read</span>
+          <span *ngIf="(!data.ReadStatus && data.ReplyMessage!= null)">UnRead</span>
+          <span *ngIf="data.ReplyMessage === null">Pending</span>
+        </td>
+        <td data-column="Manage">
+          <a href="javascript:;;" class="edit float-left" (click)="onEdit(data);edit.show();">
+            <i class="icon-edit float-left" aria-hidden="true"></i>
+            <span>Edit</span>
+          </a>
+          <a href="javascript:;;" class="remove float-left" (click)="onDelete(data); deletebillingquestion.show()">
+            <i class="icon-remove float-left" aria-hidden="true"></i>
+            <span>Remove</span>
+          </a>
+          <a href="javascript:;;" class="message float-left" *ngIf="(data.ReplyMessage!= null && data.ReplyMessage.length>0)" (click)="Message(data,data.Id);message.show()">
+            <i class="icon-twilio float-left" aria-hidden="true"></i>
+            <span>Response</span>
+          </a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <pagination-controls (pageChange)="page = $event" id="billingpage">
+  </pagination-controls>
+</div>
+<div mdbModal #deletebillingquestion="mdb-modal" class="modal fade" id="deletebillingquestion" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content rounded">
+      <div class="modal-header">
+          <h4>Delete Billing Questions</h4>
+          <p hidden>{{personrequestmodel}}</p>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="deletebillingquestion.hide()">
+            <span aria-hidden="true">
+              <i class="icon-close" aria-hidden="true"></i>
+            </span>
+         </button>
+      </div>
+      <div class="modal-body">
+      <p class=" text-center" id="myModalLabel">Do You want to delete?</p>
+      <button class="btn btn-danger float-right waves-light" (click)="deletebillingquestion.hide()">No</button>
+        <button class="btn btn-primary width_auto float-right waves-light" (click)=" deleteRequest(personrequestmodel)">Yes</button>
+    </div>
+    </div>
+  </div>
+</div>
+<div class="page-container add-record w-100 text-center mt-5 float-left" *ngIf="requestsList.length<=0">
+  <i class="w-100 icon-add-file icon float-left" aria-hidden="true"></i>
+  <p class="w-100 float-left">Add New Record</p>
+</div>
+<div mdbModal #addRequests="mdb-modal" class="modal fade" id="addRequests" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+  aria-hidden="true" [config]="{backdrop: false, ignoreBackdropClick: true, keyboard:false}">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content rounded">
+      <div class="modal-header">
+        <h4 class="modal-title w-100" id="myModalLabel"> Add {{msgtype}}</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="addRequests.hide();toClearModel('close');">
+          <span aria-hidden="true">
+            <i class="icon-close" aria-hidden="true"></i>
+          </span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="personrequestForm" (submit)="addRequestSave()">
+          <div class="row">
+            <div class="input-group col-lg-6 float-left">
+              <span class="input-title w-100 float-left">Billing Issue Description
+                <span class="color-red">*</span>
+              </span>
+              <textarea class="form-control input-md" placeholder="Billing Issue" formControlName="Details" [(ngModel)]="personrequestmodel.Details"
+                maxlength="100"></textarea>
+              <app-validation [control]="personrequestForm.controls.Details">
+              </app-validation>
+            </div>
+            <div class="input-group col-lg-6 float-left">
+              <span class="input-title w-100 float-left">Phone
+                <span class="color-red">*</span>
+              </span>
+              <input class="form-control" [textMask]="getNHSNumberMask()" formControlName="PhoneNo" [(ngModel)]="personrequestmodel.PhoneNo"
+                (blur)="unmasckphone($event)"   [ngClass]="{'error' : phonests}"/>
+              <app-validation [control]="personrequestForm.controls.PhoneNo">
+              </app-validation>
+              <!-- <div *ngIf="phonests" class="errormsg"> Number Should Be 10 Digits</div> -->
+            </div>
+          </div>
+          <div class="row ">
+            <div class="input-group col-lg-6 float-left">
+              <span class="input-title w-100 float-left">Email
+                <span class="color-red">*</span>
+              </span>
+              <input class="form-control input-md" placeholder="Email" formControlName="Email" [(ngModel)]="personrequestmodel.Email" maxlength="50"
+              />
+              <app-validation [control]="personrequestForm.controls.Email">
+              </app-validation>
+            </div>
+            <div class="input-group col-lg-6 float-left">
+              <span class="input-title w-100 float-left">Claim Number
+              </span>
+              <input class="form-control" placeholder="Claim Number" formControlName="BillClaimNo" [(ngModel)]="personrequestmodel.BillClaimNo"
+                maxlength="10" />
+              <app-validation [control]="personrequestForm.controls.BillClaimNo">
+              </app-validation>
+            </div>
+          </div>
+          <div class="row date ">
+            <div class="input-group col-lg-6   float-left">
+              <span class="input-title w-100 float-left">Date of service</span>
+              <i class="icon-calendar waves-effect " aria-hidden="true" (click)="BillDateOfService.toggleCalendar('BillDateOfService')"></i>
+              <input class="form-control datewidth w-100 float-left" formControlName="BillDateOfService" (keyup)="dateMask($event)" style="float:none;margin:0;"
+                placeholder="MM/DD/YYYY" ngx-mydatepicker name="BillDateOfService" [(ngModel)]="personrequestmodel.BillDateOfService"
+                [options]="requestDate" #BillDateOfService="ngx-mydatepicker" (inputFieldChanged)="onInputFieldDobChanged($event)"
+                (dateChanged)="onDateChanged($event)" maxlength="10" />
+              <div *ngIf="enterdatests === true && validdate === false">
+                <div style="color:red"> Invalid Date.</div>
+              </div>
+            </div>
+          </div>
+          <button class="btn btn-primary btn-sm waves-light float-right" [disabled]="!personrequestForm.valid || disableButton">SUBMIT</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<div mdbModal #edit="mdb-modal" class="modal fade" id="basicExample" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+  aria-hidden="true" [config]="{backdrop: false, ignoreBackdropClick: true, keyboard:false}">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content rounded">
+      <div class="modal-header">
+        <h4 class="modal-title w-100" id="myModalLabel">Edit {{msgtype}}</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="edit.hide();toClearModel('close');">
+          <span aria-hidden="true">
+            <i class="icon-close" aria-hidden="true"></i>
+          </span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="personrequestForm" (submit)="editRequest()">
+          <div class="row">
+            <div class="input-group col-lg-6 float-left">
+              <span class="input-title w-100 float-left">Billing Issue Description
+                <span class="color-red">*</span>
+              </span>
+              <textarea class="form-control input-md" placeholder="Billing Issue" formControlName="Details" ng-bind="personrequestmodel.Details"
+                value="{{personrequestmodel.Details}}" maxlength="100"></textarea>
+              <app-validation [control]="personrequestForm.controls.Details">
+              </app-validation>
+            </div>
+            <div class="input-group col-lg-6 float-left">
+              <span class="input-title w-100 float-left">Phone
+                <span class="color-red">*</span>
+              </span>
+              <input class="form-control" [textMask]="getNHSNumberMask()" formControlName="PhoneNo" ng-bind="personrequestmodel.PhoneNo"
+                value="{{personrequestmodel.PhoneNo}}" (blur)="unmasckphone($event)"  [ngClass]="{'error' : phonests}" />
+              <app-validation [control]="personrequestForm.controls.PhoneNo">
+              </app-validation>
+              <!-- <div *ngIf="phonests" class="errormsg"> Number Should Be 10 Digits</div> -->
+            </div>
+          </div>
+          <div class="row ">
+            <div class="input-group col-lg-6 float-left">
+              <span class="input-title w-100 float-left">Email
+                <span class="color-red">*</span>
+              </span>
+              <input class="form-control input-md" placeholder="Email" formControlName="Email" ng-bind="personrequestmodel.Email" value="{{personrequestmodel.Email}}"
+                maxlength="50" />
+              <app-validation [control]="personrequestForm.controls.Email">
+              </app-validation>
+            </div>
+            <div class="input-group col-lg-6 float-left">
+              <span class="input-title w-100 float-left">Claim Number
+              </span>
+              <input class="form-control" placeholder="Claim Number" formControlName="BillClaimNo" ng-bind="personrequestmodel.BillClaimNo"
+                value="{{personrequestmodel.BillClaimNo}}" maxlength="10" />
+              <app-validation [control]="personrequestForm.controls.BillClaimNo">
+              </app-validation>
+            </div>
+          </div>
+          <div class="row date ">
+            <div class="input-group col-lg-6  float-left">
+              <span class="input-title w-100 float-left">Date of service
+              </span>
+              <i class="icon-calendar waves-effect " aria-hidden="true" (click)="RequestedOnEdit.toggleCalendar('BillDateOfService')"></i>
+              <input class="form-control datewidth" formControlName="BillDateOfService" (keyup)="dateMask($event)" style="float:none;margin:0;"
+                placeholder="MM/DD/YYYY" ngx-mydatepicker name="BillDateOfService" ng-bind="personrequestmodel.BillDateOfService"
+                value="{{personrequestmodel.BillDateOfService}}" [options]="requestDate" #RequestedOnEdit="ngx-mydatepicker"
+                (inputFieldChanged)="onInputFieldDobChanged($event)" (dateChanged)="onDateChanged($event)" maxlength="10" />
+            </div>
+          </div>
+          <button class="btn btn-primary btn-sm waves-light float-right" [disabled]="!personrequestForm.valid || disableButton">SUBMIT</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<div mdbModal #message="mdb-modal" class="modal fade" id="message" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content rounded">
+      <div class="modal-header">
+        <h4 class="modal-title w-100" id="myModalLabel">Reply Message</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="message.hide();toClearModel('close')">
+          <span aria-hidden="true">
+            <i class="icon-close" aria-hidden="true"></i>
+          </span>
+        </button>
+      </div>
+      <div class="modal-body text-center">{{msg}}</div>
+    </div>
+  </div>
+</div>

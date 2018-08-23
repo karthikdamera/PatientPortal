@@ -1,0 +1,60 @@
+<div class="w-100 page-titel float-left">
+  <h4 class="float-left titel">Patient List</h4>
+  <div class="input-group col-lg-4 no_padding  search float-right">
+      <span class="icon-search"></span>
+  <input type="text" placeholder="Enter Email/PhoneNo/Name" name="barcode" [(ngModel)]="userFilter" class="no_margin form-control w-100 float-left">
+</div>
+</div>
+<div class="page-container add-record w-100 text-center mt-5 float-left" *ngIf="ListData.length<=0">
+  <i class="w-100 icon icon-warning2 float-left" aria-hidden="true"></i>
+  <p class="w-100 float-left">No Records to Display</p>
+</div>
+<div class="w-100 float-left page-container" *ngIf="ListData.length>0">
+  <table class="theme-table table">
+    <thead>
+      <tr>
+          <th (click)="setOrder('FirstName')" class="curor-pointer">First Name
+              <i class="fa" [ngClass]="{'fa-caret-down' : !reverse,'fa-caret-up' : reverse }" *ngIf="order=='FirstName'" aria-hidden="true" ></i>
+             </th>
+             <th (click)="setOrder('Gender')" class="curor-pointer">Gender
+                <i class="fa" [ngClass]="{'fa-caret-down' : !reverse,'fa-caret-up' : reverse }" *ngIf="order=='Gender'" aria-hidden="true" ></i>
+               </th>
+               <th (click)="setOrder('Email')" class="curor-pointer">Email
+                  <i class="fa" [ngClass]="{'fa-caret-down' : !reverse,'fa-caret-up' : reverse }" *ngIf="order=='Email'" aria-hidden="true" ></i>
+                 </th>
+                 <th (click)="setOrder('PhoneNo')" class="curor-pointer">Contact Number
+                    <i class="fa" [ngClass]="{'fa-caret-down' : !reverse,'fa-caret-up' : reverse }" *ngIf="order=='PhoneNo'" aria-hidden="true" ></i>
+                   </th>
+                   <th>Address</th>
+                    <th>State</th>
+                    <th>City</th>
+                    <th>Zipcode</th>
+        <!-- <th>Edit</th> -->
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let ListInfo of ListData | orderBy: order:reverse:'case-insensitive'  | PatientListPipe : userFilter | paginate: {itemsPerPage: 10, currentPage: page, id: 'Listpage'};">
+        <td data-column="First Name">{{ListInfo.FirstName}}</td>
+        <td data-column="Gender">{{ListInfo.Gender}}</td>
+        <td data-column="Email">{{ListInfo.Email}}</td>
+        <td data-column="Phone Number">{{ListInfo.PhoneNo}}</td>
+        <td data-column="Address">{{ListInfo.Address}}</td>
+        <td data-column="State">{{ListInfo.State}}</td>
+        <td data-column="City">{{ListInfo.City}}</td>
+        <td data-column="Zipcode">{{ListInfo.Zipcode}}</td>
+
+
+        <td data-column="Action">
+            <a href="javascript:;;" class="edit float-left" (click)="PatientCard(ListInfo.Id)" >
+                <i aria-hidden="true" class="icon-patient-card float-left"></i>
+                <span >Patient Card</span>
+                
+              </a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <pagination-controls (pageChange)="page = $event" id="Listpage">
+  </pagination-controls>
+</div>

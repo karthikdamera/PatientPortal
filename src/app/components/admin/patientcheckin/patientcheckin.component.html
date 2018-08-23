@@ -1,0 +1,58 @@
+<div class="w-100 page-titel float-left">
+    <h4 class="float-left titel">Today Appointments</h4>
+    <div class="input-group col-lg-4 no_padding search float-right" *ngIf="patientDetails.length>0">
+        <span class="icon-search"></span>
+        <input type="text" placeholder="Enter Name" name="barcode" [(ngModel)]="userFilter" class="form-control no_margin w-100 float-left">
+    </div>
+</div>
+<!-- <div *ngIf="patientDetails.length<=0">
+    No Data Found
+    </div> -->
+<div class="w-100 float-left page-container" *ngIf="patientDetails.length>0">
+    <div class="row text-center">
+        <div class="col-lg-3 float-left" *ngFor="let patientdata of patientDetails | PatientCheckinPipe : userFilter ">
+            <div class="today_appoin_tile">
+                <div class=" w-100 float-left">
+                    <span class="profile-img" [style.background-color]="patientdata.colorcode">{{patientdata.firstname}}{{patientdata.lastname}}</span>
+                    <h5 data-toggle="tooltip" title={{patientdata.PatientName}}>
+                        {{patientdata.PatientName}}</h5>
+                    <!-- <p class=" w-100 float-left ">Email: {{patientdata.Email}}</p>
+                            <p class=" w-100 float-left ">PhoneNo: {{patientdata.PhoneNo}}</p> -->
+                    <p class=" w-100 float-left ">Time: {{patientdata.FromTime}}</p>
+                    <p class="float-left w-100">Provider: {{patientdata.ProviderName}}</p>
+                    <a href="javascript:void(0)" class=" btn-primary blue-btn float-right waves-light text-center " data-toggle="modal" data-target="#PatientCheckIn" (click)="patientcheckin(patientdata);demoBasic.show()" *ngIf="patientdata.CheckIn == 'FALSE' && patientdata.BookingStatus != 'Cancelled'">Check-in</a>
+                    <a class=" blue-btn btn-danger  float-right  waves-light text-center disabled appCancelled" *ngIf="patientdata.BookingStatus == 'Cancelled'">Cancelled</a>
+                    <a class=" btn-gray blue-btn float-right  waves-light text-center disabled" *ngIf="patientdata.CheckIn == 'TRUE' && patientdata.BookingStatus != 'Cancelled'">Checked</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- *ngIf="patientDetails.length<=0" -->
+<div class="page-container add-record w-100 text-center mt-5 float-left" *ngIf="(patientDetails.length<=0 )||(patientDetails | PatientCheckinPipe: userFilter).length === 0">
+    <i class="w-100 icon-warning2 icon float-left" aria-hidden="true"></i>
+    <p class="w-100 float-left">No Records to Display</p>
+</div>
+<!-- <div  *ngIf="(patientDetails | filterBy: userFilter).length === 0">
+        <p class="text-center">There is no data to display</p>
+      </div> -->
+<div mdbModal #demoBasic="mdb-modal" class="modal fade" id="PatientCheckIn" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title w-100" id="myModalLabel">Checkin</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="demoBasic.hide()">
+                        <span aria-hidden="true">
+                            <i class="icon-close" aria-hidden="true"></i>
+                        </span>
+                    </button>
+            </div>
+            <div class="modal-body">
+                <!-- <p>Do you want to Checkin this appointment with-{{name}}</p> -->
+                <p class="text-center">Do you want to Checkin this appointment?</p>
+                <button class="btn btn-danger float-right waves-light text-center" data-dismiss="modal" (click)="Cancelcheckin()">No</button>
+                <button class="btn btn-primary float-right waves-light text-center" data-dismiss="modal" (click)="checkin()">Yes</button>
+            </div>
+        </div>
+    </div>
+</div>

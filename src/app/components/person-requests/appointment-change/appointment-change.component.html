@@ -1,0 +1,173 @@
+<mdb-navbar SideClass="navbar navbar-expand-lg navbar-dark landing-nav sticky-top">
+    <!-- Navbar brand -->
+    <logo>
+        <a class="navbar-brand" href="javascript:;;">
+            <img src="assets/images/logo/logo.png" alt="">
+        </a>
+    </logo>
+</mdb-navbar>
+<div class="w-100 float-left main-content-scrollbar">
+    <div class="user_detials w-100 float-left">
+        <a class="fa fa-angle-left" *ngIf="backbuttonsts == true" (click)="back()"></a>
+        <img *ngIf="Imageshow" src="assets/images/doctor.jpg">
+        <img *ngIf="Imageshow==false" src="{{appointmentData.PatientImage}}">
+        <h5>{{appointmentData.ProviderName}}</h5>
+    </div>
+
+    <div *ngIf="appointmentData.BookingStatus=='Booked'">
+        <p class="meeting_detials text-center" *ngIf="!sucessmsg"> Select to reschedule your appointment</p>
+        <div class="jumbotron jumbotron-fluid w-100 float-left text-center" *ngIf="sucessmsg">
+            <div class="container">
+                <h1 class="display-4 text-success">Your Appointment Booked successfully with {{appointmentData.ProviderName}} on {{currentslotdate}} {{currentslotfromtime}}.
+                </h1>
+                <h1 class="display-4 text-success">Please check your email for details.</h1>
+                <i class="text-success fa fa-smile-o"></i>
+            </div>
+        </div>
+        <div class="w-100 float-left" *ngIf="!sucessmsg">
+            <div class="appointment_calendly">
+                <div *ngIf="Slotsdisplay && appointmentsModel.length>0">
+                    <!-- <h6>Select a Date</h6> -->
+                    <!--Carousel Wrapper-->
+                    <mdb-carousel #carouselRef [isControls]="true" [animation]="'slide'" data-interval="false">
+                        <!--First slide-->
+                        <a href="javascript:;;" class="nextavailabilitydt" *ngIf="nextavailabilitydt != ''" (click)="getMyappointmnets()">Availability On ({{nextavailabilitydt}})</a>
+                        <mdb-slide *ngIf="appointmentsModel[0].emptySlots.length > 0">
+                            <div class="col-lg-2 col-md-12 col-sm-12 col-xs-12 float-left" *ngFor="let daysname of appointmentsModel[0].emptySlots" [ngStyle]="{'display': daysname.slots.length <= 0 ? 'none' : ''}">
+                                <div class="w-100 float-left" *ngIf="daysname.slots.length > 0">
+                                    <a href="javascript:void(0)" class="cal-date" data-toggle="modal" (click)="getindividualSlotdata(daysname);showslot.show()" title="Show available time slots for {{daysname.Displaydate}}">
+                                        <h6>{{daysname.dayname}}</h6>
+                                        <span>{{daysname.Displaydate}}</span>
+                                    </a>
+                                </div>
+                                <!-- <div class="w-100 float-left" *ngIf="daysname.slots.length <= 0"> -->
+                                <!-- Next Availability {{nextavailabilitydt}} -->
+                                <!-- <a href="javascript:void(0)" class="cal-date" data-toggle="modal" (click)="getindividualSlotdata(daysname);showslot.show()"
+                                        title="Show available time slots for {{daysname.Displaydate}}">
+                                        <h6>{{daysname.dayname}}</h6>
+                                        <span>{{daysname.Displaydate}}</span>
+                                    </a> -->
+                                <!-- </div> -->
+                            </div>
+                            <div class="carousel-control-prev controls2" data-slide="prev" [class.disabled]="isPrevious">
+                                <a class="fa fa-angle-left mr-2" aria-hidden="true" (click)="previous(appointmentsModel[0])"></a>
+                                <!-- <span class="sr-only">Previous</span> -->
+                            </div>
+                            <div class="carousel-control-next controls2" data-slide="next">
+                                <a class="fa fa-angle-right ml-2" aria-hidden="true" (click)="next(appointmentsModel[0])"></a>
+                                <!-- <span class="sr-only">Next</span> -->
+                            </div>
+                        </mdb-slide>
+                        <!--/First slide-->
+                        <!-- <mdb-slide>
+          <div class="col-lg-2 col-md-2 col-sm-6 col-xs-1 float-left" *ngFor="let daysname of DatesList">
+            <a href="javascript:void(0)" class="cal-date" data-toggle="modal" (click)="slotdata(daysname);showslot.show()">
+              <h6>{{daysname.dayname}}</h6>
+              <span>{{daysname.Displaydate}}</span>
+            </a>
+          </div>
+        </mdb-slide> -->
+
+                    </mdb-carousel>
+                </div>
+                <!--/.Carousel Wrapper-->
+                <div *ngIf="!Slotsdisplay" class="w-100 float-left">
+                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 text-center float-left previous-appnt">
+                        <h5>Previous Appointment:</h5>
+                        <hr>
+                        <p class="w-100 float-left">
+                            <i aria-hidden="true " class="fa fa-clock-o "></i>
+                            <span>Appointment Time:{{appointmentData.BookedTime}}</span>
+                            <b></b>
+                        </p>
+                        <p class="w-100 float-left">
+                            <i aria-hidden="true" class="fa fa-calendar-check-o"></i>
+                            <span>Appointment Date:{{appointmentData.BookedDate}}</span>
+                            <b></b>
+                        </p>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 text-center float-left next-appnt">
+                        <h5>Updated Appointment</h5>
+                        <hr>
+                        <p class="w-100 float-left">
+                            <i aria-hidden="true " class="fa fa-clock-o "></i>
+                            <span>Appointment Time:{{currentslotfromtime}}</span>
+                            <b></b>
+                        </p>
+                        <p class="w-100 float-left">
+                            <i aria-hidden="true" class="fa fa-calendar-check-o"></i>
+                            <span>Appointment Date:{{currentslotdate}}</span>
+                            <b></b>
+                        </p>
+                    </div>
+                    <!-- <div class="">
+            <button class="btn-round blue-btn align-center" (click)="confirmappointment()" >Reschedule</button>
+      </div> -->
+                    <div class="w-100 float-left text-center">
+                        <button class="btn btn-primary wave-light " style="margin-top:40px" (click)="confirmappointment()">Reschedule</button>
+                    </div>
+                    <!-- <hr class="w-100 float-left"> -->
+                </div>
+            </div>
+        </div>
+        <div mdbModal #showslot="mdb-modal" class="modal fade" id="showslot" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title"> Available Times</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="showslot.hide()">
+                            <span aria-hidden="true">
+                                <i class="icon-close" aria-hidden="true"></i>
+                            </span>
+                        </button>
+                    </div>
+                    <div class="modal-body" *ngIf="slotsdata.length > 0">
+                        <p class="mb-3 no_padding float-left">Date:{{bookslot.BookedDate}}</p>
+                        <p class="mb-3 float-right">Day:{{bookslot.BookedDay}}</p>
+
+                        <ng-scrollbar class="slot-scrollbar w-100 float-left">
+                            <collapsible-list [type]="'accordion'" class=" slotdata w-90 float-left">
+
+                                <collapsible-list-item *ngFor="let slots of slotsdata; let i=index" class=" float-left w-100">
+
+                                    <collapsible-header class="waves-effect" title="select {{slots.fromtime}} on {{bookslot.BookedDate}}">
+                                        {{slots.fromtime}}
+                                    </collapsible-header>
+                                    <collapsible-body [expanded]="false">
+                                        <p class="float-left">Do you want this time?</p>
+                                        <button type="button" (click)="selectedId = i" attr.aria-controls="#{{i}}" attr.data-target="#{{i}}" class="btn btn-outline-success pull-right no_margin" (click)="confirm(slots.fromtime,bookslot.BookedDate,slots.totime);showslot.hide()">Confirm</button>
+                                    </collapsible-body>
+
+                                </collapsible-list-item>
+
+                            </collapsible-list>
+                        </ng-scrollbar>
+                        <!-- <collapsible-list [type]="'accordion'">
+              <collapsible-list-item>
+                <collapsible-header>{{slots.fromtime}}</collapsible-header>
+                <collapsible-body>
+                  Do you want to Reschedule this slot?
+                  </collapsible-body>
+                </collapsible-list-item>
+              </collapsible-list> -->
+                        <div class="collapse" id="{{i}}" *ngIf="selectedId == i" style="height: auto !important;">
+                            <p class="float-left">Do you want to Reschedule this slot?</p>
+                            <!-- <button type="button" class="btn btn-outline-danger pull-right">No</button> -->
+                            <button class="btn btn-outline-success pull-right" (click)="confirm(slots.fromtime,bookslot.BookedDate,slots.totime)">Confirm</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="appointmentData.BookingStatus!='Booked'">
+
+        <div class="w-100 float-left text-center">
+            <div class="container">
+                <h1 class="text-danger">You are already rescheduled your appointment with {{appointmentData.ProviderName}}</h1>
+                <!-- <i class="text-danger fa fa-smile-o"></i> -->
+            </div>
+        </div>
+    </div>
+</div>

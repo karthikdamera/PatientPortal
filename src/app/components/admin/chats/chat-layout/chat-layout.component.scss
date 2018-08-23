@@ -1,0 +1,726 @@
+
+@import "../../../../../app/shared/styles/variables";
+/* ============================layout css================================== */
+.chat-layout{
+    height: calc(100vh - 45px);
+}
+.chat_left_bar,
+.chat_right_bar {
+    height: 100%;
+    // background: url(/assets/images/chat_bg.png) no-repeat;
+    background-size: cover;
+    float: left;
+    position: relative;
+    background: $color-white;
+}
+
+
+/* ==============================search css=================================== */
+
+.chat_left_bar .search,
+.chat_right_bar .search {
+    padding: 1px;
+    float: left;
+    width: 100%;
+}
+.chat_left_bar .contact_list p {
+    float: left;
+    width: 100%;
+    font-size: 14px;
+    // color: rgba(255, 255, 255, 0.4);
+    margin: 0;
+}
+
+.chat_left_bar .search input,
+.chat_right_bar .search input {
+    padding-top: 15px;
+    font-size: 20px !important;
+    color: $text-color !important;
+    background: none;
+    border: none;
+    line-height: 24px;
+    margin: 0;
+    width: 100%;
+    float: left;
+    padding-left: 30px;
+}
+
+.contact_list-scrolling{
+    height: calc(100vh - 203px);
+}
+
+/* =====================================group name css========================= */
+
+.group_name {
+    float: left;
+    width: 100%;
+    font-size: 20px;
+    text-transform: uppercase;
+    color: $text-color;
+    padding: 14px 0;
+    border-bottom: 4px solid $theme-light;
+    border-top: 2px solid $theme-light;
+    margin: 0;
+}
+
+
+/* ====================================contact list css============================== */
+
+.contact_list {
+    padding: 20px 10px;
+    float: left;
+    width: 100%;
+    margin: 0;
+   }
+
+.contact_list .contact {
+    float: left;
+    list-style: none;
+    position: relative;
+    border-radius: 4px;
+    padding: 10px 17px;
+    width: 100%;
+    margin-bottom: 5px;
+}
+
+.contact_list .contact.active,
+.contact_list .contact:hover {
+  
+    background: $theme-blue;
+    color: $color-white !important;
+
+p, h6{
+    
+    color: $color-white !important;
+}
+.icon-check{
+    top: 13px;
+    left: 0;
+    height: 18px;
+    width: 18px;
+    border: 2px solid $color-white;
+    border-radius: 2px;
+}
+}
+
+.contact_list .contact input {
+    float: left;
+    margin: 19px 0 0 0;
+    width: 20px;
+    height: 20px;
+}
+
+.contact_list .contact img {
+    float: left;
+    width: 50px;
+    height: 50px;
+
+}
+
+.contact_list .contact h6 {
+    float: left;
+    font-size: 16px;
+    width: 100%;
+    font-weight: 600;
+    // color: $text-color;
+    text-transform: capitalize;
+    margin: 6px 0 ;
+}
+
+.online_status {
+    float: left;
+    font-size: 17px;
+    color: $text-color;
+    margin-top: 13px;
+}
+
+.online_status:focus {
+    border: none;
+}
+
+.online_status span {
+    float: left;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    margin: 4px 12px 0 0;
+}
+
+.online_status .online {
+    background-color: #42e05d;
+}
+
+.contact_list .contact .badge {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    padding: 5px;
+    background-color: $theme-blue;
+    border-radius: 4px;
+    font-size: 16px;
+    color: $text-color;
+    margin-top: 19px;
+}
+
+
+/* ================================add contact btn css========================== */
+
+.add_contact {
+    float: left;
+    background: $theme-blue;
+    text-align: center;
+    padding: 16px 0;
+    font-size: 20px;
+    font-weight: 600;
+    color: $color-white !important;
+    width: 100%;
+}
+
+.add_contact:hover,
+.add_contact:focus {
+    text-decoration: none;
+    color: $text-color;
+}
+
+
+/* ================================group list css========================== */
+
+.group_list .contact {
+    float: left;
+    list-style: none;
+    width: 100%;
+}
+
+.group_list {
+    padding: 12px 0px;
+    float: left;
+    width: 100%;
+}
+
+
+/* .group_list .contact{float: left; list-style: none; position: relative; border-radius: 8px; padding: 10px 20px; width: 100%;} */
+
+.group_list .contact img {
+    float: left;
+    width: 50px;
+    height: 50px;
+    margin-right: 20px;
+    margin-left: 88px;
+}
+
+.group_list .contact h6 {
+    float: left;
+    font-size: 17px;
+    font-weight: 600;
+    color: $text-color;
+    text-transform: capitalize;
+    position: fixed;
+}
+
+.group_list .contact .online_status {
+    float: left;
+    font-size: 17px;
+    color: rgba(255, 255, 255, 0.5);
+    padding-top: 23px;
+    position: fixed;
+}
+
+.group_list .contact .online_status span {
+    float: left;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    margin: 4px 12px 0 0;
+}
+
+.chat_left_bar .contact_list{
+    p.no_data {
+    float: left;
+    width: 100%;
+    text-align: center;
+    font-size: 20px !important;
+    color: $text-color;
+    font-weight: 600;
+    margin-top: 50% !important;
+}
+}
+
+
+/* ================================massage area css========================== */
+
+.massage_area {
+    height: calc(100vh - 44px);
+    background: #f0f0f0;
+    float: left;
+    position: relative;
+}
+
+.strip-top,
+.strip-bottom {
+    float: left;
+    width: 100%;
+    background: $color-white;
+    border-bottom: 2px solid #dddde8;
+    overflow: hidden;
+}
+.strip-top{
+    height: 54px;
+    border-left: 1px solid $theme-lighter-grey;
+    border-right: 1px solid $theme-lighter-grey;
+}
+
+.strip-top a,
+.strip-bottom a {
+    position: relative;
+    height: 52px;
+    border-right: 1px solid #dddde8;
+    border-left: 1px solid #dddde8;
+}
+
+.strip-top .fa-phone::before,
+.fa-video-camera::before,
+.icon-search::before,
+.fa-ellipsis-v::before,
+.fa-smile-o::before,
+.fa-paperclip::before {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: -10px;
+    margin-left: -10px;
+    font-size: 20px;
+    color: #aeb0be;
+}
+
+.massages {
+    float: left;
+    width: 100%;
+    margin: 0;
+    height: 100%;
+        position: relative;
+}
+
+.massages-scrolling{
+    height: calc(100vh - 152px);
+}
+.strip-bottom {
+    border-top: 2px solid #dddde8;
+    border-left: 1px solid #dddde8;
+    border-bottom: none;
+    overflow: hidden;
+}
+
+.middle-content h4 {
+    float: left;
+    width: 100%;
+    text-align: center;
+    font-size: 18px;
+    font-weight: 600;
+    color: #70737a;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    position: relative;
+    margin: 6px 0;
+}
+
+.middle-content .online_status {
+    float: left;
+    width: 100%;
+    text-align: center;
+    font-size: 14px;
+    color: rgba(112, 115, 122, 0.8);
+    border: none;
+    height: auto;
+}
+
+.strip-bottom textarea {
+    border: none;
+
+    font-size: 14px;
+    
+    line-height: 17px;
+    
+    padding: 0px 10px;
+    
+    resize: none;
+}
+
+.send_message {
+    background: $theme-blue;
+    text-transform: uppercase;
+    color: $color-white !important;
+    text-align: center;
+    line-height: 58px;
+}
+
+.send_message:hover {
+    color: $text-color;
+    text-decoration: none;
+}
+
+.conversation {
+    position: absolute;
+    display: contents;
+    width: 100%;
+    bottom: 0;
+    left: 0;
+}
+
+.conversation2 {
+    width: 100%;
+    float: left;
+}
+
+
+/* ================================massage reply & massage receiv css========================== */
+
+.msg-reply,
+.msg-receiv {
+    margin-bottom: 20px;
+}
+
+.msg-reply .msg-text,
+.msg-receiv .msg-text {
+    padding: 14px;
+    max-width: 60%;
+    min-width: 120px;
+    position: relative;
+    background-color: $color-white;
+    border: 1px solid #d9dae5;
+    border-radius: 5px;
+}
+
+.msg-receiv .msg-text {
+    background: $theme-blue;
+    border: none;
+}
+
+
+/* .msg-reply .msg-text::before{ width: 24px; height: 24px; position: absolute; top: 0; left: -10px; background: url(/assets/images/chat_toggle.png); background-size: cover; background-position: center;} */
+
+.chat_toggle_reply {
+    position: absolute;
+    top: -2px;
+    left: -20px;
+}
+
+.chat_toggle_receiv {
+    position: absolute;
+    top: -1px;
+    right: -19px;
+}
+
+.msg-text span,
+.msg-text p {
+    float: left;
+    margin: 0;
+    font-size: 14px;
+    color: #70737a;
+    font-weight: 600;
+}
+
+.msg-receiv .msg-text p,
+.msg-receiv .msg-text span {
+    color: $color-white;
+}
+
+.msg-text span,
+.msg-text span {
+    float: right;
+    opacity: 0.7;
+    margin-left: 20px;
+}
+
+.msg-reply .chat_pic,
+.msg-receiv .chat_pic {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 20px;
+}
+
+.msg-receiv .chat_pic {
+    margin-left: 20px;
+}
+
+.day_status p {
+    font-size: 16px;
+    text-align: center;
+    font-weight: 600;
+    z-index: 1;
+    font-size: 12px;
+    text-transform: uppercase;
+    color: #70737a;
+    margin: 10px;
+}
+
+.day_status::after,
+.day_status::before {
+    width: 38%;
+    position: absolute;
+    top: 50%;
+    left: 15px;
+    background-color: #dddde8;
+    content: "";
+    height: 2px;
+    z-index: 0;
+}
+
+.day_status::after {
+    left: inherit;
+    right: 15px;
+}
+
+
+/* ================================groups menu css========================== */
+
+.chat_right_bar #panel-group{
+    float: left;
+    width: 100%;
+   
+     padding: 0 10px
+}
+.panelgroup-scrolling {
+    height: calc(100vh - 152px);
+}
+
+.chat_right_bar .panel-heading {
+    background: none;
+    border-bottom: none;
+    padding: 0;
+}
+
+.chat_right_bar .panel {
+    background: none;
+    box-shadow: none;
+    border: none;
+    border-bottom: 2px solid $theme-light;
+}
+
+.chat_right_bar .panel-heading a {
+    float: left;
+    width: 100%;
+    color: $text-color;
+    text-align: left;
+}
+
+.chat_right_bar .panel-heading a:hover {
+    text-decoration: none;
+}
+
+.chat_right_bar .panel-heading h4 {
+    font-size: 18px;
+    font-weight: 600;
+  text-transform: capitalize;
+    margin: 0 0 5px 0;
+}
+
+.chat_right_bar .panel-heading span {
+    font-size: 16px;
+    font-weight: 400;
+   text-transform: capitalize;
+    margin: 0 0 10px 0;
+    float: left;
+    width: 100%;
+}
+
+.chat_right_bar .panel-heading img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    padding: 5px;
+    margin: 0 auto;
+    display: block;
+    background: $color-white;
+}
+
+.chat_right_bar .contact_list {
+    height: auto;
+    cursor: pointer;
+}
+
+.chat_right_bar .contact_list h6 {
+    margin: 4px 0 6px 0;
+    text-transform: capitalize;
+}
+
+.chat_right_bar .contact_list p {
+    float: left;
+    width: 100%;
+    font-size: 14px;
+    // color: rgba(255, 255, 255, 0.4);
+    margin: 0;
+}
+
+.chat_right_bar .contact_list .contact {
+    padding:  10px 8px ;
+    margin-bottom: 5px;
+}
+
+.chat_right_bar .contact_list {
+    border-top: 1px solid $theme-light;
+}
+
+.modal-content {
+    border: none !important;
+    border: 5px solid $theme-blue;
+}
+
+.modal-header {
+    border-bottom: 2px solid $text-color;
+}
+
+.contact_badg {
+    padding: 6px;
+    border-radius: 20px;
+    border: 1px solid $theme-blue;
+    color: $text-color;
+    font-size: 14px;
+    font-weight: 600;
+    float: left;
+    margin: 8px 4px;
+    text-transform: capitalize;
+}
+
+.online_status:hover,
+.online_status:focus {
+    text-decoration: none;
+}
+
+.modal-body {
+    padding: 20px;
+}
+
+
+/* ================================Custom Scrollbar css========================== */
+
+
+/* width */
+
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+
+/* Track */
+
+::-webkit-scrollbar-track {
+    border-radius: 0px;
+}
+
+
+/* Handle */
+
+::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 4px;
+}
+
+
+/* Handle on hover */
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.5);
+}
+.suggestions {
+    margin-top: 40px;
+    position: absolute;
+    width: 100%;
+    left: 0;
+    z-index: 12;
+}
+.suggestions ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    box-shadow: 0 1px 6px 2px rgba(0,0,0,.4);
+}
+.suggestions ul li, .suggestions ul li a{display: block;
+    width: 100%;}
+.suggestions ul li :hover, .suggestions ul li a{
+    background: $color-white;}
+.suggestions ul li a {
+    height: 72px;
+    background: $color-white;
+    border-bottom: 2px solid #d3d3d3;
+    padding: 2px 5px;
+}
+.suggestions ul li a:hover{border-bottom: 2px solid $theme-blue;}
+
+.suggestions ul li :hover {
+   /* height: 72px; */
+    background: $color-white;
+    color: black;
+}
+
+.suggestions ul li a img {
+    height: 58px;
+    width: 64px;
+    border-radius: 50%;
+    margin: 0.3em;
+    float: left;
+}
+.patientcard-search {
+    width: 100%;
+    height: 38px;
+    margin:0px;
+}
+.modal-body i{font-size: inherit; color: inherit;}
+.close_btn{z-index: 10; width: 18px; height: 18px; text-align: center; top: -10px; right: 9px; position: absolute; background: none; border: none; font-size: 23px;}
+.close_btn:hover{
+    text-decoration: none;
+    border:none;
+}
+.search_btn{
+    border:none;
+}
+.modal-header{
+    border:none;
+}
+.label{
+    margin:0;
+}
+
+// input-styles
+
+.input-group .container .icon-check::before {
+    font-size: 8px;
+color: $color-white;
+top: 2px;
+left: 2px;
+position: absolute;
+}
+.input-group .icon-check{    position: absolute;
+    top: 13px;
+    left: 0;
+    height: 18px;
+    width: 18px;
+    border: 2px solid $theme-blue;
+    border-radius: 2px;
+}
+.input-group i {
+    position: absolute;
+    top: 20px;
+    left: 15px;
+    font-size: 20px;
+    padding: 8px;
+    color: $text-color !important;
+    border: none !important;
+    z-index: 1;
+
+}
+@media only screen and (max-width: 768px){
+    .chat_left_bar .contact_list p {
+        font-size: 11px;
+    }
+    .contact_list .contact h6 {
+    font-size: 13px;
+    }
+    .contact_list .contact {
+    padding: 10px 4px;
+    }
+    .chat_right_bar .contact_list p {
+        font-size: 11px;
+    }
+}

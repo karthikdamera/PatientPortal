@@ -1,0 +1,74 @@
+<div class="w-100 float-left">
+    <form class="col-lg-4 no_padding float-left" [formGroup]="sliderForm">
+        <div class="float-left col-lg-12 no_padding">
+            <p class="input-title w-100 float-left mb-2">Banner</p>
+            <div class="banner-img w-100 float-left avatharbg  text-center" *ngIf="file_srcs?.length ==''">
+                <img *ngIf="addslide" src="" alt="">
+                <img *ngIf="!addslide" src="{{slidermodel.Image}}" alt="">
+                <div class="overlay placeholder ">
+                    <a id="upload_button">
+                        <label>
+              <i class="fa fa-camera"></i>
+              <input type="file" ngf-select ng-model="new_files" formControlName="sliderImage" ng-change="fs.uploadFiles(new_files)" value="Upload"
+                (change)="fileChange(input)" class="upload" #input>
+              <strong>Upload</strong>
+            </label>
+                    </a>
+                </div>
+            </div>
+            <div class="banner-img w-100 float-left  avatharbg " *ngFor="let file_src of file_srcs; let i = index">
+                <img class="person fa fa-user-circle img-circle" height="100" width="100" [attr.src]='file_src' alt="" />
+                <div class="overlay ">
+                    <a id="upload_button">
+                        <label>
+              <i class="fa fa-camera"></i>
+
+              <input type="file" ngf-select ng-model="new_files" ng-change="fs.uploadFiles(new_files)" value="Upload" (change)="fileChange(input)"
+                class="upload" #input>
+              <!-- <app-validation [control]="sliderForm.controls.sliderImage"></app-validation> -->
+              <strong>Upload</strong>
+            </label>
+                    </a>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-lg-12 no_padding  float-left">
+            <div class="pt-3 float-left w-100">
+                <div class="input-group col-lg-12 no_padding float-left">
+                    <input type="text" class="form-control float-left w-100" placeholder="Name" formControlName="slideName" [(ngModel)]="slidermodel.Name">
+                    <app-validation [control]="sliderForm.controls.slideName"></app-validation>
+                </div>
+                <div class="col-lg-12 no_padding float-left">
+                    <textarea type="text" class="form-control float-left w-100" placeholder="Description" formControlName="SliderDescription" [(ngModel)]="slidermodel.Description" cols="10"></textarea>
+                    <app-validation [control]="sliderForm.controls.SliderDescription"></app-validation>
+                </div>
+                <div class="input-group col-lg-12 no_padding float-left">
+                    <select [(ngModel)]="slidermodel.OrderNo" class="form-control w-100 float-left" placeholder="Order No" formControlName="SliderOrderno" (change)="selectorder(slidermodel.OrderNo)">
+            <option disabled>-Order No.-</option>
+            <option *ngFor="let option of orderslider">{{option.orderno}}</option>
+          </select>
+                    <app-validation [control]="sliderForm.controls.SliderOrderno"></app-validation>
+                </div>
+            </div>
+            <button class="btn btn-danger wave-light float-left" (click)="clear()">Clear</button>
+            <button class="btn btn-primary wave-light float-left" (click)="SliderPostInfo()">Submit</button>
+        </div>
+    </form>
+
+    <div class="col-lg-8 float-left">
+        <h5 class="float-left pl-2">Banner List ({{sliderinfo.length}}/10)</h5>
+        <ng-scrollbar class="banner-list-scroll w-100 float-left">
+            <ul class="banner-list w-100 float-left">
+                <li class="w-100 float-left" *ngFor="let data of sliderinfo ; let i=index">
+                    <div class="w-100 float-left" *ngIf="i<=10">
+                        <img class="float-left profile_pic" [src]="data.Image" alt="Avatar">
+                        <h4 class="float-left">{{data.OrderNo}}. {{data.Name}}</h4>
+                        <a href="javascript:;;" class=" icon-edit float-left pl-2" title="Edit" (click)="editslides(data)"></a>
+                        <p class="float-left">{{data.Description}}</p>
+                    </div>
+                </li>
+                <!-- <p class="float-left">{{data.OrderNo}}</p> -->
+            </ul>
+        </ng-scrollbar>
+    </div>

@@ -1,0 +1,105 @@
+<div class="col-lg-10 float-left no_padding">
+  <div class="person-header float-left w-100">
+    <!-- <img src="assets/images/Robort.png" /> -->
+    <!-- [formGroup]="staffForm" -->
+    <!-- <img src="{{profileimage}}" class="profile_pic fa fa-user-circle img-circle float-left"> -->
+    <div class="profile_pic float-left" *ngIf="file_srcs?.length ==''">
+      <img *ngIf="imageshow" alt="">
+      <img *ngIf="imageshow==false" class="person fa fa-user-circle image" [src]="profileimage" alt="">
+      <div class="overlay middle">
+        <a id="upload_button">
+          <label class='text'>
+            <i class="fa fa-camera"></i>
+
+            <!-- formControlName="StaffImage" -->
+            <input type="file" ngf-select ng-model="new_files" ng-change="fs.uploadFiles(new_files)" value="Upload" (change)="fileChange(input)"
+              class="upload" #input>
+            <strong>Upload</strong>
+          </label>
+        </a>
+      </div>
+    </div>
+    <div class=" profile_pic float-left" *ngFor="let file_src of file_srcs; let i = index">
+      <img class="fa fa-user-circle image" height="100" width="100" [attr.src]='file_src' alt="" />
+      <div class="overlay middle">
+        <a id="upload_button">
+          <label class='text'>
+            <i class="fa fa-camera"></i>
+
+            <input type="file" ngf-select ng-model="new_files" ng-change="fs.uploadFiles(new_files)" value="Upload" (change)="fileChange(input)"
+              class="upload" #input>
+            <strong>Upload</strong>
+          </label>
+        </a>
+      </div>
+    </div>
+
+    <div class="col-lg-10 col-md-10 col-sm-12 col-xs-12 float-left user-info">
+      <h2 class="float-left w-100">{{profileInfo.StaffName}}
+      </h2>
+      <div class="w-100 float-left">
+        <p class="float-left width_auto">
+          <span class="float-left">Email :</span>&nbsp;{{profileInfo.Email}}
+        </p>
+      </div>
+      <div class="w-100 float-left">
+        <p class="float-left width_auto">
+          <span class="float-left">Phone Number :</span>&nbsp;{{profileInfo.PhoneNo}}
+        </p>
+        <p class="float-left width_auto">
+          <span class="float-left">Alternate Phone Number :</span>&nbsp;{{profileInfo.AltPhoneNo}}
+        </p>
+        <p class="float-left width_auto">
+          <span class="float-left">Designation : </span>&nbsp;{{profileInfo.DesignationName}}
+        </p>
+      </div>
+    </div>
+
+  </div>
+  <div class="w-100 page-titel float-left">
+    <form [formGroup]="staffForm">
+      <div class="input-group col-lg-6 float-left">
+        <span class="input-title w-100 float-left">Name :</span>
+
+        <input class="form-control capitalize input_textbox" type="text" formControlName="StaffName" [(ngModel)]="profileInfo.StaffName"
+          maxlength="50" value={{profileInfo.Name}}>
+        <app-validation [control]="staffForm.controls.StaffName"> </app-validation>
+      </div>
+
+      <div class="input-group col-lg-6 float-left">
+        <span class="input-title w-100 float-left">Email :</span>
+        <input class="form-control capitalize input_textbox" type="email" formControlName="Email" class="form-control input_textbox"
+          [(ngModel)]="profileInfo.Email" value={{profileInfo.Email}} disabled>
+      </div>
+      <div class="input-group col-lg-6 float-left">
+        <span class="input-title w-100 float-left">Phone Number :</span>
+        <input class="form-control capitalize input_textbox" type="text" [textMask]="{mask: mask}" formControlName="PhoneNo" [(ngModel)]="profileInfo.PhoneNo"
+          (blur)="unmasckphone()" [ngClass]="{'error' : phonestssec}" >
+        <app-validation [control]="staffForm.controls.PhoneNo"> </app-validation>
+        <!-- <div *ngIf="phonestssec" class="errormsg"> Number Should Be 10 Digits</div> -->
+      </div>
+      <div class="input-group col-lg-6 float-left">
+        <span class="input-title w-100 float-left">Alternate Phone Number :</span>
+        <input class="form-control capitalize input_textbox" formControlName="AltPhoneNo" [textMask]="{mask: mask}" class="form-control input_textbox"
+          [(ngModel)]="profileInfo.AltPhoneNo" (blur)="unmasckaltphone()" [ngClass]="{'error' : phonealtstssec}" >
+        <!-- <div *ngIf="phonealtstssec" class="errormsg"> Alternate Number Should Be 10 Digits</div> -->
+      </div>
+      <div class="input-group col-lg-6 float-left">
+        <span class="input-title w-100 float-left">Designation :</span>
+        <select class="form-control btn-section input_textbox" #desid formControlName="DesignationName" [(ngModel)]="profileInfo.DesignationName"
+          (change)="designationid(profileInfo.DesignationName)">
+          <option disabled selected> Select</option>
+          <option [ngValue]="providerInfo.Name" *ngFor="let providerInfo of data" [selected]="providerInfo.Name==profileInfo.DesignationName">{{providerInfo.Name}}</option>
+        </select>
+        <app-validation [control]="staffForm.controls.DesignationName"> </app-validation>
+      </div>
+      <div class="w-100 float-left text-center">
+        <button class="btn btn-primary waves-light" (click)="postStaffInfo()" [disabled]="!staffForm.valid">Update</button>
+      </div>
+    </form>
+  </div>
+</div>
+<div class="col-lg-2 float-left dashboard_right">
+  <app-slider-component></app-slider-component>
+  <app-bmi-component></app-bmi-component>
+</div>

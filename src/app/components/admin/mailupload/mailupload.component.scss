@@ -1,0 +1,114 @@
+.search {
+    position: relative;
+}
+
+.search input {
+    text-indent: 30px;
+    /* margin-left: 1380px;
+    margin-top: -70px; */
+}
+
+.search .icon-search {
+    position: absolute;
+    /* top: 10px;
+  left: 1410px; */
+  left: 20px;
+  top: 10px;
+    font-size: 18px;
+}
+
+label {
+    /* color: rgba(24, 230, 195, 0.931); */
+    font-weight: bold;
+    font-size: 18;
+    /* text-indent: 5em; */
+}
+
+.btn-round {
+    font-size: 16px;
+}
+
+.camp_det {
+    float: left;
+    width: 100%;
+    margin: 20px 0;
+}
+
+/* input {
+    width: 25%;
+} */
+
+.link-previous {
+    font-size: 22px;
+    line-height: 38px;
+}
+
+.link-previous .fa-envelope {
+    margin-right: 5px;
+}
+
+a {
+    text-decoration: none;
+}
+
+
+.input-group-text, {
+    padding: 8px 0.75rem;   
+}
+.icon-copy {
+    color: #fff;
+    
+    font-size: 16px;
+}
+span{  
+    margin-right: 10px;
+    }
+.btn {
+    padding: 9px;
+    min-width: 80px;
+}
+.btn-primary{
+    font-size: 14px;
+}
+.pcustome-check{
+    .input-group{
+        .container{
+            margin-top: -7px;
+        }
+        .icon-check::before {
+            font-size: 8px;
+            color: #ffff;
+            top: -3px;
+            left: 0px;
+            position: absolute;
+        }
+span{
+    font-size: 14px;
+    font-weight: 600;
+}
+}
+}
+.fa-paper-plane::before , .fa-angle-double-down::before{
+    color: #ffff;
+}
+// .pcustome-check1{
+// .icon-check::before{
+//     top: 1px;
+// }
+// }
+#upload_button{
+    label{
+    background: #f5f5f5;
+padding: 5px;
+}
+p{
+    color: #03a9f3;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    width: 141px;
+    white-space: nowrap;
+}
+}
+.icon-csv_upload{
+    font-size: 40px;
+}

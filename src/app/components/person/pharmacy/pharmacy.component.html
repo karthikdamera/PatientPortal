@@ -1,0 +1,311 @@
+<div class="w-100 page-titel float-left">
+  <h4 class="float-left titel">Pharmacy Information</h4>
+  <!-- <button type="button" class="btn btn-primary no_margin width_auto float-right waves-light text-center" mdbWavesEffect>Add Pharmacy</button> -->
+  <button type="button" class="btn btn-primary no_margin width_auto float-right waves-light text-center" data-toggle="modal"
+    data-target="#pharmaaddModal" (click)="demoBasic.show();toClearModel('open')" mdbWavesEffect>
+    Add Pharmacy
+  </button>
+
+</div>
+<div class="w-100 float-left page-container" *ngIf="pharmacyData.length>0">
+  <table class="theme-table table">
+    <thead>
+      <tr>
+        <th>
+          <a (click)="setOrder('PreferredPharmacy')">Pharmacy Name
+            <i class="fa" [ngClass]="{'fa-caret-down' : !reverse,'fa-caret-up' : reverse }" *ngIf="order=='PreferredPharmacy'" aria-hidden="true"></i>
+          </a>
+        </th>
+        <th>
+          <a (click)="setOrder('PharmacyPhoneNumber')">Phone Number
+            <i class="fa" [ngClass]="{'fa-caret-down' : !reverse,'fa-caret-up' : reverse }" *ngIf="order=='PharmacyPhoneNumber'" aria-hidden="true"></i>
+          </a>
+        </th>
+        <th>
+          <a (click)="setOrder('PharmacyAddress1')">
+            Address1
+            <i class="fa" [ngClass]="{'fa-caret-down' : !reverse,'fa-caret-up' : reverse }" *ngIf="order=='PharmacyAddress1'" aria-hidden="true"></i>
+          </a>
+        </th>
+        <th>
+          <a (click)="setOrder('PharmacyAddress2')">
+            Address2
+            <i class="fa" [ngClass]="{'fa-caret-down' : !reverse,'fa-caret-up' : reverse }" *ngIf="order=='PharmacyAddress2'" aria-hidden="true"></i>
+          </a>
+        </th>
+        <th>
+          <a (click)="setOrder('State')">
+            State
+            <i class="fa" [ngClass]="{'fa-caret-down' : !reverse,'fa-caret-up' : reverse }" *ngIf="order=='State'" aria-hidden="true"></i>
+          </a>
+        </th>
+        <th>
+          <a (click)="setOrder('ZipCode')">
+            Zip Code
+            <i class="fa" [ngClass]="{'fa-caret-down' : !reverse,'fa-caret-up' : reverse }" *ngIf="order=='ZipCode'" aria-hidden="true"></i>
+          </a>
+        </th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let pharmaData of pharmacyData | orderBy: order:reverse:'case-insensitive'| paginate: {itemsPerPage: 5, currentPage: page ,  id: 'pharmacypage'};">
+        <td data-column="Pharmacy Name">{{pharmaData.PreferredPharmacy}}</td>
+        <td data-column="Phone Number">{{pharmaData.PharmacyPhoneNumber}}</td>
+        <td data-column="Address1">{{pharmaData.PharmacyAddress1}}</td>
+        <td data-column="Address2">{{pharmaData.PharmacyAddress2}}</td>
+        <td data-column="State">{{pharmaData.State}}</td>
+        <td data-column="Zip Code">{{pharmaData.ZipCode}}</td>
+        <td data-column="Action">
+          <a href="javascript:;;" class="edit float-left" data-toggle="modal" data-target="#pharamaeditmodel" [disabled]="disableButton"
+            (click)="edit.show();onEdit(pharmaData)">
+            <i class="icon-edit float-left" aria-hidden="true" title="Edit" style="cursor:pointer"></i>
+            <span>Edit</span>
+          </a>
+
+          <a href="javascript:;;" class="remove float-left" (click)="onDelete(pharmaData);deletepharmacy.show()">
+            <i class="icon-remove float-left" aria-hidden="true" title="Remove" style="cursor:pointer"></i>
+            <span>Remove</span>
+          </a>
+        </td>
+      </tr>
+
+    </tbody>
+  </table>
+  <pagination-controls (pageChange)="page = $event" id="pharmacypage">
+  </pagination-controls>
+</div>
+<div class="page-container add-record w-100 text-center mt-5 float-left" *ngIf="pharmacyData.length<=0">
+  <i class="w-100 icon-add-file icon float-left" aria-hidden="true"></i>
+  <p class="w-100 float-left">Add New Record</p>
+</div>
+<div mdbModal #deletepharmacy="mdb-modal" class="modal fade" id="deletepharmacy" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content rounded">
+      <div class="modal-header">
+        <h4>Delete Pharmacy</h4>
+        <p hidden>{{phrmamodel}}</p>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="deletepharmacy.hide()">
+          <span aria-hidden="true">
+            <i class="icon-close" aria-hidden="true"></i>
+          </span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p class=" text-center" id="myModalLabel">Do You want to delete?</p>
+        <button class="btn btn-danger float-right waves-light" (click)="deletepharmacy.hide()">No</button>
+        <button class="btn btn-primary float-right waves-light" (click)="Deletepharma(phrmamodel)">Yes</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div mdbModal #demoBasic="mdb-modal" class="modal fade" id="pharmaaddModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+  aria-hidden="true" [config]="{backdrop: false, ignoreBackdropClick: true, keyboard:false}">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content rounded">
+      <div class="modal-header">
+        <h4 class="modal-title w-100" id="myModalLabel">Add Pharmacy</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="demoBasic.hide();toClearModel('close')">
+          <span aria-hidden="true">
+            <i class="icon-close" aria-hidden="true"></i>
+          </span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="pharmacyForm" (submit)="Addpharma()">
+          <div class="row">
+            <div class="input-group col-lg-3 float-left">
+              <span class="input-title w-100 float-left">Pharmacy
+                <span class="color-red">*</span>
+              </span>
+              <!-- <ng-select [allowClear]="true" [items]="items" [disabled]="disabled" (data)="refreshValue($event)" (selected)="selected($event)" (removed)="removed($event)" (typed)="typed($event)" placeholder="No city selected">
+                        </ng-select> -->
+
+
+              <!-- <select name="sample" class="mdb-select form-control w-100 float-left"formControlName="PreferredPharmacy" [(ngModel)]="phrmamodel.PreferredPharmacy" > -->
+              <div class="form-select">
+                <select class="mdb-select form-control w-100 float-left" formControlName="PreferredPharmacy" [(ngModel)]="phrmamodel.PreferredPharmacy">
+                  <!-- <option >select</option> -->
+                  <option value="" selected>--Please Select--</option>
+                  <option *ngFor="let dropdown of pharmacydrop">{{dropdown.Name}}</option>
+                  <!-- <option>CVS</option>
+                                    <option>Express Scripts</option>
+                                    <option>Pavilions</option>
+                                    <option>Ralphs</option>
+                                    <option>Target</option> -->
+
+                </select>
+
+              </div>
+              <app-validation [control]="pharmacyForm.controls.PreferredPharmacy">
+              </app-validation>
+            </div>
+            <div class="input-group col-lg-3 float-left">
+              <span class="input-title w-100 float-left">Phone Number
+                <span class="color-red">*</span>
+              </span>
+              <input class="form-control w-100 float-left" type="text" [textMask]="getNHSNumberMask()" formControlName="PharmacyPhoneNumber"
+                [(ngModel)]="phrmamodel.PharmacyPhoneNumber" (blur)="unmasckphone($event)" [ngClass]="{'error' : phonests}">
+              <app-validation [control]="pharmacyForm.controls.PharmacyPhoneNumber">
+              </app-validation>
+              <!-- <div *ngIf="phonests" class="error-message"> Number Should Be 10 Digits</div> -->
+            </div>
+            <div class="input-group col-lg-6 float-left">
+              <span class="input-title w-100 float-left">Address 1
+                <span class="color-red">*</span>
+              </span>
+              <input class="form-control w-100 float-left" type="text" placeholder="Pharmacy Address" formControlName="PharmacyAddress1"
+                [(ngModel)]="phrmamodel.PharmacyAddress1" maxlength="100">
+              <app-validation [control]="pharmacyForm.controls.PharmacyAddress1">
+              </app-validation>
+            </div>
+          </div>
+          <div class="row ">
+            <div class="input-group col-lg-6 float-left">
+              <span class="input-title w-100 float-left">Address 2
+                <span class="color-red"></span>
+              </span>
+              <input class="form-control w-100 float-left" type="text" placeholder="Pharmacy Address" formControlName="PharmacyAddress2"
+                [(ngModel)]="phrmamodel.PharmacyAddress2" maxlength="100">
+            </div>
+            <div class="input-group col-lg-3 float-left">
+              <span class="input-title w-100 float-left">State
+                <span class="color-red">*</span>
+              </span>
+              <!-- <ng-select class="form-control w-100 float-left no_padding" [options]="options" [(ngModel)]="mySelectValue"></ng-select> -->
+              <!-- <select #select class=”mdb-select”> -->
+              <select name="sample" class="mdb-select form-control w-100 float-left" formControlName="State" [(ngModel)]="phrmamodel.State"
+                name="sample" (change)="Stateid(phrmamodel.State)">
+
+                <option [ngValue]="undefined" disabled selected>-- Choose State--</option>
+                <option *ngFor="let option of stateNames" [ngValue]='option.Name'>{{option.Name}}</option>
+              </select>
+              <app-validation [control]="pharmacyForm.controls.State">
+              </app-validation>
+            </div>
+            <div class="input-group col-lg-3 float-left">
+              <span class="input-title w-100 float-left">Zip Code
+                <span class="color-red">*</span>
+              </span>
+              <input class="form-control input-md" formControlName="ZipCode" [(ngModel)]="phrmamodel.ZipCode" maxlength="5" />
+
+              <app-validation [control]="pharmacyForm.controls.ZipCode">
+              </app-validation>
+            </div>
+          </div>
+          <button class="btn btn-primary btn-sm waves-light float-right" type="submit" [disabled]="!pharmacyForm.valid ||  disableButton"
+            mdbWavesEffect>Save</button>
+
+        </form>
+      </div>
+      <!-- <div class="modal-footer">
+              <button type="button" class="btn btn-secondary btn-sm waves-light" data-dismiss="modal" (click)="demoBasic.hide()" mdbWavesEffect>Close</button>
+              <button type="button" class="btn btn-primary btn-sm waves-light" mdbWavesEffect>Save changes</button>
+          </div> -->
+    </div>
+  </div>
+</div>
+
+<div mdbModal #edit="mdb-modal" class="modal fade" id="pharamaeditmodel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+  aria-hidden="true" [config]="{backdrop: false, ignoreBackdropClick: true, keyboard:false}">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content rounded">
+      <div class="modal-header">
+        <h4 class="modal-title w-100" id="myModalLabel">Edit Pharmacy</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="edit.hide();toClearModel('close')">
+          <span aria-hidden="true">
+            <i class="icon-close" aria-hidden="true"></i>
+          </span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="pharmacyForm" (submit)="Editpharma()">
+          <div class="row">
+            <div class="input-group col-lg-3 float-left">
+              <span class="input-title w-100 float-left">Pharmacy
+                <span class="color-red">*</span>
+              </span>
+              <!-- <ng-select [allowClear]="true" [items]="items" [disabled]="disabled" (data)="refreshValue($event)" (selected)="selected($event)" (removed)="removed($event)" (typed)="typed($event)" placeholder="No city selected">
+                        </ng-select> -->
+              <!-- <select name="sample" class="mdb-select form-control w-100 float-left" formControlName="PreferredPharmacy" ng-bind="phrmamodel.PreferredPharmacy" value="{{phrmamodel.PreferredPharmacy}}">
+                                <option value="" selected disabled>Select</option>
+                                <option>CVS</option>
+                                <option>Express Scripts</option>
+                                <option>Pavilions</option>
+                                <option>Ralphs</option>
+                                <option>Target</option>
+
+                            </select> -->
+
+              <select name="PreferredPharmacy" class="mdb-select form-control w-100 float-left" formControlName="PreferredPharmacy" ng-bind="phrmamodel.PreferredPharmacy">
+                <option *ngFor="let dropdown of pharmacydrop" [ngValue]="dropdown.Name" [selected]="dropdown.Name==phrmamodel.PreferredPharmacy">{{dropdown.Name}}</option>
+
+              </select>
+
+              <app-validation [control]="pharmacyForm.controls.PreferredPharmacy">
+              </app-validation>
+            </div>
+            <div class="input-group col-lg-3 float-left">
+              <span class="input-title w-100 float-left">Phone Number
+                <span class="color-red">*</span>
+              </span>
+              <input class="form-control w-100 float-left" type="text" [textMask]="getNHSNumberMask()" formControlName="PharmacyPhoneNumber"
+                ng-bind="phrmamodel.PharmacyPhoneNumber" value="{{phrmamodel.PharmacyPhoneNumber}}" (blur)="unmasckphone($event)"
+                [ngClass]="{'error' : phonests}">
+              <app-validation [control]="pharmacyForm.controls.PharmacyPhoneNumber">
+              </app-validation>
+              <!-- <div *ngIf="phonests" style="color:red;"> Number Should Be 10 Digits</div> -->
+            </div>
+            <div class="input-group col-lg-6 float-left">
+              <span class="input-title w-100 float-left">Address 1
+                <span class="color-red">*</span>
+              </span>
+              <input class="form-control w-100 float-left" type="text" placeholder="Pharmacy Address" formControlName="PharmacyAddress1"
+                ng-bind="phrmamodel.PharmacyAddress1" maxlength="100" value="{{phrmamodel.PharmacyAddress1}}">
+              <app-validation [control]="pharmacyForm.controls.PharmacyAddress1">
+              </app-validation>
+            </div>
+          </div>
+          <div class="row ">
+            <div class="input-group col-lg-6 float-left">
+              <span class="input-title w-100 float-left">Address 2
+                <span class="color-red"></span>
+              </span>
+              <input class="form-control w-100 float-left" type="text" placeholder="Pharmacy Address" formControlName="PharmacyAddress2"
+                ng-bind="phrmamodel.PharmacyAddress2" maxlength="100" value="{{phrmamodel.PharmacyAddress2}}">
+            </div>
+            <div class="input-group col-lg-3 float-left">
+              <span class="input-title w-100 float-left">State
+                <span class="color-red">*</span>
+              </span>
+              <!-- <ng-select class="form-control w-100 float-left no_padding" [options]="options" [(ngModel)]="mySelectValue"></ng-select> -->
+              <!-- <select #select class=”mdb-select”> -->
+              <select class="mdb-select form-control w-100 float-left" formControlName="State" name="State" ng-bind="phrmamodel.State">
+                <option value='' disabled selected>-- Choose State--</option>
+                <!-- <option *ngFor="let option of stateNames" [ngValue]='option.Name'>{{option.Name}}</option> -->
+                <option *ngFor="let option of stateNames" [ngValue]="option.Name" [selected]="option.Name==phrmamodel.State">{{option.Name}}</option>
+              </select>
+              <app-validation [control]="pharmacyForm.controls.State">
+              </app-validation>
+            </div>
+            <div class="input-group col-lg-3 float-left">
+              <span class="input-title w-100 float-left">Zip Code
+                <span class="color-red">*</span>
+              </span>
+              <input class="form-control input-md" formControlName="ZipCode" value="{{phrmamodel.ZipCode}}" ng-bind="phrmamodel.ZipCode"
+                maxlength="5" />
+              <app-validation [control]="pharmacyForm.controls.ZipCode">
+              </app-validation>
+            </div>
+          </div>
+          <button class="btn btn-primary btn-sm waves-light float-right" [disabled]="!pharmacyForm.valid ||  disableButton" mdbWavesEffect>Save</button>
+        </form>
+      </div>
+      <!-- <div class="modal-footer">
+              <button type="button" class="btn btn-secondary btn-sm waves-light" data-dismiss="modal" (click)="demoBasic.hide()" mdbWavesEffect>Close</button>
+              <button type="button" class="btn btn-primary btn-sm waves-light" mdbWavesEffect>Save changes</button>
+          </div> -->
+    </div>
+  </div>
+</div>

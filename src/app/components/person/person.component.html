@@ -1,0 +1,138 @@
+<nav class="navbar-primary" [ngClass]="{'collapsed' : (collapseMenu == true)}" *ngIf="HideMenu==false" >
+  <!-- <div class="float-left w-100 brand_logo" [ngClass]="{'collapsed' : (collapseMenu == true)}" (click)="dashboard()" style="cursor:pointer">
+    <img class="full-logo" src="assets/images/logo/logo2.png" alt="">
+    <img class="small-logo" src="assets/images/logo/logo2_short.png" alt="">
+  </div> -->
+  <ng-scrollbar class="primary-menu-scrollbar w-100 float-left">
+    <ul class="navbar-primary-menu float-left w-100">
+      <li>
+        <p>App's</p>
+        <a href="javascript:;;" (click)="dashboard()">
+          <span class="icon icon-dashboard"></span>
+          <span class="nav-label">Dashboard</span>
+        </a>
+      </li>
+      <li>
+        <p>appointment</p>
+        <!-- (click)="schedule()" -->
+        <a href="javascript:;;" routerLink="/person/schedulerlogin" routerLinkActive="active" (click)="scheduleAppointment()"  >
+          <span class="icon icon-todat-appointments"></span>
+          <span class="nav-label">Schedule Appointment</span>
+        </a>
+        <a href="javascript:;;" routerLink="/person/my-appointments" routerLinkActive="active">
+          <span class="icon icon-my-appointments"></span>
+          <span class="nav-label">My Appointments</span>
+        </a>
+      </li>
+      <li>
+        <p>GENERAL</p>
+        <a href="javascript:;;" routerLink="/person/pharmacy" routerLinkActive="active">
+          <span class="icon icon-pharmacy"></span>
+          <span class="nav-label">Pharmacy</span>
+        </a>
+        <a href="javascript:;;" routerLink="/person/insurance" routerLinkActive="active">
+          <span class="icon icon-insurance"></span>
+          <span class="nav-label">Insurance</span>
+        </a>
+        <a href="javascript:;;" routerLink="/person/payment" routerLinkActive="active">
+          <span class="icon icon-payment"></span>
+          <span class="nav-label">Payment</span>
+        </a>
+        <!-- <a href="javascript:;;" (click)="subscriber()">
+                    <span class="icon icon-payment"></span>
+                    <span class="nav-label">Subscriber</span>
+                </a> -->
+        <a href="javascript:;;" routerLink="/person/assessments" routerLinkActive="active">
+          <span class="icon icon-questionnaire"></span>
+          <span class="nav-label">Questionnaire</span>
+        </a>
+      </li>
+      <li>
+        <p>Requests</p>
+        <a href="javascript:;;" routerLink="/person/requestrefills" routerLinkActive="active">
+          <span class="icon icon-refill-request"></span>
+          <span class="nav-label">Refill Request</span>
+        </a>
+        <a href="javascript:;;" routerLink="/person/testresults" routerLinkActive="active">
+          <span class="icon icon-test-results"></span>
+          <span class="nav-label">Test Results</span>
+        </a>
+        <!-- <a href="javascript:;;" routerLink="/person/referafriend" routerLinkActive="active">
+                    <span class="icon icon-refer-friend"></span>
+                    <span class="nav-label">Refer Friend</span>
+                </a> -->
+        <a href="javascript:;;" routerLink="/person/billingquestions" routerLinkActive="active">
+          <span class="icon icon-billing-questions"></span>
+          <span class="nav-label">Billing Questions</span>
+        </a>
+        <a href="javascript:;;" routerLink="/person/requestinfo" routerLinkActive="active">
+          <span class="icon icon-request-information"></span>
+          <span class="nav-label">Request Information</span>
+        </a>
+        <a href="javascript:;;" routerLink="/person/requestrecords" routerLinkActive="active">
+          <span class="icon icon-request-records"></span>
+          <span class="nav-label">Request Records</span>
+        </a>
+        <a href="javascript:;;" routerLink="/person/asksquestion" routerLinkActive="active">
+          <span class="icon icon-ask-questions"></span>
+          <span class="nav-label">Ask Questions</span>
+        </a>
+      </li>
+    </ul>
+  </ng-scrollbar>
+</nav>
+<nav class="navbar navbar-inverse navbar-global navbar-fixed-top" [ngClass]="{'collapsed' : (collapseMenu == true)}">
+  <div class="container-fluid" [ngClass]="{disabled : HideMenu}">  
+    <div class="navbar-header  w-100 float-left ">
+        <div class="float-left logo  brand_logo" [ngClass]="{'collapsed' : (collapseMenu == true)}" (click)="dashboard()">
+            <img class="full-logo " src="assets/images/logo/logo2.png" alt="">
+            <img class="small-logo " src="assets/images/logo/logo2_short.png" alt="">
+          </div>
+      <a href="javascript:void(0);" class="btn-expand-collapse" (click)="collapse()" *ngIf="HideMenu==false">
+        <span class="icon-menu-collapse" [ngClass]="{'collapsed flipInY menuIconRotate' : (collapseMenu == true)}"></span>
+      </a>
+      <!-- <div class=" input-group col-lg-4 float-left">
+            <i class="icon-search float-left"></i>
+            <input class="form-control float-left" type="text" placeholder="Click and type to search anywhere">
+          </div> -->
+          <a class="icon-search responsive-search" (click)="show()">
+          </a>
+      <div class="input-group col-lg-4 col-md-6 col-sm-6 col-xs-12 no_margin float-left" [ngClass]="{'show' :(showdiv == true) }">
+        <i class="icon-search" aria-hidden="true"></i>
+        <input class="form-control w-100 float-left" type="text" placeholder="Click and type to search anywhere" id='menu'
+        [(ngModel)]="query" value="{{searchKey}}" (click)="quickSearch()">
+        <ng-scrollbar class="suggestions-scrollbar float-left" *ngIf="filteredMenu.length > 0">
+            <ul class="suggestions float-left w-100">
+                <li *ngFor="let item of filteredMenu | FilterPipe: query">
+                    <a routerLink="/person/{{item.routername}}">{{item.name}}</a>
+                </li>
+            </ul>
+        </ng-scrollbar>
+
+      </div>
+     
+      <!-- <span class="icon-notification float-right"></span> -->
+      <div class="user-profile nav-item dropdown pr-5 float-right" dropdown>
+        <a dropdownToggle mdbWavesEffect type="button" class="nav-link dropdown-toggle waves-light float-right no_padding" mdbWavesEffect>
+          <img *ngIf="imageshow" class="float-left rounded-circle" src="https://image.flaticon.com/icons/svg/236/236832.svg" alt="">
+          <img *ngIf="imageshow==false" _ngcontent-c11="" class="float-left rounded-circle" src="{{profileimage}}">
+          <span class="profile-name">{{profileInfo.FirstName}}</span>
+          <span class="caret "></span>
+        </a>
+        <div *dropdownMenu class="dropdown-menu dropdown dropdown-primary" role="menu">
+          <a class="dropdown-item waves-light" mdbWavesEffect href="javascript:;;" (click)="profile()">
+            <span class="d-icon icon-user-avth"></span>View Profile</a>
+          <!-- <a class="dropdown-item waves-light" mdbWavesEffect href="javascript:;;"><span class="d-icon icon-user-settings"></span>Settings</a> -->
+          <div class="divider dropdown-divider"></div>
+          <a class="dropdown-item waves-light" mdbWavesEffect href="javascript:;;" (click)="logout()">
+            <span class="d-icon icon-logout"></span>Logout</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+<ng-scrollbar class="main-content-scrollbar w-100 float-left">
+  <div class="main-content w-100 float-left" [ngClass]="{'collapsed' : (collapseMenu == true)}">
+    <router-outlet class="w-100 float-left" ></router-outlet>
+  </div>
+</ng-scrollbar>

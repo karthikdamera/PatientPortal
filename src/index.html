@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Patientportal</title>
+  <base href="/">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- <link rel="icon" type="image/x-icon" href="favicon.ico"> -->
+  <link rel="apple-touch-icon" sizes="57x57" href="assets/images/favicons/apple-icon-57x57.png">
+  <link rel="apple-touch-icon" sizes="60x60" href="assets/images/favicons/apple-icon-60x60.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="assets/images/favicons/apple-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="assets/images/favicons/apple-icon-76x76.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="assets/images/favicons/apple-icon-114x114.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="assets/images/favicons/apple-icon-120x120.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="assets/images/favicons/apple-icon-144x144.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="assets/images/favicons/apple-icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/images/favicons/apple-icon-180x180.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="assets/images/favicons/android-icon-192x192.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/images/favicons/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="96x96" href="assets/images/favicons/favicon-96x96.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/images/favicons/favicon-16x16.png">
+  <link rel="manifest" href="assets/images/favicons/manifest.json">
+  <meta name="msapplication-TileColor" content="#ffffff">
+  <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+  <meta name="theme-color" content="#ffffff">
+  <link rel="stylesheet" href="https://i.icomoon.io/public/e835d5414d/PatientportalWeb/style.css">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet" />
+  <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.6.2/fullcalendar.css" /> -->
+  <link rel="stylesheet" href="assets//js/fullcalendar.min.css" />
+
+  <link rel="stylesheet" href="assets/css/prism-okaidia.css">
+  <link rel="stylesheet" href="assets/css/ng2-select.css">
+</head>
+
+<body>
+  <div class="maindiv float-left w-100">
+    <app-root></app-root>
+  </div>
+  <script src="assets/js/jquery-3.2.1.min.js"></script>
+  <script src="assets/js/moment.min.js"></script>
+  <script src="assets/js/fullcalendar.min.js"></script>
+  <!-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script> -->
+  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script> -->
+  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.19.1/moment.min.js"></script> -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBMlLa3XrAmtemtf97Z2YpXwPLlimRK7Pk"></script>
+  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.6.2/fullcalendar.js"></script> -->
+  <script>
+    function init() {
+      var mapOptions = {
+        zoom: 13,
+        scrollwheel: false,
+        center: new google.maps.LatLng(37.775, -122.434),
+        styles: [{
+          "featureType": "all",
+          "elementType": "labels.text.fill",
+          "stylers": [{
+            "saturation": 36
+          }, {
+            "color": "#000000"
+          }, {
+            "lightness": 40
+          }]
+        }, {
+          "featureType": "all",
+          "elementType": "labels.text.stroke",
+          "stylers": [{
+            "visibility": "on"
+          }, {
+            "color": "#000000"
+          }, {
+            "lightness": 16
+          }]
+        }, {
+          "featureType": "all",
+          "elementType": "labels.icon",
+          "stylers": [{
+            "visibility": "off"
+          }]
+        }, {
+          "featureType": "administrative",
+          "elementType": "geometry.fill",
+          "stylers": [{
+            "color": "#000000"
+          }, {
+            "lightness": 20
+          }]
+        }, {
+          "featureType": "administrative",
+          "elementType": "geometry.stroke",
+          "stylers": [{
+            "color": "#000000"
+          }, {
+            "lightness": 17
+          }, {
+            "weight": 1.2
+          }]
+        }, {
+          "featureType": "landscape",
+          "elementType": "geometry",
+          "stylers": [{
+            "color": "#000000"
+          }, {
+            "lightness": 20
+          }]
+        }, {
+          "featureType": "poi",
+          "elementType": "geometry",
+          "stylers": [{
+            "color": "#000000"
+          }, {
+            "lightness": 21
+          }]
+        }, {
+          "featureType": "road.highway",
+          "elementType": "geometry.fill",
+          "stylers": [{
+            "color": "#000000"
+          }, {
+            "lightness": 17
+          }]
+        }, {
+          "featureType": "road.highway",
+          "elementType": "geometry.stroke",
+          "stylers": [{
+            "color": "#000000"
+          }, {
+            "lightness": 29
+          }, {
+            "weight": 0.2
+          }]
+        }, {
+          "featureType": "road.arterial",
+          "elementType": "geometry",
+          "stylers": [{
+            "color": "#000000"
+          }, {
+            "lightness": 18
+          }]
+        }, {
+          "featureType": "road.local",
+          "elementType": "geometry",
+          "stylers": [{
+            "color": "#000000"
+          }, {
+            "lightness": 16
+          }]
+        }, {
+          "featureType": "transit",
+          "elementType": "geometry",
+          "stylers": [{
+            "color": "#000000"
+          }, {
+            "lightness": 19
+          }]
+        }, {
+          "featureType": "water",
+          "elementType": "geometry",
+          "stylers": [{
+            "color": "#000000"
+          }, {
+            "lightness": 17
+          }]
+        }]
+      };
+      var mapElement = document.getElementById('googleMap');
+      var map = new google.maps.Map(mapElement, mapOptions);
+      var marker = new google.maps.Marker({
+        position: new google.maps.LatLng(37.775, -122.434),
+        animation: google.maps.Animation.BOUNCE,
+        icon: 'assets/images/user-location.svg',
+        map: map
+      });
+      marker.setMap(map);
+
+      var marker = new google.maps.Marker({
+        position: new google.maps.LatLng(37.785, -122.423),
+        // animation: google.maps.Animation.BOUNCE,
+        icon: 'assets/images/map-pointer.svg',
+        map: map
+      });
+      var marker = new google.maps.Marker({
+        position: new google.maps.LatLng(37.795, -122.443),
+        // animation: google.maps.Animation.BOUNCE,
+        icon: 'assets/images/map-pointer.svg',
+        map: map
+      });
+      var marker = new google.maps.Marker({
+        position: new google.maps.LatLng(37.765, -122.463),
+        // animation: google.maps.Animation.BOUNCE,
+        icon: 'assets/images/map-pointer.svg',
+        map: map
+      });
+      var marker = new google.maps.Marker({
+        position: new google.maps.LatLng(37.755, -122.453),
+        // animation: google.maps.Animation.BOUNCE,
+        icon: 'assets/images/map-pointer.svg',
+        map: map
+      });
+      marker.setMap(map);
+    }
+    google.maps.event.addDomListener(window, 'load', init);
+
+  </script>
+</body>
+
+</html>

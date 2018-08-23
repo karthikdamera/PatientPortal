@@ -1,0 +1,55 @@
+<div class="admin-login">
+  <router-outlet></router-outlet>
+  <div class="overlay"></div>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <img src="assets/images/logo/logo2.png" alt="">
+      </div>
+      <div class="modal-body" *ngIf='adminloginShow'>
+        <h4>Sign In
+          <p class="invalid-login" *ngIf="errorMsg">
+            {{errorMsg}}
+          </p>
+        </h4>
+        <form [formGroup]="myForm" (submit)="login(model)" method='post'>
+          <div class="input-group w-100 float-left mt-4">
+            <input class="form-control float-left" type="text" autofocus placeholder="Email id" [(ngModel)]="model.Name" formControlName="Name">
+            <app-validation [control]="myForm.controls.Name"> </app-validation>
+          </div>
+          <div class="input-group w-100 float-left mt-4">
+            <input class="form-control float-left" type="password" placeholder="Password" [(ngModel)]="model.PassWord" formControlName="PassWord">
+            <app-validation [control]="myForm.controls.PassWord"></app-validation>
+          </div>
+          <div class="input-group w-100 float-left mt-4">
+            <button type="submit" *ngIf="!loading" class="btn btn-primary btn-green w-100 no_margin waves-light text-center" mdbWavesEffect
+              (click)="login(model)" [disabled]="!myForm.valid">Sign in</button>
+            <button type="button" *ngIf="loading" class="btn btn-secondary btn-green w-100 no_margin waves-light text-center" mdbWavesEffect>Authenticating user...</button>
+          </div>
+        </form>
+        <div class="input-group w-100 float-left mt-3">
+          <!-- checked="checked" -->
+          <label class="container signin-checkbox mt-2">Keep me in signed in
+            <input type="checkbox">
+            <span class="icon-check"></span>
+          </label>
+        </div>
+        <div class="float-left mt-4">
+          <span class="float-left w-100 link-text" (click)='forgot()'>
+            <a>Forgot Password ?</a>
+          </span>
+        </div>
+      </div>
+      <div class="modal-body" *ngIf='showadminForget'>
+        <app-forgot [data]='Fromadminlogin' (getloginAdmintypeCall)="LoginEvent($event)"></app-forgot>
+      </div>
+      <div class="modal-body" *ngIf='showadminreset'>
+        <app-resetpassword [firstReg]='firstreg' (getFirstRegResettypeCall)="LoginEvent($event)"></app-resetpassword>
+      </div>
+      <!-- <div class="modal-body" *ngIf='showadminForget' >
+        fdgdfgdfg
+        <app-forgot></app-forgot>
+    </div> -->
+    </div>
+  </div>
+</div>

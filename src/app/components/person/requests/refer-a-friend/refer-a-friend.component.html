@@ -1,0 +1,252 @@
+<div class="w-100 page-titel float-left">
+  <h4 class="float-left titel">Request friend</h4>
+  <!-- <button type="button" class="btn btn-primary no_margin width_auto float-right waves-light text-center" mdbWavesEffect>Add Pharmacy</button> -->
+  <button type="button" class="btn btn-primary no_margin width_auto float-right waves-light text-center" data-toggle="modal"
+    data-target="#addRequests" (click)="addRequests.show();toClearModel()" mdbWavesEffect>
+   ADD Request friend
+  </button>
+  <div class="input-group col-lg-4 no_padding mr-3  search float-right" *ngIf="requestsList.length>0">
+      <span class="icon-search"></span>
+  <input type="text" placeholder="Search By Name/Phone/Email" name="barcode" [(ngModel)]="userFilter" class="form-control w-100 float-left no_margin">
+</div>
+</div>
+<div class="w-100 float-left page-container" *ngIf="requestsList.length>0">
+  <table class="theme-table table">
+    <thead>
+      <tr>
+        <th>Provider Name</th>
+        
+        <th>Refer Name</th>
+        <th>Refer Phone No</th>
+        <th>Refer Email</th>
+        <th>CreatedOn</th>
+        <th>Status</th>
+        <th>Manage</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of requestsList | RequestPipe : userFilter | paginate: {itemsPerPage: 5, currentPage: page,  id: 'referfriendpage'};let i=index">
+        <!-- <td>{{data.PharmacyName}}</td> -->
+        <td data-column="Provider Name">{{data.ProviderName}}</td>
+        
+        <td class='details'>{{data.Details}}</td>
+        <td data-column="PhoneNo">{{data.PhoneNo}}</td>
+        <td data-column="Email">{{data.Email}}</td>
+        <td data-column="CreatedOn">{{data.CreatedOn}}</td>
+        <td data-column="Status">
+          <span *ngIf="(data.ReadStatus && data.ReplyMessage!= null)">Read</span>
+          <span *ngIf="(!data.ReadStatus && data.ReplyMessage!= null)">UnRead</span>
+          <span *ngIf="data.ReplyMessage === null">Pending</span>
+        </td>
+
+        <td data-column="Manage">
+
+          <a href="javascript:;;" class="edit float-left" (click)="onEdit(data);edit.show()">
+            <i class="icon-edit float-left" aria-hidden="true"></i>
+            <span>Edit</span>
+          </a>
+          <a href="javascript:;;" class="remove float-left" (click)="onDelete(data);deletereferafriend.show()">
+            <i class="icon-remove float-left" aria-hidden="true"></i>
+            <span>Remove</span>
+          </a>
+          <a href="javascript:;;" class="message float-left" *ngIf="(data.ReplyMessage!= null && data.ReplyMessage.length>0)" (click)="Message(data,data.Id);message.show()">
+            <i class="icon-twilio float-left" aria-hidden="true"></i>
+            <span>Response</span>
+          </a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <pagination-controls (pageChange)="page = $event" id="referfriendpage">
+  </pagination-controls>
+
+</div>
+<div mdbModal #deletereferafriend="mdb-modal" class="modal fade" id="deletereferafriend" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content rounded">
+      <div class="modal-header">
+          <p hidden>{{personrequestmodel}}</p>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="deletereferafriend.hide()">
+            <span aria-hidden="true">
+              <i class="icon-close" aria-hidden="true"></i>
+            </span>
+          </button>
+      </div>
+      <div class="modal-body">
+      <p class=" text-center" id="myModalLabel">Do You want to delete?</p>
+      <button class="btn btn-danger float-right waves-light" (click)="deletereferafriend.hide()">No</button>
+        <button class="btn btn-primary width_auto float-right waves-light" (click)=" deleteRequest(personrequestmodel)">Yes</button>
+    </div>
+    </div>
+  </div>
+</div>
+
+<div class="page-container add-record w-100 text-center mt-5 float-left" *ngIf="requestsList.length<=0">
+  <i class="w-100 icon-add-file icon float-left" aria-hidden="true"></i>
+  <p class="w-100 float-left">Add New Record</p>
+</div>
+
+<div mdbModal #addRequests="mdb-modal" class="modal fade" id="addRequests" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content rounded">
+      <div class="modal-header">
+        <h4 class="modal-title w-100" id="myModalLabel"> Add {{msgtype}}</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="addRequests.hide()">
+          <span aria-hidden="true">
+            <i class="icon-close" aria-hidden="true"></i>
+          </span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="personrequestForm" (submit)="addRequestSave()">
+          <div class="row">
+            <div class="input-group col-lg-6 float-left">
+              <span class="input-title w-100 float-left">Refer Name
+                <span class="color-red">*</span>
+              </span>
+              <input class="form-control" placeholder="Name" formControlName="Details" [(ngModel)]="personrequestmodel.Details" maxlength="100"
+              />
+              <app-validation [control]="personrequestForm.controls.Details">
+              </app-validation>
+            </div>
+            <div class="input-group col-lg-6 float-left">
+              <span class="input-title w-100 float-left">Refer Phone
+                <span class="color-red">*</span>
+              </span>
+              <input class="form-control" [textMask]="getNHSNumberMask()" formControlName="PhoneNo" [(ngModel)]="personrequestmodel.PhoneNo"
+                (blur)="unmasckphone($event)"  [ngClass]="{'error' : phonests}" />
+              <app-validation [control]="personrequestForm.controls.PhoneNo">
+              </app-validation>
+              <!-- <div *ngIf="phonests" class="errormsg"> Number Should Be 10 Digits</div> -->
+            </div>
+          </div>
+          <div class="row ">
+            <div class="input-group col-lg-6 float-left">
+              <span class="input-title w-100 float-left">Refer Email
+                <span class="color-red">*</span>
+              </span>
+              <input class="form-control input-md" placeholder="Email" formControlName="Email" [(ngModel)]="personrequestmodel.Email" maxlength="100"
+              />
+              <app-validation [control]="personrequestForm.controls.Email">
+              </app-validation>
+              <!-- <app-validation [control]="pharmacyForm.controls.PreferredPharmacy">
+                                         </app-validation> -->
+            </div>
+            <div class="input-group col-lg-6 float-left">
+              <span class="input-title w-100 float-left">Provider
+                <span class="color-red">*</span>
+              </span>
+              <div class="form-select">
+                <select class="form-control input-md" formControlName="ProviderId" [(ngModel)]="personrequestmodel.ProviderId">
+                  <option [ngValue]="undefined" selected>-- Choose Provider--</option>
+                  <option *ngFor="let provider of providerDropdown" [ngValue]="provider.ProviderId">{{provider.ProviderName}}</option>
+                </select>
+
+              </div>
+            </div>
+          </div>
+
+
+          <button class="btn btn-primary btn-sm waves-light ml-6" [disabled]="!personrequestForm.valid || disableButton">SUBMIT</button>
+
+          <!-- <button class="btn ml-6 btn-primary btn-sm waves-light float-right" [disabled]="!personrequestForm.valid ||  disableButton" mdbWavesEffect>Submit</button> -->
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+<div mdbModal #edit="mdb-modal" class="modal fade" id="basicExample" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content rounded">
+      <div class="modal-header">
+        <h4 class="modal-title w-100" id="myModalLabel">Edit {{msgtype}}</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="edit.hide()">
+          <span aria-hidden="true">
+            <i class="icon-close" aria-hidden="true"></i>
+          </span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="personrequestForm" (submit)="editRequest()">
+          <div class="row">
+            <div class="input-group col-lg-6 float-left">
+              <span class="input-title w-100 float-left">Refer Name
+                <span class="color-red">*</span>
+              </span>
+              <input class="form-control" placeholder="Details" formControlName="Details" ng-bind="personrequestmodel.Details" value="{{personrequestmodel.Details}}"
+                maxlength="100" />
+              <app-validation [control]="personrequestForm.controls.Details">
+              </app-validation>
+            </div>
+            <div class="input-group col-lg-6 float-left">
+              <span class="input-title w-100 float-left">Refer Phone
+                <span class="color-red">*</span>
+              </span>
+              <input class="form-control" [textMask]="getNHSNumberMask()" formControlName="PhoneNo" ng-bind="personrequestmodel.PhoneNo"
+                value="{{personrequestmodel.PhoneNo}}" (blur)="unmasckphone($event)"  [ngClass]="{'error' : phonests}" />
+              <app-validation [control]="personrequestForm.controls.PhoneNo">
+              </app-validation>
+              <!-- <div *ngIf="phonests" class="errormsg"> Number Should Be 10 Digits</div> -->
+            </div>
+          </div>
+          <div class="row ">
+            <div class="input-group col-lg-6 float-left">
+              <span class="input-title w-100 float-left">Refer Email
+                <span class="color-red">*</span>
+              </span>
+              <input class="form-control input-md" placeholder="Email" formControlName="Email" ng-bind="personrequestmodel.Email" value="{{personrequestmodel.Email}}"
+                maxlength="100" />
+              <app-validation [control]="personrequestForm.controls.Email">
+              </app-validation>
+            </div>
+            <!-- <app-validation [control]="pharmacyForm.controls.PreferredPharmacy">
+                                                 </app-validation> -->
+
+
+            <div class="input-group col-lg-6 float-left">
+              <span class="input-title w-100 float-left">Provider</span>
+              <div class="form-select">
+                <select class="form-control input-md" formControlName="ProviderId">
+                  <option [ngValue]="undefined" selected>-- Choose Provider--</option>
+                  <option *ngFor="let provider of providerDropdown" [ngValue]="provider.ProviderId" [selected]="provider.ProviderId==personrequestmodel.ProviderId">{{provider.ProviderName}}</option>
+                </select>
+
+              </div>
+            </div>
+
+          </div>
+
+          <button class="btn btn-primary btn-sm waves-light ml-6" [disabled]="!personrequestForm.valid || disableButton">SUBMIT</button>
+
+          <!-- <button class="btn ml-6 btn-primary btn-sm waves-light float-right" [disabled]="!personrequestForm.valid ||  disableButton" mdbWavesEffect>Submit</button> -->
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<div mdbModal #message="mdb-modal" class="modal fade" id="message" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content rounded">
+      <div class="modal-header">
+        <h4 class="modal-title w-100" id="myModalLabel">Reply Message</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="message.hide()">
+          <span aria-hidden="true">
+            <i class="icon-close" aria-hidden="true"></i>
+          </span>
+        </button>
+      </div>
+      
+      <div class="modal-body text-center">{{msg}}</div>
+    </div>
+  </div>
+</div>

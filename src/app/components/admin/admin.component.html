@@ -1,0 +1,160 @@
+<nav class="navbar-primary" [ngClass]="{'collapsed' : (collapseMenu == true)}">
+   
+    <ng-scrollbar class="primary-menu-scrollbar w-100 float-left">
+        <ul class="navbar-primary-menu float-left w-100">
+            <li>
+                <p>App's</p>
+                <a href="javascript:;;" routerLink="/admin/admindashboard" routerLinkActive="active">
+                    <span class="icon icon-dashboard"></span>
+                    <span class="nav-label">Dashboard</span>
+                </a>
+            </li>
+            <li>
+                <p>daily activities</p>
+                <a href="javascript:;;" routerLink="/admin/patientcheckin" routerLinkActive="active">
+                    <span class="icon icon-todat-appointments"></span>
+                    <span class="nav-label">Today Appointments</span>
+                </a>
+                <a href="javascript:;;" routerLink="/admin/patientcheckout" routerLinkActive="active">
+                    <span class="icon icon-checked-out"></span>
+                    <span class="nav-label">Checkout</span>
+                </a>
+                <a href="javascript:;;" routerLink="/admin/appointmenthistory" routerLinkActive="active">
+                    <span class="icon icon-todat-appointments"></span>
+                    <span class="nav-label">Appointments History</span>
+                </a>
+                <a href="javascript:;;" routerLink="/admin/leaddata" routerLinkActive="active">
+                    <span class="icon icon-todat-appointments"></span>
+                    <span class="nav-label">Leads Data</span>
+                </a>
+                <a href="javascript:;;" routerLink="/admin/chats" routerLinkActive="active">
+                    <span class="icon icon-twilio"></span>
+                    <span class="nav-label">Twilio</span>
+                </a>
+                <a href="javascript:;;" routerLink="/admin/admin-requests" routerLinkActive="active">
+                    <span class="icon icon-requests"></span>
+                    <span class="nav-label">Requests</span>
+                </a>
+            </li>
+            <li>
+                <p>GENERAL</p>
+                <a href="javascript:;;" routerLink="/admin/slot-booking" routerLinkActive="active">
+                    <span class="icon icon-schedule"></span>
+                    <span class="nav-label">Schedule</span>
+                </a>
+                <a href="javascript:;;" routerLink="/admin/patientlist" routerLinkActive="active">
+                    <span class="icon icon-patient-card"></span>
+                    <span class="nav-label">Patient Card</span>
+                </a>
+                <a href="javascript:;;" routerLink="/admin/campaign" routerLinkActive="active">
+                    <span class="icon icon-campaign"></span>
+                    <span class="nav-label">Campaign</span>
+                </a>
+                <a href="javascript:;;" routerLink="/admin/medications" routerLinkActive="active">
+                    <span class="icon icon-refill-request"></span>
+                    <span class="nav-label">Medication</span>
+                </a>
+            </li>
+            <li>
+                <p>Settings</p>
+                <a href="javascript:;;" routerLink="/admin/masters" routerLinkActive="active">
+                    <span class="icon icon-staff-settings"></span>
+                    <span class="nav-label">Masters</span>
+                </a>
+                <a href="javascript:;;" routerLink="/admin/providerssettings" routerLinkActive="active">
+                    <span class="icon icon-provider-settings"></span>
+                    <span class="nav-label">Provider Settings</span>
+                </a>
+                <!-- <a href="javascript:;;"  routerLink="/admin/designationsettings" routerLinkActive="active">
+                    <span class="icon icon-designation-settings"></span>
+                    <span class="nav-label">Designation Settings</span>
+                </a> -->
+                <!-- <a href="javascript:;;" (click)="appointment()">
+                    <span class="icon icon-designation-settings"></span>
+                    <span class="nav-label">Appointment Settings</span>
+                </a> -->
+            </li>
+        </ul>
+    </ng-scrollbar>
+</nav>
+<nav class="navbar navbar-inverse navbar-global navbar-fixed-top" [ngClass]="{'collapsed' : (collapseMenu == true)}">
+    <div class="container-fluid">
+        <div class="navbar-header w-100 float-left ">
+            <!-- <a href="javascript:;;" class="btn-expand-collapse">
+                <span class="icon-menu-collapse"></span>
+            </a> -->
+            <div class="float-left logo  brand_logo" [ngClass]="{'collapsed' : (collapseMenu == true)}" routerLink="/admin/admindashboard" routerLinkActive="active" style="cursor:pointer">
+                <img class="full-logo" src="assets/images/logo/logo2.png" alt="">
+                <img class="small-logo" src="assets/images/logo/logo2_short.png" alt="">
+            </div>
+            <a href="javascript:void(0);" class="btn-expand-collapse" (click)="collapse()">
+                <span class="icon-menu-collapse" [ngClass]="{'collapsed flipInY menuIconRotate' : (collapseMenu == true)}"></span>
+            </a>
+
+            <!-- <div class=" input-group col-lg-4 float-left">
+      <i class="icon-search float-left"></i>
+      <input class="form-control float-left" type="text" placeholder="Click and type to search anywhere">
+    </div> -->
+            <div class="input-group col-lg-4 col-md-4 col-sm-6 col-xs-6 float-left no_margin">
+                <i class="icon-search" aria-hidden="true"></i>
+                <!-- <input class="form-control float-left" (keyup.enter)="quickSearch()" [ngModel]="quickSearchQuery" (input)="setMsg($event.target.value)"
+                    type="text" placeholder="Click and type to search anywhere"> -->
+                <!-- <input class="form-control float-left" type="text" placeholder="Click and type to search anywhere"> -->
+
+                <input class="form-control float-left" type="text" placeholder="Click and type to search anywhere" id='menu' [(ngModel)]="query" value="{{searchKey}}" (click)="quickSearch()">
+                <ng-scrollbar class="suggestions-scrollbar float-left" *ngIf="filteredMenu.length > 0">
+                    <ul class="suggestions float-left w-100">
+                        <li *ngFor="let item of filteredMenu ">
+                            <a routerLink="/admin/{{item.routername}}">{{item.name}}</a>
+                        </li>
+                    </ul>
+                </ng-scrollbar>
+
+            </div>
+            <!-- <span class="icon-notification float-right"></span> -->
+            <div class="user-profile nav-item dropdown float-right" dropdown>
+                <a dropdownToggle mdbWavesEffect type="button" class="mr-3 nav-link dropdown-toggle waves-light float-right no_padding" mdbWavesEffect>
+                    <!-- john Doe333 -->
+                    <img *ngIf="imageshow" class="float-left rounded-circle" src="https://image.flaticon.com/icons/svg/236/236832.svg" alt="">
+                    <img *ngIf="imageshow==false" _ngcontent-c11="" class="float-left rounded-circle" src="{{profileimage}}">
+                    <span class="profile-name">{{profileInfo.StaffName}}</span>
+
+                    <!-- <img *ngIf="imageshow" class="img-circle" src="https://image.flaticon.com/icons/svg/236/236832.svg" alt=""> -->
+                    <!-- <img *ngIf="imageshow==false" _ngcontent-c11="" class="float-left rounded-circle" src="{{profileimage}}"> {{profileInfo.FirstName}} -->
+
+                    <span class="caret "></span>
+                </a>
+                <div *dropdownMenu class="dropdown-menu dropdown dropdown-primary" role="menu">
+                    <a class="dropdown-item waves-light" mdbWavesEffect (click)="myProfile()">
+                        <span class="d-icon icon-user-avth"></span>View Profile</a>
+                    <a class="dropdown-item waves-light" mdbWavesEffect href="javascript:;;" (click)="settings()">
+                        <span class="d-icon icon-user-settings"></span>Settings</a>
+
+                    <div class="divider dropdown-divider"></div>
+                    <a class="dropdown-item waves-light" mdbWavesEffect (click)="logout()">
+                        <span class="d-icon icon-logout"></span>Logout</a>
+                </div>
+
+
+                <!-- <div *dropdownMenu class="dropdown-menu dropdown dropdown-primary" role="menu">
+                        <a class="dropdown-item waves-light" mdbWavesEffect href="javascript:;;" (click)="profile()">
+                          <span class="d-icon icon-user-avth"></span>View Profile</a>
+
+                        <div class="divider dropdown-divider"></div>
+                        <a class="dropdown-item waves-light" mdbWavesEffect href="javascript:;;" (click)="logout()">
+                          <span class="d-icon icon-logout"></span>Logout</a>
+                      </div> -->
+            </div>
+        </div>
+    </div>
+</nav>
+<!-- <ng-scrollbar class="main-content-scrollbar w-100 float-left">
+    <div class="main-content w-100 float-left">
+        <router-outlet class="w-100 float-left"></router-outlet>
+    </div>
+</ng-scrollbar> -->
+<ng-scrollbar class="main-content-scrollbar w-100 float-left">
+    <div class="main-content w-100 float-left" [ngClass]="{'collapsed' : (collapseMenu == true)}">
+        <router-outlet class="w-100 float-left"></router-outlet>
+    </div>
+</ng-scrollbar>

@@ -1,0 +1,226 @@
+<!--component html goes here -->
+<div class="row" style="height:100vh;background:#fff;">
+    <div class="col-md-3" style="background:#ffd500;text-align:center;height:100vh;">
+<img  src="https://cdn4.iconfinder.com/data/icons/avatar-vol-1-3/512/7-128.png" style="
+   margin:7em auto 4em auto;
+    text-align: center;
+    display: block;
+    border: 1px solid #f1bb19;
+    padding: 0.5em;
+    border-radius: 50%;
+">
+<h3>Let's Get you setup</h3>
+<p>It should only take a couple of minutes to pair with Us</p>
+<a [routerLink]="['/kiosk/home']"><img src="https://d30y9cdsu7xlg0.cloudfront.net/png/14135-200.png" style="width:50px;"/></a>
+    </div>
+    <div class="col-md-9">
+
+<div class="row">
+<div class="col-lg-12">
+    <form [formGroup]="userForm"   class="kiosk-form">
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="col-12">
+                    <h4>Patient Registration</h4>
+                    <hr>
+                </div>
+                <!--first name-->
+                <div class="row">
+                <div class="col-6">
+                    <div class="input-container form-group">
+                        <label for="fname">&nbsp;First Name
+                            <span class="color-red">*</span>
+                        </label>
+                        <input class="form-control" formControlName="FirstName" id="FirstName" [(ngModel)]="regModel.FirstName" maxlength="50" />
+
+                        <div class="bar"></div>
+                        <!-- <div *ngIf="f.submitted && !FirstName.valid" class="help-block">First Name is required</div> -->
+                        <app-validation [control]="userForm.controls.FirstName">
+                        </app-validation>
+
+                    </div>
+                </div>
+                <!--last name-->
+                <div class="col-6">
+                    <div class="input-container form-group">
+                        <label for="lname">&nbsp;Last Name
+                            <span class="color-red">*</span>
+                        </label>
+                        <input class="form-control" type="text" formControlName="LastName" id="LastName" [(ngModel)]="regModel.LastName" maxlength="50"
+                        />
+
+                        <div class="bar"></div>
+                        <app-validation [control]="userForm.controls.LastName">
+                        </app-validation>
+                    </div>
+                </div>
+                </div>
+                <div class="row">
+                <!--address 1-->
+                <div class="col-6">
+                    <div class="input-container form-group">
+                        <label for="address">&nbsp;Address 1
+                            <span class="color-red">*</span>
+                        </label>
+                        <input class="form-control" type="text" formControlName="Address" id="Address" [(ngModel)]="regModel.Address" />
+
+                        <div class="bar"></div>
+                        <app-validation [control]="userForm.controls.Address">
+                        </app-validation>
+                    </div>
+                </div>
+                <!--address 2-->
+                <div class="col-6">
+                    <div class="input-container form-group">
+                        <label for="address">&nbsp;Address 2
+                            <!-- <span class="color-red">*</span> -->
+                        </label>
+                        <input class="form-control" type="text" formControlName="Address2" id="Address2" [(ngModel)]="regModel.Address2"/>
+
+                        <div class="bar"></div>
+                        <app-validation [control]="userForm.controls.Address2">
+                        </app-validation>
+                    </div>
+                </div>
+</div>
+                <!--  city -->
+   <div class="row">
+                <div class="col-4">
+                    <div class="input-container form-group">
+                        <label for="address">&nbsp;City
+                            <span class="color-red">*</span>
+                        </label>
+                        <input class="form-control" type="text" formControlName="City" id="City" [(ngModel)]="regModel.City" />
+
+                        <div class="bar"></div>
+                        <app-validation [control]="userForm.controls.City">
+                        </app-validation>
+                    </div>
+                </div>
+
+                <!-- State  -->
+
+                <div class="col-4">
+                    <div class="input-container form-group">
+                        <label for="address">&nbsp;State
+                            <span class="color-red">*</span>
+                        </label>
+                        <input class="form-control" type="text" formControlName="State" id="State" [(ngModel)]="regModel.State" />
+
+                        <div class="bar"></div>
+                        <app-validation [control]="userForm.controls.State">
+                        </app-validation>
+                    </div>
+                </div>
+
+
+                <!--zipcode-->
+                <div class="col-4">
+                    <div class="input-container form-group">
+                        <label for="zipcoe">&nbsp;Zipcode
+                            <span class="color-red">*</span>
+                        </label>
+                        <input class="form-control" type="text" formControlName="Zipcode" id="Zipcode" [(ngModel)]="regModel.Zipcode" maxlength="5"
+                        />
+
+                        <div class="bar"></div>
+                        <app-validation [control]="userForm.controls.Zipcode">
+                        </app-validation>
+                    </div>
+                </div>
+             
+</div>
+    <div class="row">
+        <!--phone number-->
+        <div class="col-4">
+            <div class="input-container form-group">
+                <label for="phone">&nbsp;Phone No
+                    <span class="color-red">*</span>
+                </label>
+                <input class="form-control" type="text" formControlName="PhoneNo" id="PhoneNo" [(ngModel)]="regModel.PhoneNo" maxlength="10"
+                />
+    
+                <div class="bar"></div>
+                <app-validation [control]="userForm.controls.PhoneNo">
+                </app-validation>
+            </div>
+        </div>
+    
+        <!-- email -->
+        <div class="col-4">
+            <div class="input-container form-group">
+                <label for="email">&nbsp;Email
+                    <span class="color-red">*</span>
+                </label>
+                <input class="form-control" type="text" formControlName="Email" id="Email" [(ngModel)]="regModel.Email" />
+    
+                <div class="bar"></div>
+                <!-- <div *ngIf="f.submitted && !Email.valid" class="help-block">Email is required</div> -->
+                <app-validation [control]="userForm.controls.Email">
+                </app-validation>
+            </div>
+        </div>
+    
+        <!--dob-->
+        <div class="col-4">
+            <div class="form-group">
+                <label>DOB
+                    <span class="color-red">*</span>
+                </label>
+                <div class="input-group">
+                    <span class="input-group-btn" style="height:35px;">
+                        <button type="button" style="width:45px;padding:0;" class="btn btn-default" (click)="DOB.toggleCalendar('DOB')">
+                            <i class="fa fa-calendar" aria-hidden="true"></i>
+                        </button>
+                    </span>
+                    <input class="form-control datewidth" formControlName="DOB" style="float:none;margin:0;margin-bottom:10px;" placeholder="MM/DD/YYYY"
+                        ngx-mydatepicker name="DOB" [(ngModel)]="regModel.DOB" [options]="dob" #DOB="ngx-mydatepicker" (dateChanged)="onDateChanged($event)"
+                    />
+    
+                </div>
+                <app-validation [control]="userForm.controls.DOB">
+                </app-validation>
+            </div>
+        </div>
+    </div>
+
+            <div class="row">
+        <div class="col-12">
+            <div class="form-group prblemtextarea">
+                <label class="control-label " for="message">
+                    Problem
+                </label>
+                <textarea formControlName="Message" class="form-control" cols="40" id="Message" [(ngModel)]="regModel.Message"></textarea>
+            </div>
+        </div>
+        </div>
+        </div>
+<div class="col-12">
+    <div class="btn-group btn-group-justified" role="group" aria-label="group button">
+
+        <div class="">
+
+            <button class="btn-round blue-btn" type="submit" *ngIf="buttonloading">Next</button>
+            <button *ngIf="loadingdata" class="btn-round yellow-btn buttonload" [disabled]="buttonloading">
+                <i class="fa fa-spinner fa-spin faloading">&nbsp;</i>Submitting</button>
+            <button class="btn-round gray-btn" type="button" tabindex="0" data-dismiss="modal" (click)="close()">Close</button>
+        </div>
+
+    </div>
+</div>
+
+
+     
+        <!-- <div *ngIf="loading=='true'" align="center">
+                                                <div class="alert-success alert-text row">
+                                                    <b>{{message}}</b>
+                                                </div>
+                                            </div> -->
+        <!-- </div> -->
+        <!-- </div> -->
+    
+</div>
+</form>
+</div>
+    </div>
+</div>

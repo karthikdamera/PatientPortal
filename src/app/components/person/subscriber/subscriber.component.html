@@ -1,0 +1,373 @@
+<div class="w-100 page-titel float-left">
+    <div class="w-100 page-titel-2 float-left">
+        <h4 class="float-left titel">Subscriber</h4>
+        <button type="button" class="btn btn-primary no_margin width_auto float-right waves-light text-center" data-toggle="modal"
+            data-target="#pharmaaddModal" (click)="ToClear('open');edit.show();ifPatientisSuscriber('Primary');" mdbWavesEffect *ngIf="primarysubscribersaddsts.length<2">
+            Add subscriber
+        </button>
+    </div>
+</div>
+<div class="w-100 float-left page-container" *ngIf="primarysubscribersaddsts.length>0">
+    <table class="theme-table table">
+        <thead>
+            <tr>
+                <!-- <th></th> -->
+                <th>Type</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Relationship</th>
+                <th>dob</th>
+                <th>Gender</th>
+                <th>Email</th>
+                <th>Address</th>
+                <th>Phone</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let subsinfo of data" class="primary-record" [ngClass]="{'secondary-record':subsinfo.SubscriberType=='Secondary'}">
+                <td data-column="Type">{{subsinfo.SubscriberType}}</td>
+                <td data-column="FirstName">{{subsinfo.SubscriberFirstName}}</td>
+                <td data-column="LastName">{{subsinfo.SubscriberLastName}}</td>
+                <td data-column="Relationship">{{subsinfo.RelationshipToPatient}}</td>
+                <td data-column="dob">{{subsinfo.SubscriberDob}}</td>
+                <td data-column="Gender">{{subsinfo.SubscriberGender}}</td>
+                <td data-column="Email">{{subsinfo.SubscriberEmail}}</td>
+                <td data-column="Address">
+                    <span class="w-100 float-left">{{subsinfo.SubscriberHomeAddress}}</span>
+                    <!-- <span class="w-100 float-left">Delran,</span>
+                        <span class="w-100 float-left">NJ 08075, USA</span> -->
+                </td>
+                <td data-column="Phone">{{subsinfo.SubscriberPhoneNumber}}</td>
+                <td data-column="Action">
+                    <a href="javascript:;;" class="edit float-left" data-toggle="modal" data-target="#subscribereditmodel" [disabled]="disableButton"
+                        (click)="addsubs.show();getsubInfo(subsinfo.SubscriberType)">
+                        <i class="icon-edit float-left" aria-hidden="true" title="Edit"></i>
+                        <span>Edit</span>
+                    </a>
+
+                    <!-- <a href="javascript:;;" class="remove float-left">
+                        <i class="icon-remove float-left" aria-hidden="true" title="Remove"></i>
+                        <span>Remove</span>
+                    </a> -->
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div mdbModal #edit="mdb-modal" class="modal fade" id="subscribereditmodel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+    aria-hidden="true" [config]="{backdrop: false, ignoreBackdropClick: true, keyboard:false}">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content rounded">
+            <div class="modal-header">
+                <h4 class="modal-title w-100" id="myModalLabel">Add Subscriber</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="edit.hide();ToClear('close')">
+                    <span aria-hidden="true">
+                        <i class="icon-close" aria-hidden="true"></i>
+                    </span>
+                </button>
+            </div>
+            <div class="modal-body">
+                    <div class="chkboxDiv" >
+                            <div class="col-md-12">
+<input type="checkbox" id="subtype" [(ngModel)]="model.checkp" [checked]="model.checkp" (change)="click(model, $event)"
+/>
+
+                                <label for="subtype ">Patient Is Same As Subscriber</label>
+                            </div>
+                        </div>
+                <div [formGroup]="subscriberForm">
+                    <div class="row">
+                        <div class="input-group col-lg-4 float-left" >
+                            <span class="input-title w-100 float-left">Subscriber Type
+                                <span class="color-red">*</span>
+                            </span>
+                            <select name="sample" class="mdb-select form-control w-100 float-left" formControlName="stype" [(ngModel)]="sbscribemodel.SubscriberType"  (change)="changeInsurance(insurancetype.value)" #insurancetype>
+                                <option [ngValue]="undefined" selected>Please Select Type</option>
+                                <option *ngFor="let type of types" [value]="type">{{type}}</option>
+                            </select>
+                            <app-validation [control]="subscriberForm.controls.stype">
+                            </app-validation>
+                        </div>
+                        <div class="input-group col-lg-4 float-left">
+                            <span class="input-title w-100 float-left">First Name
+                                <span class="color-red">*</span>
+                            </span>
+                            <input class="form-control w-100 float-left" type="text" formControlName="SubscriberFirstName" [(ngModel)]="sbscribemodel.SubscriberFirstName"
+                                maxlength="50" [attr.disabled]="model.checkp == true?'':null">
+                            <app-validation [control]="subscriberForm.controls.SubscriberFirstName">
+                            </app-validation>
+                        </div>
+                        <div class="input-group col-lg-4 float-left">
+                            <span class="input-title w-100 float-left">Last Name
+                                <span class="color-red">*</span>
+                            </span>
+                            <input class="form-control w-100 float-left" type="text" formControlName="SubscriberLastName" [(ngModel)]="sbscribemodel.SubscriberLastName"
+                                maxlength="50" [attr.disabled]="model.checkp == true?'':null">
+                            <app-validation [control]="subscriberForm.controls.SubscriberLastName">
+                            </app-validation>
+                        </div>
+                        <div class="input-group col-lg-4 mt-2 float-left" [hidden]="model.checkp == true">
+                            <span class="input-title w-100 float-left">Relationship
+                                <span class="color-red">*</span>
+                            </span>
+                            <select name="sample" class="mdb-select form-control w-100 float-left" formControlName="RelationshipToPatient" [(ngModel)]="sbscribemodel.RelationshipToPatient"
+                                [attr.disabled]="model.checkp == true?'':null">
+                                <option [ngValue]="undefined" selected>Please Select Relationship</option>
+                                <option value="Parent">Parent</option>
+                                <option value="Partner">Partner</option>
+                                <!-- <option value="Partner">Self</option> -->
+                                <option value="Child">Child</option>
+                                <option value="Spouse">Spouse</option>
+                                <option value="Other">Other</option>
+                            </select>
+                            <app-validation [control]="subscriberForm.controls.RelationshipToPatient">
+                            </app-validation>
+                        </div>
+                        <div class="input-group col-lg-4 mt-2 float-left" [hidden]="model.checkp == true">                            
+                            <span class="input-title w-100 float-left">DOB
+                                <!-- <span class="color-red">*</span> -->
+                            </span>
+                            <div *ngIf="model.checkp || model.patientsecondarydob!= ''">
+                                <i class="icon-calendar waves-effect " aria-hidden="true" (click)="Birthdate.toggleCalendar('Birthdate')"></i>
+                                <input class="form-control datewidth w-100 float-left" ngx-mydatepicker [options]="myOptions" name="Birthdate" formControlName="Birthdate"
+                                    id="Birthdate" placeholder="MM/DD/YYYY " value="{{model.patientsecondarydob}}" [(ngModel)]="model.Birthdate"
+                                    #Birthdate="ngx-mydatepicker" (inputFieldChanged)="onInputFieldDobChanged($event)" (dateChanged)="onDobChanged($event)"
+                                    maxlength="10" />
+                            </div>
+                            <!-- <app-validation [control]="subscriberForm.controls.Birthdate">
+                            </app-validation> -->
+                            <div *ngIf="!model.checkp && model.patientsecondarydob==''">
+                                <i class="icon-calendar waves-effect " aria-hidden="true" (click)="Birthdate.toggleCalendar('Birthdate')"></i>
+                                <input class="form-control datewidth w-100 float-left" ngx-mydatepicker [options]="myOptions" name="Birthdate" formControlName="Birthdate"
+                                    id="Birthdate" placeholder="MM/DD/YYYY " value="{{model.patientsecondarydob}}" [(ngModel)]="model.Birthdate"
+                                    #Birthdate="ngx-mydatepicker" (inputFieldChanged)="onInputFieldDobChanged($event)" (keyup)="dateMask($event)"
+                                    (dateChanged)="onDobChanged($event)" maxlength="10" />
+                            </div>
+                        </div>
+                        <div class="input-group col-lg-4  float-left">
+                            <span class="input-title w-100 float-left">Gender
+                                <span class="color-red">*</span>
+                            </span>
+                            <select name="sample" class="mdb-select form-control w-100 float-left" formControlName="SubscriberGender" value="{{sbscribemodel.SubscriberGender}}"
+                                [(ngModel)]="sbscribemodel.SubscriberGender" [attr.disabled]="model.checkp == true?'':null">
+                                <option [ngValue]="undefined" selected>Please Select</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                            </select>
+                            <app-validation [control]="subscriberForm.controls.SubscriberGender">
+                            </app-validation>
+                        </div>
+                        <div class="input-group col-lg-4  float-left">
+                            <span class="input-title w-100 float-left">Email
+                                <span class="color-red">*</span>
+                            </span>
+                            <input class="form-control w-100 float-left" formControlName="SubscriberEmail" [(ngModel)]="sbscribemodel.SubscriberEmail"
+                                [attr.disabled]="model.checkp == true?'':null" />
+                            <app-validation [control]="subscriberForm.controls.SubscriberEmail">
+                            </app-validation>
+                        </div>
+                        <div class="input-group col-lg-4   float-left">
+                            <span class="input-title w-100 float-left">Address
+                                <span class="color-red">*</span>
+                            </span>
+                            <textarea class="form-control w-100 float-left" formControlName="SubscriberHomeAddress" rows="3" [(ngModel)]="sbscribemodel.SubscriberHomeAddress"
+                                [attr.disabled]="model.checkp == true?'':null"></textarea>
+                            <app-validation [control]="subscriberForm.controls.SubscriberHomeAddress">
+                            </app-validation>
+                        </div>
+                        <div class="input-group col-lg-4  float-left">
+                            <span class="input-title w-100 float-left">Phone Number
+                                <span class="color-red">*</span>
+                            </span>
+                            <input class="form-control w-100 float-left" [textMask]="getNHSNumberMasksec()" formControlName="SubscriberPhoneNumber" [(ngModel)]="sbscribemodel.SubscriberPhoneNumber"
+                                [attr.disabled]="model.checkp == true?'':null" />
+                            <app-validation [control]="subscriberForm.controls.SubscriberPhoneNumber">
+                            </app-validation>
+                        </div>
+                        <div class="input-group col-lg-4  float-left">
+                            <span class="input-title w-100 float-left">City
+                                <span class="color-red">*</span>
+                            </span>
+                            <input class="form-control w-100 float-left" formControlName="SubscriberCity" [(ngModel)]="sbscribemodel.SubscriberCity"
+                                maxlength="50" [attr.disabled]="model.checkp == true?'':null" />
+                            <app-validation [control]="subscriberForm.controls.SubscriberCity">
+                            </app-validation>
+                        </div>
+                        <div class="input-group col-lg-4  float-left">
+                            <span class="input-title w-100 float-left">State
+                                <span class="color-red">*</span>
+                            </span>
+                            <select name="sample" class="mdb-select form-control w-100 float-left" formControlName="SubscriberState" [(ngModel)]="sbscribemodel.SubscriberState"
+                                [attr.disabled]="model.checkp == true?'':null">
+                                <option [ngValue]="undefined" selected>-- Choose State --</option>
+                                <option *ngFor="let data of stateNames" [ngValue]="data.Name" [selected]="data.Name==sbscribemodel.SubscriberState">{{data.Name}}</option>
+                            </select>
+                            <app-validation [control]="subscriberForm.controls.SubscriberState">
+                            </app-validation>
+                        </div>
+                        <div class="input-group col-lg-4  float-left">
+                            <span class="input-title w-100 float-left">Zip Code
+                                <span class="color-red">*</span>
+                            </span>
+                            <input class="form-control w-100 float-left" formControlName="SubscriberZipCode" [(ngModel)]="sbscribemodel.SubscriberZipCode"
+                                class="form-control " maxlength="5" [attr.disabled]="model.checkp == true?'':null" />
+                            <app-validation [control]="subscriberForm.controls.SubscriberZipCode">
+                            </app-validation>
+                        </div>
+                    </div>
+                </div>
+                <button type="button" class="btn btn-primary float-right btn-sm waves-light" mdbWavesEffect (click)="ispatientsameassubscriber(sbscribemodel,sbscribemodel.SubscriberType)" [hidden]="model.checkp != true">Save</button>
+                <button type="button" class="btn btn-primary float-right btn-sm waves-light" mdbWavesEffect (click)="addsubscriber(sbscribemodel.SubscriberType)" [hidden]="model.checkp == true" >Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div mdbModal #addsubs="mdb-modal" class="modal fade" id="subscribereditmodel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+    aria-hidden="true" [config]="{backdrop: false, ignoreBackdropClick: true, keyboard:false}">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content rounded">
+            <div class="modal-header">
+                <h4 class="modal-title w-100" id="myModalLabel">Edit {{model.instype}} Subscriber</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="addsubs.hide();ToClear('close')">
+                    <span aria-hidden="true">
+                        <i class="icon-close" aria-hidden="true"></i>
+                    </span>
+                </button>
+            </div>
+            <div class="modal-body">
+                    <ng-scrollbar class="edit-insurance-scroll w-100 float-left">
+                <div [formGroup]="subscriberForm1">
+                    <div class="row">
+                        <div class="input-group col-lg-4 float-left">
+                            <span class="input-title w-100 float-left">First Name
+                                <span class="color-red">*</span>
+                            </span>
+                            <input class="form-control w-100 float-left" type="text" formControlName="SubscriberFirstName" [(ngModel)]="sbscribemodel.SubscriberFirstName"
+                                maxlength="50" [attr.disabled]="model.checkp == true?'':null">
+                            <app-validation [control]="subscriberForm1.controls.SubscriberFirstName">
+                            </app-validation>
+                        </div>
+                        <div class="input-group col-lg-4 float-left">
+                            <span class="input-title w-100 float-left">Last Name
+                                <span class="color-red">*</span>
+                            </span>
+                            <input class="form-control w-100 float-left" type="text" formControlName="SubscriberLastName" [(ngModel)]="sbscribemodel.SubscriberLastName"
+                                maxlength="50" [attr.disabled]="model.checkp == true?'':null">
+                            <app-validation [control]="subscriberForm1.controls.SubscriberLastName">
+                            </app-validation>
+                        </div>
+                        <div class="input-group col-lg-4 float-left">
+                            <span class="input-title w-100 float-left">Relationship
+                                <span class="color-red">*</span>
+                            </span>
+                            <select name="sample" class="mdb-select form-control w-100 float-left" formControlName="RelationshipToPatient" [(ngModel)]="sbscribemodel.RelationshipToPatient"
+                                [attr.disabled]="model.checkp == true?'':null">
+                                <option [ngValue]="undefined" selected>Please Select Relationship</option>
+                                <option value="Parent">Parent</option>
+                                <option value="Partner">Partner</option>
+                                 <option value="Child">Child</option>
+                                <option value="Spouse">Spouse</option>
+                                <option value="Other">Other</option>
+                            </select>
+                            <app-validation [control]="subscriberForm1.controls.RelationshipToPatient">
+                            </app-validation>
+                        </div> 
+                        <div class="input-group col-lg-4 float-left">
+                            <span class="input-title w-100  float-left">DOB
+                            </span>
+                            <div *ngIf="model.checkp || model.patientdob!= ''">
+                                <i class="icon-calendar waves-effect " aria-hidden="true" (click)="Birthdate.toggleCalendar('Birthdate')"></i>
+                                <input class="form-control datewidth w-100 float-left" ngx-mydatepicker [options]="myOptions" name="Birthdate" formControlName="Birthdate"
+                                    id="Birthdate" placeholder="MM/DD/YYYY"   value="{{model.patientdob}}" [(ngModel)]="model.Birthdate"
+                                    #Birthdate="ngx-mydatepicker" (inputFieldChanged)="onInputFieldDobChanged($event)" (dateChanged)="onDobChanged($event)"
+                                    maxlength="10" />
+                                   
+                            </div>                        
+                            <div *ngIf="!model.checkp && model.patientdob==''">
+                                <i class="icon-calendar waves-effect " aria-hidden="true" (click)="Birthdate.toggleCalendar('Birthdate')"></i>
+                                <input class="form-control datewidth w-100 float-left" ngx-mydatepicker [options]="myOptions" name="Birthdate" formControlName="Birthdate"
+                                    id="Birthdate" placeholder="MM/DD/YYYY" value="{{model.patientdob}}" [(ngModel)]="model.Birthdate"
+                                    #Birthdate="ngx-mydatepicker" (inputFieldChanged)="onInputFieldDobChanged($event)" (keyup)="dateMask($event)"
+                                    (dateChanged)="onDobChanged($event)" maxlength="10" />
+                                   
+                            </div>
+                        </div>
+                        <div class="input-group col-lg-4  float-left">
+                            <span class="input-title w-100 float-left">Gender
+                                <span class="color-red">*</span>
+                            </span>
+                            <select name="sample" class="mdb-select form-control w-100 float-left" formControlName="SubscriberGender" value="{{sbscribemodel.SubscriberGender}}"
+                                [(ngModel)]="sbscribemodel.SubscriberGender" [attr.disabled]="model.checkp == true?'':null">
+                                <option [ngValue]="undefined" selected>Please Select</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                            </select>
+                            <app-validation [control]="subscriberForm1.controls.SubscriberGender">
+                            </app-validation>
+                        </div>
+                        <div class="input-group col-lg-4  float-left">
+                            <span class="input-title w-100 float-left">Email
+                                <span class="color-red">*</span>
+                            </span>
+                            <input class="form-control w-100 float-left" formControlName="SubscriberEmail" [(ngModel)]="sbscribemodel.SubscriberEmail"
+                                [attr.disabled]="model.checkp == true?'':null" />
+                            <app-validation [control]="subscriberForm1.controls.SubscriberEmail">
+                            </app-validation>
+                        </div>
+                        <div class="input-group col-lg-4  float-left">
+                            <span class="input-title w-100 float-left">Address
+                                <span class="color-red">*</span>
+                            </span>
+                            <textarea class="form-control w-100 float-left" formControlName="SubscriberHomeAddress" rows="3" [(ngModel)]="sbscribemodel.SubscriberHomeAddress"
+                                [attr.disabled]="model.checkp == true?'':null"></textarea>
+                            <app-validation [control]="subscriberForm1.controls.SubscriberHomeAddress">
+                            </app-validation>
+                        </div>
+                        <div class="input-group col-lg-4  float-left">
+                            <span class="input-title w-100 float-left">Phone Number
+                                <span class="color-red">*</span>
+                            </span>
+                            <input class="form-control w-100 float-left" [textMask]="getNHSNumberMasksec()" formControlName="SubscriberPhoneNumber" [(ngModel)]="sbscribemodel.SubscriberPhoneNumber"
+                                [attr.disabled]="model.checkp == true?'':null" />
+                            <app-validation [control]="subscriberForm1.controls.SubscriberPhoneNumber">
+                            </app-validation>
+                        </div>
+                        <div class="input-group col-lg-4  float-left">
+                            <span class="input-title w-100 float-left">City
+                                <span class="color-red">*</span>
+                            </span>
+                            <input class="form-control w-100 float-left" formControlName="SubscriberCity" [(ngModel)]="sbscribemodel.SubscriberCity"
+                                maxlength="50" [attr.disabled]="model.checkp == true?'':null" />
+                            <app-validation [control]="subscriberForm1.controls.SubscriberCity">
+                            </app-validation>
+                        </div>
+                        <div class="input-group col-lg-4  float-left">
+                            <span class="input-title w-100 float-left">State
+                                <span class="color-red">*</span>
+                            </span>
+                            <select name="sample" class="mdb-select form-control w-100 float-left" formControlName="SubscriberState" [(ngModel)]="sbscribemodel.SubscriberState"
+                                [attr.disabled]="model.checkp == true?'':null">
+                                <option [ngValue]="undefined" selected>-- Choose State --</option>
+                                <option *ngFor="let data of stateNames" [ngValue]="data.Name" [selected]="data.Name==sbscribemodel.SubscriberState">{{data.Name}}</option>
+                            </select>
+                            <app-validation [control]="subscriberForm1.controls.SubscriberState">
+                            </app-validation>
+                        </div>
+                        <div class="input-group col-lg-4  float-left">
+                            <span class="input-title w-100 float-left">Zip Code
+                                <span class="color-red">*</span>
+                            </span>
+                            <input class="form-control w-100 float-left" formControlName="SubscriberZipCode" [(ngModel)]="sbscribemodel.SubscriberZipCode"
+                                class="form-control " maxlength="5" [attr.disabled]="model.checkp == true?'':null" />
+                            <app-validation [control]="subscriberForm1.controls.SubscriberZipCode">
+                            </app-validation>
+                        </div>
+                    </div>
+                </div>
+                
+                <button type="button" class="btn btn-primary no_margin float-right btn-sm waves-light" mdbWavesEffect  (click)="updatesubscriber(model.instype)">Update</button>
+            </ng-scrollbar>
+            </div>
+        </div>
+    </div>
+</div>

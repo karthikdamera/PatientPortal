@@ -1,0 +1,10 @@
+.errormsg{
+    color: #ce3a42;
+    position: absolute;
+    font-size: 14px;
+    right: 50px;
+    top: 13px;
+}
+.someinput::-ms-clear {
+    display: none;
+ }

@@ -1,0 +1,126 @@
+<!--component html goes here -->
+<!--component html goes here -->
+<div class="entry">
+  <div class="entry-header">
+      <div class="col-lg-12 float-left header-title headding-banner">
+          <div class="col-lg-6 search float-left">
+            
+                  <span class="icon-search"></span>
+                  <input class="form-control" type="search" placeholder="Quick search" [(ngModel)]="userFilter.Activity" class="form-control">
+                  <!--<input class="form-control" type="search" placeholder="quick search" >-->
+                  <!-- <div class="input-group-addon"></div> -->
+                
+      </div>
+    
+      <button (click)="addactivities()" class="btn btn-primary no_margin float-right waves-light text-center" style="border-width:0px;">
+        <i class="menu-icon fa fa-plus"></i> Add New</button>
+      <!-- </div> -->
+    
+    </div>
+  </div>
+  <!-- entry-header -->
+  <!-- <div class="filter-bar">
+      <div class="filter-options">
+        <div class="option">
+          
+        </div>
+      
+      </div>
+
+    </div> -->
+  <!-- filter-bar -->
+  <div class="entry-section" *ngFor="let activity of activityItems |  filterBy: userFilter">
+    <!--<div class="entry-section" *ngFor="let intervention of interventions">-->
+        <div class="row no-gutters headding-banner">
+        <!-- col-2 -->
+        <div class="col-lg-2 float-left entry-status">
+          <!--<span class="status-complete" ></span>-->
+          <i aria-hidden="true" class="fa fa-check" *ngIf="activity.Status=='Complete'"></i>
+          <i aria-hidden="true" class="fa fa-unlock" *ngIf="activity.Status=='Active'"></i>
+          <i aria-hidden="true" class="fa fa-lock" *ngIf="activity.Status=='Inactive'"></i>
+        </div>
+        <!-- col-3 -->
+        <div class="col-lg-7 float-left" *ngIf="activity.Date==''">
+          <div class="entry-available">{{activity.Activity}}</div>
+          <div class="entry-meta">
+            <b>{{activity.Status}}</b> by client </div>
+        </div>
+        <div class="col-lg-7 float-left" *ngIf="activity.Date!=''">
+          <div class="entry-available">{{activity.Activity}}</div>
+          <div class="entry-meta">
+            <b>{{activity.Status}}</b> by client on
+            <b>{{activity.Date | date:'short'}}</b> and Consumed Time is
+            <b>{{activity.TimeConsume}}</b>
+          </div>
+          <!-- <div class="entry-meta"><b>{{activity.Status}}</b> by client on <b>{{activity.Date |date:'MM'}}/{{activity.Date |date:'dd'}}/{{activity.Date |date:'yyyy'}}</b> and Consumed Time is <b>{{activity.TimeConsume}}</b></div> -->
+        </div>
+        <!-- col-8 -->
+        <div class="col-lg-3 float-left entry-action">
+          <a href="javascript:void(0)" (click)="edit.show();updateActivity(activity,i)" class="btn btn-primary no_margin float-right waves-light text-center">Update</a>
+        </div>
+          <div mdbModal #edit="mdb-modal" class="modal fade" id="edit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content rounded">
+                <div class="modal-header">
+                    <h4 class="modal-title w-100 float-left" >Update Activity</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="edit.hide()">
+                      <span aria-hidden="true">
+                        <i class="icon-close" aria-hidden="true"></i>
+                      </span>
+                    </button>
+                    </div>
+                  <div class="modal-body">
+                    <form #Form="ngForm" name="form" novalidate>
+                         
+                          <div class="col-lg-12">
+                            <div class="entry-name">
+                              <b>{{activity.Activity}}</b>
+                            </div>
+                          </div>
+                          <!-- col-12 -->
+                          <div class="col-lg-12">
+                            <div class="form-group">
+                              <div class="form-label">
+                                <label class="label-title">Status</label>
+                              </div>
+
+                              <div class="form-group">
+                                <div class="check-btn">
+                                  <label>
+                                    <input type="radio" value="Active" [checked]="activity.Status ==='Active'" name="CurrentStatus" (click)="updateStatus('Active')"
+                                      required>
+                                    <span>Active</span>
+                                  </label>
+                                </div>
+                                <div class="check-btn">
+                                  <label>
+                                    <input type="radio" value="Inactive" [checked]="activity.Status ==='Inactive'" name="CurrentStatus" (click)="updateStatus('Inactive')"
+                                      required>
+                                    <span>Inactive</span>
+                                  </label>
+                                </div>
+                                <div class="check-btn">
+                                  <label>
+                                    <input type="radio" value="Complete" [checked]="activity.Status ==='Complete'" name="CurrentStatus" (click)="updateStatus('Complete')"
+                                      required>
+                                    <span>Complete</span>
+                                  </label>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        <button type="button" class="btn btn-primary width_auto float-right waves-light text-center" data-dismiss="modal" aria-label="Close" (click)="edit.hide()">Discard</button>
+                        <button class="btn btn-primary width_auto float-right waves-light text-center"  [disabled]="!Form.form.valid" (click)="postUpdatedStatus()">Submit</button>
+                    </form>
+                  </div>
+                <!-- </div> -->
+              </div>
+            </div>
+          </div>
+      
+        <!-- col-3 -->
+
+      </div>
+  </div>
+</div>
+<!-- <span *ngIf="showLoader" class="loading"></span> -->
