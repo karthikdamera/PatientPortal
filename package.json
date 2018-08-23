@@ -23,7 +23,6 @@
     "@angular/platform-browser-dynamic": "^5.2.0",
     "@angular/router": "^5.2.0",
     "@ng-bootstrap/ng-bootstrap": "^2.0.0",
-    "angular-cli": "1.0.0-beta.28.3",
     "angular-bootstrap-md": "^6.0.0",
     "angular2-collapsible": "0.0.52",
     "angular2-csv": "^0.2.5",
